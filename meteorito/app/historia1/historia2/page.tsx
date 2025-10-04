@@ -217,7 +217,7 @@ export default function ImageDialogChanger() {
     if (currentAudio) {
       currentAudio.pause();
     }
-    window.location.href = "https://www.ejemplo.com/siguiente-historia";
+    window.location.href = "/games/game1";
   };
 
   return (

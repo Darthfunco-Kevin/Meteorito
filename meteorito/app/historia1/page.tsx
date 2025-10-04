@@ -165,7 +165,7 @@ export default function ImageDialogChanger() {
     if (currentAudio) {
       currentAudio.pause();
     }
-    window.location.href = "https://www.ejemplo.com/siguiente-historia";
+    window.location.href = "/games"; // Cambia esto a la URL deseada
   };
 
   return (
@@ -261,6 +261,7 @@ export default function ImageDialogChanger() {
               <strong>Escena:</strong> {currentIndex + 1} de {slides.length}
             </div>
             <button
+              
               onClick={continueToNext}
               className="bg-purple-600 hover:bg-purple-700 text-white px-5 py-2.5 rounded-lg font-medium transition-all duration-300 active:scale-95"
             >
