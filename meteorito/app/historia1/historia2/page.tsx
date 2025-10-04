@@ -2,56 +2,108 @@
 import { useState, useEffect } from 'react';
 
 export default function ImageDialogChanger() {
-  type Slide = {
-    image: string;
-    dialog: string;
-    audioUrl?: string;
-  };
-
-  const slides: Slide[] = [
+  const slides = [
     {
       image: "https://media.giphy.com/media/3o7btPCcdNniyf0ArS/giphy.gif",
-      dialog: "La historia comienza en algún lugar del espacio, específicamente en la galaxia NGC 6744.",
+      dialog: "Narrator: After hard work, the celebration begins to welcome their savior, being a quite repetitive custom for someone who has been saving lives for a long time."
       //audioUrl:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
       // Opcional: puedes agregar una URL de audio personalizado
       // audioUrl: "/audios/escena1.mp3"
     },
     {
       image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800",
-      dialog: "Una civilización festejaba sus costumbres, sin saber que próximamente llegaría una inminente lluvia de meteoritos al planeta. "
+      dialog: "Scientist: Thank you so much capybara, we will always be in your debt."
     },
     {
       image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800",
-      dialog: "Fue demasiado tarde, cuando se percataron de la desgarradora noticia, sin perder más el tiempo comenzaron a encontrar una posible solución, pero su preocupación era en contra del meteorito denominado IMPACTOR."
+      dialog: "Capybara: Capybara"
     },
     {
       image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800",
-      dialog: "Llega el día donde se definiría la continuidad de la civilización. A pesar de los esfuerzos para desviarlo, no fue lo suficiente."
+      dialog: "Governor: Tell me capybara, what motivates you to continue with this dangerous adventure?"
     },
     {
       image: "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=800",
-      dialog: "Su civilización, sus antepasados, su historia, su cultura… todo desapareció de la faz del universo."
+      dialog: "Capybara: Don't ask..." 
     },
     {
       image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
-      dialog: "Finalmente, descubrimos el océano infinito. ¡El destino alcanzado!"
+      dialog: "Governor: I suppose you'll be too busy to stay at our celebration"
+
     },
     {
       image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
-      dialog: "Finalmente, descubrimos el océano infinito. ¡El destino alcanzado!"
+      dialog: "Capybara: That's right, in this job there's never time to rest"
+
     },
     {
       image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
-      dialog: "Finalmente, descubrimos el océano infinito. ¡El destino alcanzado!"
+      dialog: "Governor: You know, I recently became the father of a beautiful daughter, so I was worried that meteorite would take that dream away from me. So... I order that you be very well rewarded"
+
     },
     {
       image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
-      dialog: "Finalmente, descubrimos el océano infinito. ¡El destino alcanzado!"
+      dialog: "Narrator: Time passes quickly on the planet, where the capybara decides to wait while being rewarded, so he proceeds to visit the planet's customs. When he finished being rewarded, he proceeds to leave the planet."
+
     },
     {
       image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
-      dialog: "Finalmente, descubrimos el océano infinito. ¡El destino alcanzado!"
+      dialog: "Narrator: The most dangerous meteorite in the universe had been located again heading towards the Milky Way, specifically to planet Earth where human beings live."
+
+    },
+    {
+      image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
+      dialog: "Capybara: One capybara, until the end"
+
+    },
+    {
+      image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
+      dialog: "Capybara: Capybara in action"
+
+    },
+    {
+      image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
+      dialog: "Narrator: Our little furry, friendly and adorable hero begins to destroy asteroids, in order to safeguard the lives of humans; however, a vague memory enters his mind, it was about his planet, his family."
+
+    },
+    {
+      image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
+      dialog: "Narrator: The capybara known as the meteorite destroyer, at some point in his life had to defend his home, despite the efforts, it was in vain. Being one of the most technologically advanced planets on average, no one managed to escape the chaos."
+
+    },    
+    {
+      image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
+      dialog: "Scientist: Sir, it's impossible, a space capybara."
+
+    },   
+    {
+      image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
+      dialog: "Governor: We have a meteorite traveling at a speed we cannot stop, you can behave like an adult, help is help, no matter where it comes from"
+
+    },   
+    {
+      image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
+      dialog: "Capybara: The strong protect themselves and the strongest protect others. I have come for a new rematch against IMPACTOR"
+
+    },   
+    {
+      image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
+      dialog: "Capybara: I'm all ears... "
+
+
+    },   
+    {
+      image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
+      dialog: "Scientist: I don't like to give orders, but I need you to protect 5 locations in different parts of the world, since we will launch what would be 'the penetrator', if everything goes well, we can destroy the meteorite once and for all"
+
+
+    },   
+    {
+      image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
+      dialog: "Capybara: Capybara forever"
+
     }
+
 
   ];
 
@@ -62,7 +114,7 @@ export default function ImageDialogChanger() {
   const [currentAudio, setCurrentAudio] = useState<HTMLAudioElement | null>(null);
 
   // Función para reproducir audio con Text-to-Speech
-  const speakDialog = (text: string) => {
+  const speakDialog = (text) => {
     // Detener cualquier audio previo
     window.speechSynthesis.cancel();
     
@@ -80,7 +132,7 @@ export default function ImageDialogChanger() {
   };
 
   // Función alternativa para usar archivos de audio personalizados
-  const playCustomAudio = (audioUrl: string) => {
+  const playCustomAudio = (audioUrl) => {
     // Detener audio anterior si existe
     if (currentAudio) {
       currentAudio.pause();

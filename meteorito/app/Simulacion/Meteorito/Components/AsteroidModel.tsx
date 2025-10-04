@@ -18,8 +18,8 @@ interface AsteroidModelProps {
 
 export default function AsteroidModel({
   scale = 1,
-  color = "#8B4513",
-  emissiveColor = "#FF4500",
+  color = "#808080",
+  emissiveColor = "#606060",
   metalness = 0.4,
   roughness = 0.6,
   emissiveIntensity = 0.2,
