@@ -2,7 +2,13 @@
 import { useState, useEffect } from 'react';
 
 export default function ImageDialogChanger() {
-  const slides = [
+  type Slide = {
+    image: string;
+    dialog: string;
+    audioUrl?: string;
+  };
+
+  const slides: Slide[] = [
     {
       image: "https://media.giphy.com/media/3o7btPCcdNniyf0ArS/giphy.gif",
       dialog: "La historia comienza en algún lugar del espacio, específicamente en la galaxia NGC 6744.",
@@ -56,7 +62,7 @@ export default function ImageDialogChanger() {
   const [currentAudio, setCurrentAudio] = useState<HTMLAudioElement | null>(null);
 
   // Función para reproducir audio con Text-to-Speech
-  const speakDialog = (text) => {
+  const speakDialog = (text: string) => {
     // Detener cualquier audio previo
     window.speechSynthesis.cancel();
     
@@ -74,7 +80,7 @@ export default function ImageDialogChanger() {
   };
 
   // Función alternativa para usar archivos de audio personalizados
-  const playCustomAudio = (audioUrl) => {
+  const playCustomAudio = (audioUrl: string) => {
     // Detener audio anterior si existe
     if (currentAudio) {
       currentAudio.pause();

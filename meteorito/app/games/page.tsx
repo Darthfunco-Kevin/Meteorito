@@ -34,8 +34,8 @@ export default function MeteorGame() {
       const app = new PIXI.Application();
       
       await app.init({
-        width: 800,
-        height: 600,
+        width: 850,
+        height: 650,
         backgroundColor: 0x000000,
         canvas: canvasRef.current!,
       });
@@ -338,11 +338,29 @@ export default function MeteorGame() {
 
     return () => {
       if (appRef.current) {
+        // Detener el ticker antes de destruir
+        appRef.current.ticker.stop();
+
+        // Limpiar el intervalo de meteoritos
         if ((appRef.current as any).meteorInterval) {
           clearInterval((appRef.current as any).meteorInterval);
         }
-        appRef.current.destroy(true);
+
+        // Limpiar todos los objetos del stage
+        meteorsRef.current.forEach(m => appRef.current?.stage.removeChild(m));
+        bulletsRef.current.forEach(b => appRef.current?.stage.removeChild(b));
+        starsRef.current.forEach(s => appRef.current?.stage.removeChild(s));
+
+        // Destruir la aplicación
+        appRef.current.destroy(true, { children: true, texture: true });
+        appRef.current = null;
       }
+
+      // Resetear referencias
+      meteorsRef.current = [];
+      bulletsRef.current = [];
+      starsRef.current = [];
+      shipRef.current = null;
     };
   }, []);
 
@@ -365,8 +383,16 @@ export default function MeteorGame() {
     bulletsRef.current.push(bullet);
   };
 
-  const WinGame = () =>{
-    router.push('/games/game1');
+  const WinGame = () => {
+    // Limpiar el juego antes de navegar
+    gameOverRef.current = true;
+    if (appRef.current) {
+      if ((appRef.current as any).meteorInterval) {
+        clearInterval((appRef.current as any).meteorInterval);
+      }
+      appRef.current.ticker.stop();
+    }
+    router.push('/historia1');
   }
 
   const restartGame = () => {
