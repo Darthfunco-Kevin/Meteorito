@@ -1,13 +1,11 @@
 "use client";
 
-import { Suspense, useState, useEffect } from "react";
+import { Suspense, useState, useEffect, useMemo, memo } from "react";
 import { Canvas } from "@react-three/fiber";
 import {
   OrbitControls,
   Stars,
   Environment,
-  Text,
-  Html,
 } from "@react-three/drei";
 import InteractiveMeteorite from "./Components/InteractiveMeteorite";
 import ControlPanel from "@/app/Simulacion/Meteorito/Components/ControlPanel";
@@ -46,6 +44,21 @@ export default function Meteorito() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Date states
+  const getDefaultStartDate = () => {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    return yesterday.toISOString().split("T")[0];
+  };
+
+  const getDefaultEndDate = () => {
+    return new Date().toISOString().split("T")[0];
+  };
+
+  const [startDate, setStartDate] = useState(getDefaultStartDate());
+  const [endDate, setEndDate] = useState(getDefaultEndDate());
+  const [dateError, setDateError] = useState<string | null>(null);
+
   // Meteorite properties
   const [scale, setScale] = useState(1);
   const [color, setColor] = useState("#8B4513");
@@ -54,23 +67,40 @@ export default function Meteorito() {
   const [roughness, setRoughness] = useState(0.6);
   const [emissiveIntensity, setEmissiveIntensity] = useState(0.2);
 
-  // Fetch NASA NEO data
+  // Fetch NASA NEO data with dynamic dates
   useEffect(() => {
+    // Don't fetch if there's a date error
+    if (dateError) {
+      return;
+    }
+
     const fetchNEOData = async () => {
       try {
         setLoading(true);
+        setError(null);
+
+        // NASA API Key
+        const apiKey = "zVzegaI3w4VmNN670raPf3di530WmWynSaJslIej";
+
         const response = await fetch(
-          "https://api.nasa.gov/neo/rest/v1/feed?start_date=2015-09-07&end_date=2015-09-08&api_key=zVzegaI3w4VmNN670raPf3di530WmWynSaJslIej"
+          `https://api.nasa.gov/neo/rest/v1/feed?start_date=${startDate}&end_date=${endDate}&api_key=${apiKey}`
         );
 
         if (!response.ok) {
-          throw new Error("Failed to fetch NEO data");
+          throw new Error("Error al obtener datos de la NASA");
         }
 
         const data = await response.json();
         const allNeos = Object.values(
           data.near_earth_objects
         ).flat() as NEOData[];
+
+        if (allNeos.length === 0) {
+          throw new Error(
+            "No hay datos de meteoritos disponibles para estas fechas"
+          );
+        }
+
         setNeoData(allNeos);
 
         // Select first meteorite by default
@@ -86,7 +116,41 @@ export default function Meteorito() {
     };
 
     fetchNEOData();
-  }, []);
+  }, [startDate, endDate, dateError]);
+
+  // Validate and handle date changes
+  const handleDateChange = (start: string, end: string) => {
+    const startDateObj = new Date(start);
+    const endDateObj = new Date(end);
+
+    // Validate start date is not after end date
+    if (startDateObj > endDateObj) {
+      setDateError("La fecha de inicio debe ser anterior a la fecha fin");
+      return;
+    }
+
+    // Validate dates are not in the future
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (endDateObj > today) {
+      setDateError("No se pueden seleccionar fechas futuras");
+      return;
+    }
+
+    // Validate date range (NASA API allows max 7 days)
+    const diffTime = Math.abs(endDateObj.getTime() - startDateObj.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays > 7) {
+      setDateError("El rango máximo es de 7 días");
+      return;
+    }
+
+    setDateError(null);
+    setStartDate(start);
+    setEndDate(end);
+  };
 
   const handleMeteoriteSelect = (meteorite: NEOData) => {
     setSelectedMeteorite(meteorite);
@@ -215,21 +279,80 @@ export default function Meteorito() {
       </div>
 
       {/* Enhanced Header */}
-      <div className="absolute top-0 left-0 right-0 z-20 bg-gradient-to-b from-black/60 via-black/40 to-transparent backdrop-blur-md border-b border-purple-500/20">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-5xl font-black bg-gradient-to-r from-purple-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent mb-2 drop-shadow-lg">
+      <div className="absolute top-16 left-0 right-0 z-20 bg-gradient-to-b from-black/70 via-black/50 to-transparent backdrop-blur-lg border-b border-purple-500/30 shadow-2xl shadow-purple-900/20">
+        <div className="max-w-7xl mx-auto px-6 py-6">
+          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+            {/* Title Section */}
+            <div className="flex-1">
+              <h1 className="text-4xl lg:text-5xl font-black bg-gradient-to-r from-purple-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent mb-3 drop-shadow-2xl">
                 Simulador de Meteoritos
               </h1>
-              <div className="flex items-center gap-3">
-                <span className="px-3 py-1 bg-purple-600/20 border border-purple-500/40 rounded-full text-xs text-purple-300 font-semibold">
-                  Datos NASA
+              <div className="flex items-center gap-3 flex-wrap">
+                <span className="px-4 py-1.5 bg-gradient-to-r from-purple-600/30 to-blue-600/30 border border-purple-500/50 rounded-full text-xs text-purple-300 font-bold shadow-lg shadow-purple-500/20">
+                  🛰️ Datos NASA
                 </span>
-                <p className="text-gray-300 text-sm">
-                  Interactúa con el mouse para explorar
+                <p className="text-gray-300 text-sm font-medium">
+                  🖱️ Interactúa con el mouse para explorar
                 </p>
               </div>
+            </div>
+
+            {/* Date Selectors */}
+            <div className="flex flex-col gap-2 w-full lg:w-auto">
+              <div className="flex items-center gap-3">
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-xs text-gray-300 font-bold uppercase tracking-wide">
+                    Fecha Inicio
+                  </label>
+                  <input
+                    type="date"
+                    value={startDate}
+                    onChange={(e) => {
+                      const newStart = e.target.value;
+                      handleDateChange(newStart, endDate);
+                    }}
+                    max={endDate}
+                    className="px-4 py-2.5 bg-slate-900/90 border-2 border-purple-500/40 rounded-xl text-white text-sm focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-500/50 transition-all shadow-lg hover:bg-slate-800/90"
+                  />
+                </div>
+
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-xs text-gray-300 font-bold uppercase tracking-wide">
+                    Fecha Fin
+                  </label>
+                  <input
+                    type="date"
+                    value={endDate}
+                    onChange={(e) => {
+                      const newEnd = e.target.value;
+                      handleDateChange(startDate, newEnd);
+                    }}
+                    min={startDate}
+                    max={new Date().toISOString().split("T")[0]}
+                    className="px-4 py-2.5 bg-slate-900/90 border-2 border-purple-500/40 rounded-xl text-white text-sm focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-500/50 transition-all shadow-lg hover:bg-slate-800/90"
+                  />
+                </div>
+              </div>
+
+              {/* Date Error Message */}
+              {dateError && (
+                <div className="flex items-center gap-2 px-4 py-2.5 bg-red-900/40 border-2 border-red-500/50 rounded-xl shadow-lg shadow-red-500/20">
+                  <svg
+                    className="w-5 h-5 text-red-400 flex-shrink-0"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                  <span className="text-sm text-red-300 font-semibold">{dateError}</span>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -240,7 +363,15 @@ export default function Meteorito() {
         <Canvas
           camera={{ position: [0, 0, 10], fov: 60 }}
           style={{ background: "transparent" }}
-          gl={{ antialias: true, alpha: true }}
+          gl={{
+            antialias: true,
+            alpha: true,
+            powerPreference: "high-performance",
+            stencil: false,
+            depth: true
+          }}
+          dpr={[1, 2]}
+          performance={{ min: 0.5 }}
         >
           <Suspense fallback={null}>
             {/* Lighting */}
@@ -249,23 +380,19 @@ export default function Meteorito() {
               position={[10, 10, 5]}
               intensity={0.8}
               color="#4A90E2"
+              castShadow={false}
             />
             <pointLight
               position={[-10, -10, -10]}
               color="#8B5CF6"
               intensity={0.4}
             />
-            <pointLight
-              position={[10, -10, 10]}
-              color="#06B6D4"
-              intensity={0.3}
-            />
 
-            {/* Background stars */}
+            {/* Background stars - Reduced count */}
             <Stars
               radius={300}
               depth={60}
-              count={5000}
+              count={2000}
               factor={6}
               saturation={0}
               fade
@@ -296,6 +423,8 @@ export default function Meteorito() {
               minDistance={2}
               maxDistance={50}
               autoRotate={false}
+              enableDamping={true}
+              dampingFactor={0.05}
             />
           </Suspense>
         </Canvas>
@@ -323,75 +452,18 @@ export default function Meteorito() {
       {/* Meteorite Information */}
       {selectedMeteorite && <MeteoriteInfo meteorite={selectedMeteorite} />}
 
-      {/* Instructions - Enhanced */}
-      <div className="absolute bottom-4 right-4 z-20 bg-gradient-to-br from-slate-900/90 to-purple-900/90 backdrop-blur-xl rounded-2xl p-5 text-white shadow-2xl border border-purple-500/30 max-w-xs">
-        <div className="flex items-center gap-2 mb-3">
-          <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-blue-500 rounded-lg flex items-center justify-center">
-            <svg
-              className="w-5 h-5 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-          </div>
-          <h3 className="font-bold text-lg">Controles</h3>
-        </div>
-
-        <div className="space-y-2 text-sm">
-          <div className="flex items-start gap-2 text-gray-300">
-            <span className="text-purple-400 font-bold">•</span>
-            <span>
-              <span className="text-white font-semibold">
-                Click izquierdo + arrastrar:
-              </span>{" "}
-              Rotar vista
-            </span>
-          </div>
-          <div className="flex items-start gap-2 text-gray-300">
-            <span className="text-purple-400 font-bold">•</span>
-            <span>
-              <span className="text-white font-semibold">Rueda del mouse:</span>{" "}
-              Zoom in/out
-            </span>
-          </div>
-          <div className="flex items-start gap-2 text-gray-300">
-            <span className="text-purple-400 font-bold">•</span>
-            <span>
-              <span className="text-white font-semibold">
-                Click derecho + arrastrar:
-              </span>{" "}
-              Mover cámara
-            </span>
-          </div>
-          <div className="flex items-start gap-2 text-gray-300">
-            <span className="text-purple-400 font-bold">•</span>
-            <span>
-              <span className="text-white font-semibold">Panel lateral:</span>{" "}
-              Ajustar propiedades
-            </span>
-          </div>
-        </div>
-      </div>
-
-      {/* Impact Button - Enhanced */}
+      {/* Impact Button - Enhanced - Moved to bottom right */}
       {selectedMeteorite && (
-        <div className="absolute bottom-4 left-4 z-20">
+        <div className="absolute bottom-6 right-6 z-20">
           <button
             onClick={() =>
               router.push(`/Simulacion/Impacto?id=${selectedMeteorite.id}`)
             }
-            className="group relative overflow-hidden px-10 py-4 bg-gradient-to-r from-red-600 via-orange-600 to-red-600 text-white font-bold rounded-2xl hover:from-red-700 hover:via-orange-700 hover:to-red-700 transition-all duration-300 transform hover:scale-105 shadow-2xl shadow-red-500/40 hover:shadow-red-500/60 border border-red-500/50"
+            className="group relative overflow-hidden px-8 py-4 bg-gradient-to-br from-red-600 via-orange-600 to-red-700 text-white font-bold rounded-2xl hover:from-red-700 hover:via-orange-700 hover:to-red-800 transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-2xl shadow-red-500/50 hover:shadow-red-500/70 border-2 border-red-400/50 hover:border-red-300/70"
           >
-            <span className="relative z-10 flex items-center gap-3">
+            <span className="relative z-10 flex items-center gap-3 text-base">
               <svg
-                className="w-6 h-6 group-hover:animate-pulse"
+                className="w-6 h-6 group-hover:animate-pulse drop-shadow-lg"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -399,13 +471,13 @@ export default function Meteorito() {
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  strokeWidth={2}
+                  strokeWidth={2.5}
                   d="M13 10V3L4 14h7v7l9-11h-7z"
                 />
               </svg>
-              Ver Simulación de Impacto
+              <span className="drop-shadow-lg">Simulación de Impacto</span>
               <svg
-                className="w-5 h-5 group-hover:translate-x-1 transition-transform"
+                className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200 drop-shadow-lg"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -413,13 +485,15 @@ export default function Meteorito() {
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  strokeWidth={2}
+                  strokeWidth={2.5}
                   d="M9 5l7 7-7 7"
                 />
               </svg>
             </span>
             {/* Shimmer effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-700" />
+            {/* Pulsing glow */}
+            <div className="absolute inset-0 rounded-2xl bg-red-400/20 blur-xl group-hover:bg-red-400/40 transition-all duration-300" />
           </button>
         </div>
       )}

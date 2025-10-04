@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, memo, useCallback } from "react";
 import { ChevronDown, ChevronUp, Settings, Palette, Zap } from "lucide-react";
 
 interface NEOData {
@@ -44,7 +44,7 @@ interface ControlPanelProps {
   setEmissiveIntensity: (intensity: number) => void;
 }
 
-export default function ControlPanel({
+const ControlPanel = memo(function ControlPanel({
   neoData,
   selectedMeteorite,
   onMeteoriteSelect,
@@ -64,94 +64,195 @@ export default function ControlPanel({
   const [isExpanded, setIsExpanded] = useState(true);
   const [activeTab, setActiveTab] = useState<'meteorites' | 'appearance' | 'materials'>('meteorites');
 
+  // Memoize preset handlers
+  const handleMetallicPreset = useCallback(() => {
+    setMetalness(0.8);
+    setRoughness(0.2);
+    setEmissiveIntensity(0.1);
+  }, [setMetalness, setRoughness, setEmissiveIntensity]);
+
+  const handleRockyPreset = useCallback(() => {
+    setMetalness(0.1);
+    setRoughness(0.9);
+    setEmissiveIntensity(0.3);
+  }, [setMetalness, setRoughness, setEmissiveIntensity]);
+
+  const handleMoltenPreset = useCallback(() => {
+    setMetalness(0.6);
+    setRoughness(0.4);
+    setEmissiveIntensity(0.8);
+  }, [setMetalness, setRoughness, setEmissiveIntensity]);
+
+  const handleNaturalPreset = useCallback(() => {
+    setMetalness(0.3);
+    setRoughness(0.7);
+    setEmissiveIntensity(0.2);
+  }, [setMetalness, setRoughness, setEmissiveIntensity]);
+
   return (
-    <div className="absolute top-4 right-4 z-20 w-80 bg-slate-800/90 backdrop-blur-sm rounded-lg border border-purple-500/20">
+    <div className="absolute top-52 right-6 z-20 w-96 bg-slate-800/95 backdrop-blur-lg rounded-2xl border-2 border-purple-500/30 shadow-2xl shadow-purple-900/30">
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b border-purple-500/20">
-        <h2 className="text-xl font-semibold text-white flex items-center gap-2">
-          <Settings className="w-5 h-5 text-purple-400" />
-          Controles
+      <div className="flex items-center justify-between p-5 border-b-2 border-purple-500/30 bg-gradient-to-r from-purple-900/30 to-blue-900/30">
+        <h2 className="text-xl font-bold text-white flex items-center gap-2">
+          <Settings className="w-6 h-6 text-purple-400 drop-shadow-lg" />
+          <span className="drop-shadow-lg">Panel de Control</span>
         </h2>
         <button
           onClick={() => setIsExpanded(!isExpanded)}
-          className="text-gray-400 hover:text-white transition-colors"
+          className="text-gray-400 hover:text-white transition-all duration-200 hover:scale-110 active:scale-95"
         >
-          {isExpanded ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+          {isExpanded ? <ChevronUp className="w-6 h-6" /> : <ChevronDown className="w-6 h-6" />}
         </button>
       </div>
 
       {isExpanded && (
-        <div className="p-4">
+        <div className="p-5">
           {/* Tabs */}
-          <div className="flex mb-4 bg-slate-700/50 rounded-lg p-1">
+          <div className="flex mb-5 bg-slate-900/60 rounded-xl p-1.5 shadow-inner">
             <button
               onClick={() => setActiveTab('meteorites')}
-              className={`flex-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+              className={`flex-1 px-4 py-2.5 rounded-lg text-sm font-bold transition-all duration-200 ${
                 activeTab === 'meteorites'
-                  ? 'bg-purple-600 text-white'
-                  : 'text-gray-300 hover:text-white'
+                  ? 'bg-gradient-to-r from-purple-600 to-purple-700 text-white shadow-lg shadow-purple-500/30'
+                  : 'text-gray-300 hover:text-white hover:bg-slate-700/50'
               }`}
             >
-              Meteoritos
+              🌠 Meteoritos
             </button>
             <button
               onClick={() => setActiveTab('appearance')}
-              className={`flex-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+              className={`flex-1 px-4 py-2.5 rounded-lg text-sm font-bold transition-all duration-200 ${
                 activeTab === 'appearance'
-                  ? 'bg-purple-600 text-white'
-                  : 'text-gray-300 hover:text-white'
+                  ? 'bg-gradient-to-r from-purple-600 to-purple-700 text-white shadow-lg shadow-purple-500/30'
+                  : 'text-gray-300 hover:text-white hover:bg-slate-700/50'
               }`}
             >
               <Palette className="w-4 h-4 inline mr-1" />
-              Apariencia
+              Color
             </button>
             <button
               onClick={() => setActiveTab('materials')}
-              className={`flex-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+              className={`flex-1 px-4 py-2.5 rounded-lg text-sm font-bold transition-all duration-200 ${
                 activeTab === 'materials'
-                  ? 'bg-purple-600 text-white'
-                  : 'text-gray-300 hover:text-white'
+                  ? 'bg-gradient-to-r from-purple-600 to-purple-700 text-white shadow-lg shadow-purple-500/30'
+                  : 'text-gray-300 hover:text-white hover:bg-slate-700/50'
               }`}
             >
               <Zap className="w-4 h-4 inline mr-1" />
-              Materiales
+              Material
             </button>
           </div>
 
           {/* Meteorites Tab */}
           {activeTab === 'meteorites' && (
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-white mb-3">Seleccionar Meteorito</h3>
-              <div className="max-h-60 overflow-y-auto space-y-2">
-                {neoData.map((meteorite) => (
-                  <button
-                    key={meteorite.id}
-                    onClick={() => onMeteoriteSelect(meteorite)}
-                    className={`w-full text-left p-3 rounded-lg border transition-all ${
-                      selectedMeteorite?.id === meteorite.id
-                        ? 'border-purple-400 bg-purple-600/20'
-                        : 'border-gray-600 bg-slate-700/50 hover:bg-slate-600/50'
-                    }`}
-                  >
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="font-medium text-white text-sm">
-                        {meteorite.name}
-                      </span>
-                      {meteorite.is_potentially_hazardous_asteroid && (
-                        <span className="text-red-400 text-xs">⚠️</span>
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="text-lg font-semibold text-white">Seleccionar Meteorito</h3>
+                <span className="text-xs text-gray-400 bg-slate-700/50 px-2 py-1 rounded">
+                  {neoData.length} disponibles
+                </span>
+              </div>
+
+              <div className="max-h-96 overflow-y-auto space-y-2 pr-1">
+                {neoData.map((meteorite) => {
+                  const avgDiameter = (
+                    meteorite.estimated_diameter.kilometers.estimated_diameter_min +
+                    meteorite.estimated_diameter.kilometers.estimated_diameter_max
+                  ) / 2;
+
+                  const velocity = meteorite.close_approach_data[0]?.relative_velocity.kilometers_per_second
+                    ? parseFloat(meteorite.close_approach_data[0].relative_velocity.kilometers_per_second)
+                    : 0;
+
+                  const approachDate = meteorite.close_approach_data[0]?.close_approach_date || 'N/A';
+
+                  return (
+                    <button
+                      key={meteorite.id}
+                      onClick={() => onMeteoriteSelect(meteorite)}
+                      className={`w-full text-left p-4 rounded-xl border-2 transition-all transform hover:scale-[1.02] ${
+                        selectedMeteorite?.id === meteorite.id
+                          ? 'border-purple-500 bg-gradient-to-br from-purple-600/30 to-blue-600/20 shadow-lg shadow-purple-500/20'
+                          : 'border-gray-600/50 bg-slate-700/40 hover:bg-slate-600/50 hover:border-purple-400/30'
+                      }`}
+                    >
+                      {/* Header */}
+                      <div className="flex items-start justify-between mb-2">
+                        <div className="flex-1">
+                          <span className="font-bold text-white text-sm block mb-1 leading-tight">
+                            {meteorite.name}
+                          </span>
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${
+                              meteorite.is_potentially_hazardous_asteroid
+                                ? 'bg-red-500/20 text-red-300 border border-red-500/50'
+                                : 'bg-green-500/20 text-green-300 border border-green-500/50'
+                            }`}>
+                              {meteorite.is_potentially_hazardous_asteroid ? 'Peligroso' : 'Seguro'}
+                            </span>
+                            {avgDiameter > 1 && (
+                              <span className="px-2 py-0.5 rounded-full text-xs font-semibold bg-orange-500/20 text-orange-300 border border-orange-500/50">
+                                Grande
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        {meteorite.is_potentially_hazardous_asteroid && (
+                          <span className="text-red-400 text-lg">⚠️</span>
+                        )}
+                      </div>
+
+                      {/* Stats Grid */}
+                      <div className="grid grid-cols-2 gap-2 mt-3">
+                        <div className="bg-slate-800/60 rounded-lg p-2 border border-slate-700/50">
+                          <div className="text-xs text-gray-400 mb-0.5">Diámetro</div>
+                          <div className="text-sm font-bold text-white">
+                            {avgDiameter.toFixed(3)} km
+                          </div>
+                        </div>
+
+                        <div className="bg-slate-800/60 rounded-lg p-2 border border-slate-700/50">
+                          <div className="text-xs text-gray-400 mb-0.5">Magnitud</div>
+                          <div className="text-sm font-bold text-white">
+                            {meteorite.absolute_magnitude_h.toFixed(1)}
+                          </div>
+                        </div>
+
+                        <div className="bg-slate-800/60 rounded-lg p-2 border border-slate-700/50">
+                          <div className="text-xs text-gray-400 mb-0.5">Velocidad</div>
+                          <div className="text-sm font-bold text-cyan-400">
+                            {velocity.toFixed(1)} km/s
+                          </div>
+                        </div>
+
+                        <div className="bg-slate-800/60 rounded-lg p-2 border border-slate-700/50">
+                          <div className="text-xs text-gray-400 mb-0.5">Fecha</div>
+                          <div className="text-xs font-semibold text-white">
+                            {new Date(approachDate).toLocaleDateString('es-ES', {
+                              day: '2-digit',
+                              month: 'short'
+                            })}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* ID Reference */}
+                      <div className="mt-2 pt-2 border-t border-slate-600/50">
+                        <div className="text-xs text-gray-500 font-mono truncate">
+                          ID: {meteorite.id}
+                        </div>
+                      </div>
+
+                      {/* Selection Indicator */}
+                      {selectedMeteorite?.id === meteorite.id && (
+                        <div className="mt-3 flex items-center justify-center gap-2 text-xs text-purple-400 font-semibold">
+                          <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>
+                          Seleccionado
+                        </div>
                       )}
-                    </div>
-                    <div className="text-xs text-gray-400">
-                      Diámetro: {(
-                        (meteorite.estimated_diameter.kilometers.estimated_diameter_min + 
-                         meteorite.estimated_diameter.kilometers.estimated_diameter_max) / 2
-                      ).toFixed(2)} km
-                    </div>
-                    <div className="text-xs text-gray-400">
-                      Magnitud: {meteorite.absolute_magnitude_h}
-                    </div>
-                  </button>
-                ))}
+                    </button>
+                  );
+                })}
               </div>
             </div>
           )}
@@ -283,41 +384,25 @@ export default function ControlPanel({
                 </label>
                 <div className="grid grid-cols-2 gap-2">
                   <button
-                    onClick={() => {
-                      setMetalness(0.8);
-                      setRoughness(0.2);
-                      setEmissiveIntensity(0.1);
-                    }}
+                    onClick={handleMetallicPreset}
                     className="px-3 py-2 bg-slate-700 hover:bg-slate-600 rounded text-white text-sm transition-colors"
                   >
                     Metálico
                   </button>
                   <button
-                    onClick={() => {
-                      setMetalness(0.1);
-                      setRoughness(0.9);
-                      setEmissiveIntensity(0.3);
-                    }}
+                    onClick={handleRockyPreset}
                     className="px-3 py-2 bg-slate-700 hover:bg-slate-600 rounded text-white text-sm transition-colors"
                   >
                     Rocoso
                   </button>
                   <button
-                    onClick={() => {
-                      setMetalness(0.6);
-                      setRoughness(0.4);
-                      setEmissiveIntensity(0.8);
-                    }}
+                    onClick={handleMoltenPreset}
                     className="px-3 py-2 bg-slate-700 hover:bg-slate-600 rounded text-white text-sm transition-colors"
                   >
                     Fundido
                   </button>
                   <button
-                    onClick={() => {
-                      setMetalness(0.3);
-                      setRoughness(0.7);
-                      setEmissiveIntensity(0.2);
-                    }}
+                    onClick={handleNaturalPreset}
                     className="px-3 py-2 bg-slate-700 hover:bg-slate-600 rounded text-white text-sm transition-colors"
                   >
                     Natural
@@ -330,4 +415,6 @@ export default function ControlPanel({
       )}
     </div>
   );
-}
+});
+
+export default ControlPanel;

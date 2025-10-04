@@ -315,14 +315,24 @@ function ImpactoContent() {
 
   useEffect(() => {
     if (!meteoriteId) {
-      router.push("/meteorito");
+      router.push("/Simulacion/Meteorito");
       return;
     }
 
     const fetchMeteoriteData = async () => {
       try {
+        // Get dynamic dates - last 7 days
+        const endDate = new Date();
+        const startDate = new Date();
+        startDate.setDate(startDate.getDate() - 7);
+
+        const startDateStr = startDate.toISOString().split("T")[0];
+        const endDateStr = endDate.toISOString().split("T")[0];
+
+        const apiKey = "zVzegaI3w4VmNN670raPf3di530WmWynSaJslIej";
+
         const response = await fetch(
-          "https://api.nasa.gov/neo/rest/v1/feed?start_date=2015-09-07&end_date=2015-09-08&api_key=DEMO_KEY"
+          `https://api.nasa.gov/neo/rest/v1/feed?start_date=${startDateStr}&end_date=${endDateStr}&api_key=${apiKey}`
         );
 
         const data = await response.json();
@@ -335,11 +345,11 @@ function ImpactoContent() {
           setMeteoriteData(meteorite);
           calculateImpactData(meteorite);
         } else {
-          router.push("/meteorito");
+          router.push("/Simulacion/Meteorito");
         }
       } catch (err) {
         console.error("Error fetching meteorite data:", err);
-        router.push("/meteorito");
+        router.push("/Simulacion/Meteorito");
       } finally {
         setLoading(false);
       }
@@ -409,30 +419,30 @@ function ImpactoContent() {
       </div>
 
       {/* Header with enhanced design */}
-      <div className="absolute top-0 left-0 right-0 z-20 bg-gradient-to-b from-black/60 via-black/40 to-transparent backdrop-blur-md border-b border-red-500/20">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
+      <div className="absolute top-16 left-0 right-0 z-20 bg-gradient-to-b from-black/80 via-black/60 to-transparent backdrop-blur-lg border-b-2 border-red-500/30 shadow-2xl shadow-red-900/30">
+        <div className="max-w-7xl mx-auto px-6 py-6">
+          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
             <div className="flex-1">
-              <h1 className="text-5xl font-black bg-gradient-to-r from-red-400 via-orange-400 to-yellow-300 bg-clip-text text-transparent mb-2 drop-shadow-lg animate-pulse">
-                Simulación de Impacto
+              <h1 className="text-4xl lg:text-5xl font-black bg-gradient-to-r from-red-400 via-orange-400 to-yellow-300 bg-clip-text text-transparent mb-3 drop-shadow-2xl">
+                💥 Simulación de Impacto
               </h1>
-              <div className="flex items-center gap-3">
-                <p className="text-gray-200 font-medium text-lg">
+              <div className="flex items-center gap-3 flex-wrap">
+                <p className="text-gray-200 font-bold text-lg bg-gradient-to-r from-orange-300 to-yellow-300 bg-clip-text text-transparent">
                   {meteoriteData.name}
                 </p>
                 {meteoriteData.is_potentially_hazardous_asteroid && (
-                  <span className="px-3 py-1 bg-red-500/20 border border-red-500 rounded-full text-red-300 text-xs font-bold uppercase animate-pulse">
-                    ⚠ Peligroso
+                  <span className="px-4 py-1.5 bg-gradient-to-r from-red-600/40 to-orange-600/40 border-2 border-red-500/60 rounded-full text-red-300 text-xs font-black uppercase shadow-lg shadow-red-500/30 animate-pulse">
+                    ⚠️ Potencialmente Peligroso
                   </span>
                 )}
               </div>
             </div>
 
             <button
-              onClick={() => router.push("/meteorito")}
-              className="px-6 py-3 bg-gradient-to-r from-slate-700 to-slate-800 hover:from-slate-600 hover:to-slate-700 text-white rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl border border-slate-600"
+              onClick={() => router.push("/Simulacion/Meteorito")}
+              className="px-8 py-3.5 bg-gradient-to-br from-slate-700 to-slate-900 hover:from-slate-600 hover:to-slate-800 text-white rounded-xl font-bold transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-2xl hover:shadow-slate-500/50 border-2 border-slate-600 hover:border-slate-500"
             >
-              <span className="flex items-center gap-2">
+              <span className="flex items-center gap-3">
                 <svg
                   className="w-5 h-5"
                   fill="none"
@@ -442,11 +452,11 @@ function ImpactoContent() {
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    strokeWidth={2}
+                    strokeWidth={2.5}
                     d="M10 19l-7-7m0 0l7-7m-7 7h18"
                   />
                 </svg>
-                Volver
+                <span className="drop-shadow-lg">Volver a Meteoritos</span>
               </span>
             </button>
           </div>
@@ -523,12 +533,12 @@ function ImpactoContent() {
 
       {/* Impact Information - Enhanced Design */}
       {impactData && (
-        <div className="absolute bottom-4 right-4 z-20 max-w-md">
-          <div className="bg-gradient-to-br from-slate-900/95 via-red-900/95 to-orange-900/95 backdrop-blur-xl rounded-2xl p-6 shadow-2xl border border-orange-500/30 transform transition-all duration-300 hover:scale-105">
-            <div className="flex items-center gap-3 mb-5">
-              <div className="w-12 h-12 bg-gradient-to-br from-red-500 to-orange-500 rounded-xl flex items-center justify-center shadow-lg">
+        <div className="absolute bottom-6 right-6 z-20 max-w-lg">
+          <div className="bg-gradient-to-br from-slate-900/98 via-red-900/98 to-orange-900/98 backdrop-blur-xl rounded-2xl p-7 shadow-2xl border-2 border-orange-500/40 hover:border-orange-500/60 transition-all duration-300">
+            <div className="flex items-center gap-4 mb-6">
+              <div className="w-14 h-14 bg-gradient-to-br from-red-500 to-orange-500 rounded-2xl flex items-center justify-center shadow-2xl shadow-orange-500/50 animate-pulse">
                 <svg
-                  className="w-7 h-7 text-white"
+                  className="w-8 h-8 text-white drop-shadow-lg"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -536,64 +546,66 @@ function ImpactoContent() {
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    strokeWidth={2}
+                    strokeWidth={2.5}
                     d="M13 10V3L4 14h7v7l9-11h-7z"
                   />
                 </svg>
               </div>
-              <h2 className="text-3xl font-black bg-gradient-to-r from-orange-300 via-red-300 to-yellow-300 bg-clip-text text-transparent">
-                Datos del Impacto
+              <h2 className="text-3xl font-black bg-gradient-to-r from-orange-300 via-red-300 to-yellow-300 bg-clip-text text-transparent drop-shadow-xl">
+                📊 Datos del Impacto
               </h2>
             </div>
 
             <div className="space-y-4">
               {/* Energy */}
-              <div className="bg-gradient-to-r from-red-500/10 to-transparent rounded-xl p-4 border-l-4 border-red-500">
-                <div className="flex items-center gap-2 mb-1">
-                  <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
-                  <p className="text-gray-300 text-xs uppercase tracking-wide font-bold">
-                    Energía de impacto
+              <div className="bg-gradient-to-r from-red-500/20 to-transparent rounded-xl p-5 border-l-4 border-red-500 shadow-lg shadow-red-500/10">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse shadow-lg shadow-red-500/50" />
+                  <p className="text-gray-300 text-xs uppercase tracking-wider font-black">
+                    ⚡ Energía de impacto
                   </p>
                 </div>
-                <p className="text-2xl font-black text-red-400">
+                <p className="text-3xl font-black text-red-400 drop-shadow-lg">
                   {impactData.energy}
                 </p>
               </div>
 
               {/* Crater Size */}
-              <div className="bg-gradient-to-r from-orange-500/10 to-transparent rounded-xl p-4 border-l-4 border-orange-500">
-                <div className="flex items-center gap-2 mb-1">
-                  <div className="w-2 h-2 bg-orange-500 rounded-full animate-pulse" />
-                  <p className="text-gray-300 text-xs uppercase tracking-wide font-bold">
-                    Diámetro del cráter
+              <div className="bg-gradient-to-r from-orange-500/20 to-transparent rounded-xl p-5 border-l-4 border-orange-500 shadow-lg shadow-orange-500/10">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-3 h-3 bg-orange-500 rounded-full animate-pulse shadow-lg shadow-orange-500/50" />
+                  <p className="text-gray-300 text-xs uppercase tracking-wider font-black">
+                    🕳️ Diámetro del cráter
                   </p>
                 </div>
-                <p className="text-2xl font-black text-orange-400">
+                <p className="text-3xl font-black text-orange-400 drop-shadow-lg">
                   {impactData.craterSize}
                 </p>
               </div>
 
               {/* Devastation Radius */}
-              <div className="bg-gradient-to-r from-yellow-500/10 to-transparent rounded-xl p-4 border-l-4 border-yellow-500">
-                <div className="flex items-center gap-2 mb-1">
-                  <div className="w-2 h-2 bg-yellow-500 rounded-full animate-pulse" />
-                  <p className="text-gray-300 text-xs uppercase tracking-wide font-bold">
-                    Radio de devastación
+              <div className="bg-gradient-to-r from-yellow-500/20 to-transparent rounded-xl p-5 border-l-4 border-yellow-500 shadow-lg shadow-yellow-500/10">
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-3 h-3 bg-yellow-500 rounded-full animate-pulse shadow-lg shadow-yellow-500/50" />
+                  <p className="text-gray-300 text-xs uppercase tracking-wider font-black">
+                    💀 Radio de devastación
                   </p>
                 </div>
-                <p className="text-2xl font-black text-yellow-400">
+                <p className="text-3xl font-black text-yellow-400 drop-shadow-lg">
                   {impactData.devastationRadius}
                 </p>
               </div>
 
               {/* Separator */}
-              <div className="border-t border-gray-700/50 my-4" />
+              <div className="border-t-2 border-gray-700/50 my-5" />
 
               {/* Additional Info Grid */}
               <div className="grid grid-cols-2 gap-4">
-                <div className="bg-slate-800/50 rounded-xl p-3 border border-slate-700/50">
-                  <p className="text-gray-400 text-xs mb-1">Velocidad</p>
-                  <p className="text-lg font-bold text-white">
+                <div className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 rounded-xl p-4 border-2 border-slate-700/50 shadow-lg hover:border-cyan-500/50 transition-all">
+                  <p className="text-gray-400 text-xs mb-1 font-bold uppercase tracking-wide">
+                    🚀 Velocidad
+                  </p>
+                  <p className="text-xl font-black text-cyan-400">
                     {
                       meteoriteData.close_approach_data[0]?.relative_velocity
                         .kilometers_per_second
@@ -602,9 +614,11 @@ function ImpactoContent() {
                   </p>
                 </div>
 
-                <div className="bg-slate-800/50 rounded-xl p-3 border border-slate-700/50">
-                  <p className="text-gray-400 text-xs mb-1">Diámetro</p>
-                  <p className="text-lg font-bold text-white">
+                <div className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 rounded-xl p-4 border-2 border-slate-700/50 shadow-lg hover:border-purple-500/50 transition-all">
+                  <p className="text-gray-400 text-xs mb-1 font-bold uppercase tracking-wide">
+                    📏 Diámetro
+                  </p>
+                  <p className="text-xl font-black text-purple-400">
                     {avgDiameter.toFixed(3)} km
                   </p>
                 </div>
@@ -613,10 +627,10 @@ function ImpactoContent() {
 
             {/* Impact Alert */}
             {showImpact && (
-              <div className="mt-5 p-4 bg-gradient-to-r from-red-600 to-red-800 rounded-xl border-2 border-red-400 shadow-lg animate-pulse">
-                <div className="flex items-center justify-center gap-3">
+              <div className="mt-6 p-5 bg-gradient-to-r from-red-600 to-red-800 rounded-2xl border-4 border-red-400 shadow-2xl shadow-red-500/50 animate-pulse">
+                <div className="flex items-center justify-center gap-4">
                   <svg
-                    className="w-6 h-6 text-white animate-bounce"
+                    className="w-8 h-8 text-white animate-bounce drop-shadow-lg"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -626,11 +640,11 @@ function ImpactoContent() {
                       clipRule="evenodd"
                     />
                   </svg>
-                  <p className="text-white font-black text-lg tracking-wide">
-                    ¡IMPACTO DETECTADO!
+                  <p className="text-white font-black text-xl tracking-wider drop-shadow-lg">
+                    🔥 ¡IMPACTO DETECTADO! 🔥
                   </p>
                   <svg
-                    className="w-6 h-6 text-white animate-bounce"
+                    className="w-8 h-8 text-white animate-bounce drop-shadow-lg"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -647,12 +661,17 @@ function ImpactoContent() {
         </div>
       )}
 
-      {/* Controls Guide - Bottom Left */}
-      <div className="absolute bottom-4 left-4 z-20 bg-gradient-to-br from-slate-900/90 to-purple-900/90 backdrop-blur-xl rounded-2xl p-5 shadow-2xl border border-purple-500/30 max-w-xs">
-        <div className="flex items-center gap-2 mb-3">
-          <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-blue-500 rounded-lg flex items-center justify-center">
+      {/* Download 3D Model Button - Top Right */}
+      <div className="absolute top-44 right-6 z-20">
+        <a
+          href="https://sketchfab.com/3d-models/asteroid-fbx-free-download-cb5e1211c13e4f8ab1f6d11a84a0ba07"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group relative overflow-hidden flex items-center gap-3 px-6 py-3.5 bg-gradient-to-br from-cyan-600 via-blue-600 to-purple-600 hover:from-cyan-500 hover:via-blue-500 hover:to-purple-500 text-white font-bold rounded-xl transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-2xl shadow-cyan-500/40 hover:shadow-cyan-500/60 border-2 border-cyan-400/50 hover:border-cyan-300/70"
+        >
+          <span className="relative z-10 flex items-center gap-3">
             <svg
-              className="w-5 h-5 text-white"
+              className="w-6 h-6 drop-shadow-lg"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -660,39 +679,43 @@ function ImpactoContent() {
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                strokeWidth={2}
-                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                strokeWidth={2.5}
+                d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"
               />
             </svg>
-          </div>
-          <h3 className="font-bold text-white text-lg">Controles</h3>
-        </div>
+            <div className="text-left">
+              <div className="text-sm font-black drop-shadow-lg">📦 Descargar Modelo 3D</div>
+              <div className="text-xs text-cyan-100 font-semibold">Archivo FBX (Sketchfab)</div>
+            </div>
+          </span>
+          {/* Shimmer effect */}
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-700" />
+          {/* Pulsing glow */}
+          <div className="absolute inset-0 rounded-xl bg-cyan-400/20 blur-xl group-hover:bg-cyan-400/40 transition-all duration-300" />
+        </a>
 
-        <div className="space-y-2 text-sm">
-          <div className="flex items-start gap-2 text-gray-300">
-            <span className="text-purple-400 font-bold">•</span>
-            <span>
-              <span className="text-white font-semibold">
-                Click izquierdo + arrastrar:
-              </span>{" "}
-              Rotar cámara
-            </span>
-          </div>
-          <div className="flex items-start gap-2 text-gray-300">
-            <span className="text-purple-400 font-bold">•</span>
-            <span>
-              <span className="text-white font-semibold">Rueda del mouse:</span>{" "}
-              Zoom in/out
-            </span>
-          </div>
-          <div className="flex items-start gap-2 text-gray-300">
-            <span className="text-purple-400 font-bold">•</span>
-            <span>
-              <span className="text-white font-semibold">
-                Click derecho + arrastrar:
-              </span>{" "}
-              Mover cámara
-            </span>
+        {/* Info tooltip */}
+        <div className="mt-3 p-4 bg-slate-900/95 backdrop-blur-xl rounded-xl border-2 border-cyan-500/30 shadow-xl">
+          <div className="flex items-start gap-2">
+            <svg
+              className="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                fillRule="evenodd"
+                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                clipRule="evenodd"
+              />
+            </svg>
+            <div className="text-xs text-gray-300">
+              <p className="font-bold text-white mb-1">💡 Instrucciones:</p>
+              <ol className="space-y-1 list-decimal list-inside text-gray-400">
+                <li>Descarga el modelo FBX</li>
+                <li>Guárdalo en <span className="text-cyan-400 font-mono">/public/models/</span></li>
+                <li>Nómbralo <span className="text-cyan-400 font-mono">meteorite.fbx</span></li>
+              </ol>
+            </div>
           </div>
         </div>
       </div>

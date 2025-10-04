@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, memo, useMemo } from "react";
 import { ChevronDown, ChevronUp, Info, AlertTriangle, Calendar, Gauge, Ruler } from "lucide-react";
 
 interface NEOData {
@@ -30,18 +30,30 @@ interface MeteoriteInfoProps {
   meteorite: NEOData;
 }
 
-export default function MeteoriteInfo({ meteorite }: MeteoriteInfoProps) {
-  const [isExpanded, setIsExpanded] = useState(false);
+const MeteoriteInfo = memo(function MeteoriteInfo({ meteorite }: MeteoriteInfoProps) {
+  const [isExpanded, setIsExpanded] = useState(true);
 
-  const avgDiameter = (meteorite.estimated_diameter.kilometers.estimated_diameter_min + 
-                     meteorite.estimated_diameter.kilometers.estimated_diameter_max) / 2;
+  // Memoize calculations
+  const avgDiameter = useMemo(() =>
+    (meteorite.estimated_diameter.kilometers.estimated_diameter_min +
+     meteorite.estimated_diameter.kilometers.estimated_diameter_max) / 2,
+    [meteorite]
+  );
 
-  const latestApproach = meteorite.close_approach_data[0];
-  const velocity = parseFloat(latestApproach.relative_velocity.kilometers_per_second);
-  const missDistance = parseFloat(latestApproach.miss_distance.kilometers);
+  const latestApproach = useMemo(() => meteorite.close_approach_data[0], [meteorite]);
 
-  // Calculate risk level
-  const getRiskLevel = () => {
+  const velocity = useMemo(() =>
+    parseFloat(latestApproach.relative_velocity.kilometers_per_second),
+    [latestApproach]
+  );
+
+  const missDistance = useMemo(() =>
+    parseFloat(latestApproach.miss_distance.kilometers),
+    [latestApproach]
+  );
+
+  // Memoize risk level
+  const risk = useMemo(() => {
     if (meteorite.is_potentially_hazardous_asteroid) {
       return { level: "ALTO", color: "text-red-400", bgColor: "bg-red-500/20" };
     } else if (avgDiameter > 1) {
@@ -49,68 +61,67 @@ export default function MeteoriteInfo({ meteorite }: MeteoriteInfoProps) {
     } else {
       return { level: "BAJO", color: "text-green-400", bgColor: "bg-green-500/20" };
     }
-  };
+  }, [meteorite.is_potentially_hazardous_asteroid, avgDiameter]);
 
-  const risk = getRiskLevel();
-
-  // Format date
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('es-ES', {
+  // Memoize formatted date
+  const formattedDate = useMemo(() =>
+    new Date(latestApproach.close_approach_date).toLocaleDateString('es-ES', {
       year: 'numeric',
       month: 'long',
       day: 'numeric'
-    });
-  };
+    }),
+    [latestApproach.close_approach_date]
+  );
 
   return (
-    <div className="absolute bottom-4 left-4 z-20 w-80 bg-slate-800/90 backdrop-blur-sm rounded-lg border border-purple-500/20">
+    <div className="absolute bottom-6 left-6 z-20 w-96 bg-slate-800/95 backdrop-blur-lg rounded-2xl border-2 border-cyan-500/30 shadow-2xl shadow-cyan-900/30">
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b border-purple-500/20">
-        <h2 className="text-xl font-semibold text-white flex items-center gap-2">
-          <Info className="w-5 h-5 text-purple-400" />
-          Información del Meteorito
+      <div className="flex items-center justify-between p-5 border-b-2 border-cyan-500/30 bg-gradient-to-r from-cyan-900/30 to-blue-900/30">
+        <h2 className="text-xl font-bold text-white flex items-center gap-2">
+          <Info className="w-6 h-6 text-cyan-400 drop-shadow-lg" />
+          <span className="drop-shadow-lg">Información</span>
         </h2>
         <button
           onClick={() => setIsExpanded(!isExpanded)}
-          className="text-gray-400 hover:text-white transition-colors"
+          className="text-gray-400 hover:text-white transition-all duration-200 hover:scale-110 active:scale-95"
         >
-          {isExpanded ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+          {isExpanded ? <ChevronUp className="w-6 h-6" /> : <ChevronDown className="w-6 h-6" />}
         </button>
       </div>
 
       {/* Basic Info (Always visible) */}
-      <div className="p-4">
-        <div className="space-y-3">
+      <div className="p-5">
+        <div className="space-y-4">
           {/* Name and Risk */}
           <div className="flex items-center justify-between">
-            <h3 className="text-lg font-semibold text-white">{meteorite.name}</h3>
-            <span className={`px-2 py-1 rounded-full text-xs font-medium ${risk.bgColor} ${risk.color}`}>
+            <h3 className="text-lg font-bold text-white drop-shadow-lg">{meteorite.name}</h3>
+            <span className={`px-3 py-1.5 rounded-full text-xs font-bold border-2 ${risk.bgColor} ${risk.color} shadow-lg`}>
               {risk.level}
             </span>
           </div>
 
           {/* Hazard Warning */}
           {meteorite.is_potentially_hazardous_asteroid && (
-            <div className="flex items-center gap-2 p-2 bg-red-500/20 border border-red-500/30 rounded-lg">
-              <AlertTriangle className="w-4 h-4 text-red-400" />
-              <span className="text-red-400 text-sm font-medium">Asteroides Potencialmente Peligrosos</span>
+            <div className="flex items-center gap-2 p-3 bg-red-500/30 border-2 border-red-500/50 rounded-xl shadow-lg shadow-red-500/20">
+              <AlertTriangle className="w-5 h-5 text-red-400 animate-pulse" />
+              <span className="text-red-300 text-sm font-bold">⚠️ Potencialmente Peligroso</span>
             </div>
           )}
 
           {/* Quick Stats */}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="flex items-center gap-2">
-              <Ruler className="w-4 h-4 text-purple-400" />
+          <div className="grid grid-cols-2 gap-3">
+            <div className="flex items-center gap-3 p-3 bg-gradient-to-br from-cyan-900/30 to-blue-900/30 rounded-xl border border-cyan-500/30 shadow-lg">
+              <Ruler className="w-5 h-5 text-cyan-400 flex-shrink-0" />
               <div>
-                <div className="text-xs text-gray-400">Diámetro</div>
-                <div className="text-sm font-medium text-white">{avgDiameter.toFixed(2)} km</div>
+                <div className="text-xs text-gray-400 font-semibold">Diámetro</div>
+                <div className="text-base font-bold text-white">{avgDiameter.toFixed(2)} km</div>
               </div>
             </div>
-            <div className="flex items-center gap-2">
-              <Gauge className="w-4 h-4 text-purple-400" />
+            <div className="flex items-center gap-3 p-3 bg-gradient-to-br from-cyan-900/30 to-blue-900/30 rounded-xl border border-cyan-500/30 shadow-lg">
+              <Gauge className="w-5 h-5 text-cyan-400 flex-shrink-0" />
               <div>
-                <div className="text-xs text-gray-400">Magnitud</div>
-                <div className="text-sm font-medium text-white">{meteorite.absolute_magnitude_h}</div>
+                <div className="text-xs text-gray-400 font-semibold">Magnitud</div>
+                <div className="text-base font-bold text-white">{meteorite.absolute_magnitude_h.toFixed(1)}</div>
               </div>
             </div>
           </div>
@@ -119,8 +130,8 @@ export default function MeteoriteInfo({ meteorite }: MeteoriteInfoProps) {
 
       {/* Expanded Info */}
       {isExpanded && (
-        <div className="px-4 pb-4 border-t border-purple-500/20">
-          <div className="space-y-4 pt-4">
+        <div className="px-5 pb-5 border-t-2 border-cyan-500/30">
+          <div className="space-y-4 pt-5">
             {/* Detailed Stats */}
             <div>
               <h4 className="text-sm font-semibold text-gray-300 mb-2">Estadísticas Detalladas</h4>
@@ -150,7 +161,7 @@ export default function MeteoriteInfo({ meteorite }: MeteoriteInfoProps) {
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
                     <span className="text-gray-400">Fecha:</span>
-                    <span className="text-white">{formatDate(latestApproach.close_approach_date)}</span>
+                    <span className="text-white">{formattedDate}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-400">Velocidad:</span>
@@ -205,4 +216,6 @@ export default function MeteoriteInfo({ meteorite }: MeteoriteInfoProps) {
       )}
     </div>
   );
-}
+});
+
+export default MeteoriteInfo;

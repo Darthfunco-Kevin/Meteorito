@@ -113,7 +113,7 @@ export default function Navbar() {
               </Link>
 
               <Link
-                href="/Meteorito"
+                href="/Simulacion/Meteorito"
                 className={`px-4 py-2 text-sm font-semibold transition-all duration-300 relative group rounded-xl ${
                   isActive("/Meteorito") || isActive("/impacto")
                     ? "text-white bg-gradient-to-r from-orange-600/30 to-red-600/30 border border-orange-500/50"
