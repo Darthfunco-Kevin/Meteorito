@@ -24,8 +24,8 @@ export default function MeteorGame() {
 
   // RUTAS DE TUS IMÁGENES - Colócalas en la carpeta public/images/
   const SHIP_IMAGE = '/ImagenParte1/nave.png';
-  const METEOR_IMAGE = '/images/meteor.jpg';
-  const PLANET_IMAGE = '/images/planet.png';
+  const METEOR_IMAGE = '/ImagenParte1/meteorito.png';
+  const PLANET_IMAGE = '/ImagenParte1/Planeta1.png';
 
   useEffect(() => {
     if (!canvasRef.current) return;
@@ -93,7 +93,7 @@ export default function MeteorGame() {
         planet = new PIXI.Sprite(planetTexture);
         planet.anchor.set(0.5);
         planet.x = app.screen.width / 2;
-        planet.y = app.screen.height + 150;
+        planet.y = app.screen.height+ 60;
         planet.width = 400;
         planet.height = 400;
       } else {
@@ -366,7 +366,7 @@ export default function MeteorGame() {
   };
 
   const WinGame = () =>{
-    router.push('/game2');
+    router.push('/games/game1');
   }
 
   const restartGame = () => {
