@@ -80,7 +80,7 @@ export default function Home() {
           {/* Animated Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-500/20 to-blue-500/20 border border-purple-500/30 rounded-full mb-8 backdrop-blur-sm">
             <Sparkles className="w-4 h-4 text-purple-400 animate-pulse" />
-            <span className="text-sm font-semibold text-purple-300">Explorando el Cosmos Digital</span>
+            <span className="text-sm font-semibold text-purple-300">Exploring the Digital Space</span>
             <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse" />
           </div>
 
@@ -88,7 +88,7 @@ export default function Home() {
           <div className="mb-10">
             <h1 className="text-6xl sm:text-7xl lg:text-8xl font-black mb-6 leading-tight">
               <span className="block bg-gradient-to-r from-purple-300 via-blue-300 to-cyan-300 bg-clip-text text-transparent drop-shadow-2xl">
-                Bienvenido al
+                Welcome to
               </span>
               <span className="block bg-gradient-to-r from-cyan-200 via-purple-200 to-pink-200 bg-clip-text text-transparent drop-shadow-2xl animate-pulse">
                 Impactor 2025
@@ -107,34 +107,12 @@ export default function Home() {
 
           {/* Subtitle - Enhanced */}
           <p className="text-xl sm:text-2xl lg:text-3xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed font-light">
-           Te invitamos a descubrir la verdad sobre las amenazas de asteroides, a su vez sus impactos y consecuencias. Aquí encontrarás las herramientas y la 
-           información esencial para entender estos riesgos y aprender cómo podemos mitigarlos juntos.
-          </p>
-
-          {/* Feature Cards - Enhanced */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-            {/* Card 1 - Innovación */}
-            
-
-            {/* Card 3 - Creatividad */}
-            <div className="group relative p-8 bg-gradient-to-br from-slate-900/80 to-cyan-900/80 backdrop-blur-xl border border-cyan-500/30 rounded-2xl hover:border-cyan-400/60 transition-all duration-500 hover:transform hover:scale-105 hover:shadow-2xl hover:shadow-cyan-500/20">
-              <div className="absolute inset-0 bg-gradient-to-r from-cyan-600/20 to-blue-600/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <div className="relative z-10">
-                <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-cyan-700 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:rotate-12 transition-transform duration-500 shadow-lg shadow-cyan-500/50">
-                  <Sparkles className="w-8 h-8 text-white group-hover:animate-spin" style={{ animationDuration: "2s" }} />
-                </div>
-                <h3 className="text-2xl font-bold text-white mb-3">Creatividad</h3>
-                <p className="text-gray-300 leading-relaxed">Ideas brillantes que iluminan el cosmos digital</p>
-                <div className="mt-4 h-1 w-0 bg-gradient-to-r from-cyan-500 to-blue-500 group-hover:w-full transition-all duration-500 rounded-full" />
-              </div>
-            </div>
-          </div>
-
+          We invite you to discover the truth about asteroid threats, as well as their impacts and consequences. Here, you'll find the essential tools and information to understand these risks and learn how we can mitigate them together. </p>
           {/* Projects Showcase */}
           <div className="mb-16">
             <h2 className="text-4xl font-bold text-white mb-8">
               <span className="bg-gradient-to-r from-purple-300 to-cyan-300 bg-clip-text text-transparent">
-                Proyectos Destacados
+                Featured Portals
               </span>
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -147,21 +125,16 @@ export default function Home() {
                       <div className="w-14 h-14 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center shadow-lg shadow-orange-500/50">
                         <Globe className="w-7 h-7 text-white" />
                       </div>
-                      <ArrowRight className="w-6 h-6 text-orange-400 group-hover:translate-x-2 transition-transform duration-300" />
-                    </div>
-                    <h3 className="text-2xl font-bold text-white mb-2">Simulador de Meteoritos</h3>
-                    <p className="text-gray-300 mb-4">Visualización 3D interactiva de meteoritos reales de la NASA con datos en tiempo real</p>
-                    <div className="flex gap-2 flex-wrap">
-                      <span className="px-3 py-1 bg-orange-500/20 border border-orange-500/40 rounded-full text-xs text-orange-300 font-semibold">React Three Fiber</span>
-                      <span className="px-3 py-1 bg-orange-500/20 border border-orange-500/40 rounded-full text-xs text-orange-300 font-semibold">NASA API</span>
-                      <span className="px-3 py-1 bg-orange-500/20 border border-orange-500/40 rounded-full text-xs text-orange-300 font-semibold">3D</span>
-                    </div>
+                   </div>
+                    <h3 className="text-2xl font-bold text-white mb-2">Meteorite Simulator</h3>
+                    <p className="text-gray-300 mb-4">Real-Time 3D Meteorite Explorer (Powered by NASA Data)</p>
+                    
                   </div>
                 </div>
               </Link>
 
               {/* Juego Project */}
-              <Link href="/juego">
+              <Link href="/Infometeorito">
                 <div className="group relative p-6 bg-gradient-to-br from-slate-900/90 to-green-900/90 backdrop-blur-xl border border-green-500/30 rounded-2xl hover:border-green-400/60 transition-all duration-500 hover:transform hover:scale-105 hover:shadow-2xl hover:shadow-green-500/20 cursor-pointer overflow-hidden">
                   <div className="absolute inset-0 bg-gradient-to-r from-green-600/20 to-emerald-600/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   <div className="relative z-10">
@@ -169,43 +142,35 @@ export default function Home() {
                       <div className="w-14 h-14 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg shadow-green-500/50">
                         <Code className="w-7 h-7 text-white" />
                       </div>
-                      <ArrowRight className="w-6 h-6 text-green-400 group-hover:translate-x-2 transition-transform duration-300" />
                     </div>
-                    <h3 className="text-2xl font-bold text-white mb-2">Space Shooter</h3>
-                    <p className="text-gray-300 mb-4">Juego arcade espacial desarrollado con PIXI.js con efectos visuales avanzados</p>
-                    <div className="flex gap-2 flex-wrap">
-                      <span className="px-3 py-1 bg-green-500/20 border border-green-500/40 rounded-full text-xs text-green-300 font-semibold">PIXI.js</span>
-                      <span className="px-3 py-1 bg-green-500/20 border border-green-500/40 rounded-full text-xs text-green-300 font-semibold">Game Dev</span>
-                      <span className="px-3 py-1 bg-green-500/20 border border-green-500/40 rounded-full text-xs text-green-300 font-semibold">Canvas</span>
-                    </div>
+                    <h3 className="text-2xl font-bold text-white mb-2">Meteorite Information</h3>
+                    <p className="text-gray-300 mb-4">Discover comprehensive information on meteorite types and characteristics here.</p>
+                    
                   </div>
                 </div>
               </Link>
             </div>
           </div>
+          {/* Feature Cards - Enhanced */}
+          <Link href="/juego">
+          <div className="mb-16">
+            <div className="w-full group relative p-8 bg-gradient-to-br from-slate-900/80 to-cyan-900/80 backdrop-blur-xl border border-cyan-500/30 rounded-2xl hover:border-cyan-400/60 transition-all duration-500 hover:transform hover:scale-105 hover:shadow-2xl hover:shadow-cyan-500/20">
+              <div className="absolute inset-0 bg-gradient-to-r from-cyan-600/20 to-blue-600/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="relative z-10">
+                <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-cyan-700 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:rotate-12 transition-transform duration-500 shadow-lg shadow-cyan-500/50">
+                  <Sparkles className="w-8 h-8 text-white group-hover:animate-spin" style={{ animationDuration: "2s" }} />
+                </div>
+                <h3 className="text-2xl font-bold text-white mb-3">Participant Information</h3>
+                <p className="text-gray-300 leading-relaxed">Find out who the participants are</p>
+                <div className="mt-4 h-1 w-0 bg-gradient-to-r from-cyan-500 to-blue-500 group-hover:w-full transition-all duration-500 rounded-full" />
+              </div>
+            </div>
+          </div></Link>
 
-          {/* Call to Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-            <Link href="/meteorito">
-              <button className="group relative overflow-hidden bg-gradient-to-r from-purple-600 via-blue-600 to-cyan-500 hover:from-purple-700 hover:via-blue-700 hover:to-cyan-600 text-white px-10 py-5 rounded-2xl text-lg font-bold transition-all duration-300 transform hover:scale-105 shadow-2xl shadow-purple-500/30 hover:shadow-purple-500/50 border border-purple-400/30">
-                <span className="relative z-10 flex items-center gap-3">
-                  <Rocket className="w-6 h-6 group-hover:animate-bounce" />
-                  Explorar Meteoritos
-                  <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform duration-300" />
-                </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-cyan-400/20 to-purple-400/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
-              </button>
-            </Link>
-
-            <Link href="/juego">
-              <button className="group relative overflow-hidden bg-transparent border-2 border-purple-400/50 hover:border-purple-400 text-purple-300 hover:text-white px-10 py-5 rounded-2xl text-lg font-bold transition-all duration-300 hover:bg-purple-600/20 shadow-lg hover:shadow-xl">
-                <span className="relative z-10 flex items-center gap-3">
-                  <Zap className="w-6 h-6 group-hover:animate-pulse" />
-                  Jugar Space Shooter
-                </span>
-              </button>
-            </Link>
-          </div>
+          {/* Projects Showcase */}
+          
+         
+           
 
           {/* Floating Elements */}
           <div className="absolute top-20 left-10 w-20 h-20 bg-purple-500/20 rounded-full blur-xl animate-pulse"></div>
@@ -213,12 +178,7 @@ export default function Home() {
           <div className="absolute top-1/2 left-5 w-16 h-16 bg-cyan-500/20 rounded-full blur-xl animate-pulse" style={{ animationDelay: "4s" }}></div>
         </div>
 
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <div className="w-6 h-10 border-2 border-purple-400/50 rounded-full flex justify-center">
-            <div className="w-1 h-3 bg-purple-400 rounded-full mt-2 animate-pulse"></div>
-          </div>
-        </div>
+        
       </div>
 
       {/* Custom CSS for meteorite trails */}

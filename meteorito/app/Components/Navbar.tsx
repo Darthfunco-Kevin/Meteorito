@@ -83,7 +83,7 @@ export default function Navbar() {
               <div className="flex items-center gap-1 mt-0.5">
                 <Sparkles className="w-3 h-3 text-purple-400 animate-pulse" />
                 <span className="text-xs text-gray-400 font-medium">
-                  Espacio Digital
+                 Digital Space
                 </span>
               </div>
             </div>
@@ -102,7 +102,7 @@ export default function Navbar() {
               >
                 <span className="relative z-10 flex items-center gap-2">
                   <Home className="w-4 h-4" />
-                  Inicio
+                  Home
                 </span>
                 {!isActive("/") && (
                   <>
@@ -122,7 +122,7 @@ export default function Navbar() {
               >
                 <span className="relative z-10 flex items-center gap-2">
                   <Globe className="w-4 h-4" />
-                  Meteoritos
+                  Meteorites 
                 </span>
                 {!isActive("/Meteorito") && !isActive("/impacto") && (
                   <>
@@ -142,7 +142,7 @@ export default function Navbar() {
               >
                 <span className="relative z-10 flex items-center gap-2">
                   <Code2 className="w-4 h-4" />
-                  Juego
+                  Game
                 </span>
                 {!isActive("/juego") && (
                   <>
@@ -173,7 +173,7 @@ export default function Navbar() {
             <div className="flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-purple-600/20 to-cyan-600/20 border border-purple-500/30 rounded-full">
               <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse shadow-lg shadow-green-400/50" />
               <span className="text-xs text-gray-300 font-medium">
-                En línea
+                Online
               </span>
             </div>
           </div>
@@ -216,7 +216,7 @@ export default function Navbar() {
               onClick={() => setIsMenuOpen(false)}
             >
               <Home className="w-5 h-5" />
-              <span>Inicio</span>
+              <span>Home</span>
             </Link>
 
             <Link
@@ -229,7 +229,7 @@ export default function Navbar() {
               onClick={() => setIsMenuOpen(false)}
             >
               <Globe className="w-5 h-5" />
-              <span>Meteoritos</span>
+              <span>Meteorites</span>
             </Link>
 
             <Link
@@ -242,7 +242,7 @@ export default function Navbar() {
               onClick={() => setIsMenuOpen(false)}
             >
               <Code2 className="w-5 h-5" />
-              <span>Juego</span>
+              <span>Game</span>
             </Link>
 
             <Link
@@ -260,7 +260,7 @@ export default function Navbar() {
               <div className="flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-600/20 to-cyan-600/20 border border-purple-500/30 rounded-xl">
                 <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse shadow-lg shadow-green-400/50" />
                 <span className="text-sm text-gray-300 font-medium">
-                  Sistema en línea
+                 Online
                 </span>
               </div>
             </div>
