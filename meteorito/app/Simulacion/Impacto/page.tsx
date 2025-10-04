@@ -1,7 +1,8 @@
 "use client";
 
 import { Suspense, useEffect, useState, useRef } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import dynamic from "next/dynamic";
+import { useFrame } from "@react-three/fiber";
 import {
   OrbitControls,
   Stars,
@@ -9,9 +10,15 @@ import {
   Sphere,
   Trail,
   MeshDistortMaterial,
+  useFBX,
 } from "@react-three/drei";
 import { useSearchParams, useRouter } from "next/navigation";
 import * as THREE from "three";
+
+const Canvas = dynamic(
+  () => import("@react-three/fiber").then((mod) => mod.Canvas),
+  { ssr: false }
+);
 
 interface NEOData {
   id: string;
@@ -45,18 +52,20 @@ function FallingMeteorite({
   onImpact: () => void;
   isHazardous: boolean;
 }) {
-  const meshRef = useRef<THREE.Mesh>(null);
+  const groupRef = useRef<THREE.Group>(null);
   const [position, setPosition] = useState<[number, number, number]>([
     0, 20, 0,
   ]);
-  const [rotation, setRotation] = useState<[number, number, number]>([0, 0, 0]);
   const [impacted, setImpacted] = useState(false);
 
+  // Load FBX model
+  const fbx = useFBX("/models/meteorite.fbx");
+
   useFrame(() => {
-    if (!impacted && meshRef.current) {
-      meshRef.current.rotation.x += 0.01;
-      meshRef.current.rotation.y += 0.015;
-      meshRef.current.rotation.z += 0.005;
+    if (!impacted && groupRef.current) {
+      groupRef.current.rotation.x += 0.01;
+      groupRef.current.rotation.y += 0.015;
+      groupRef.current.rotation.z += 0.005;
     }
   });
 
@@ -80,7 +89,6 @@ function FallingMeteorite({
     return () => clearInterval(interval);
   }, [impacted, onImpact]);
 
-  const baseColor = isHazardous ? "#4a2c1a" : "#6b4423";
   const emissiveColor = isHazardous ? "#ff0000" : "#ff6b35";
 
   return (
@@ -91,26 +99,10 @@ function FallingMeteorite({
       attenuation={(t) => t * t * t}
     >
       <group position={position}>
-        {/* Main meteorite body - irregular shape */}
-        <mesh ref={meshRef} castShadow>
-          <icosahedronGeometry args={[scale, 2]} />
-          <MeshDistortMaterial
-            color={baseColor}
-            emissive={emissiveColor}
-            emissiveIntensity={0.6}
-            metalness={0.8}
-            roughness={0.3}
-            distort={0.4}
-            speed={2}
-            envMapIntensity={1.5}
-          />
-        </mesh>
-
-        {/* Glowing core effect */}
-        <mesh scale={0.7}>
-          <icosahedronGeometry args={[scale, 1]} />
-          <meshBasicMaterial color={emissiveColor} transparent opacity={0.3} />
-        </mesh>
+        {/* 3D Model from FBX */}
+        <group ref={groupRef} scale={scale * 0.01}>
+          <primitive object={fbx.clone()} castShadow />
+        </group>
 
         {/* Heat glow around meteorite */}
         <mesh scale={1.3}>
@@ -136,39 +128,23 @@ function FallingMeteorite({
 }
 
 function Earth() {
-  const meshRef = useRef<THREE.Mesh>(null);
+  const groupRef = useRef<THREE.Group>(null);
+
+  // Load FBX model
+  const fbx = useFBX("/models/planet.fbx");
 
   useFrame(() => {
-    if (meshRef.current) {
-      meshRef.current.rotation.y += 0.001;
+    if (groupRef.current) {
+      groupRef.current.rotation.y += 0.001;
     }
   });
 
   return (
     <group position={[0, -3, 0]}>
-      {/* Main Earth sphere */}
-      <mesh ref={meshRef} receiveShadow>
-        <sphereGeometry args={[3, 64, 64]} />
-        <meshStandardMaterial
-          color="#1a5fb4"
-          emissive="#0a2f5a"
-          emissiveIntensity={0.15}
-          metalness={0.2}
-          roughness={0.6}
-        />
-      </mesh>
-
-      {/* Continents overlay */}
-      <mesh scale={1.01}>
-        <sphereGeometry args={[3, 64, 64]} />
-        <meshStandardMaterial
-          color="#2d5016"
-          transparent
-          opacity={0.6}
-          roughness={0.9}
-          metalness={0.1}
-        />
-      </mesh>
+      {/* 3D Model from FBX */}
+      <group ref={groupRef} scale={0.03}>
+        <primitive object={fbx.clone()} receiveShadow />
+      </group>
 
       {/* Atmosphere glow */}
       <mesh scale={1.15}>
@@ -178,17 +154,6 @@ function Earth() {
           transparent
           opacity={0.1}
           side={THREE.BackSide}
-        />
-      </mesh>
-
-      {/* Cloud layer simulation */}
-      <mesh scale={1.02} rotation={[0, 0, 0]}>
-        <sphereGeometry args={[3, 32, 32]} />
-        <meshStandardMaterial
-          color="#ffffff"
-          transparent
-          opacity={0.15}
-          roughness={1}
         />
       </mesh>
 
@@ -661,64 +626,6 @@ function ImpactoContent() {
         </div>
       )}
 
-      {/* Download 3D Model Button - Top Right */}
-      <div className="absolute top-44 right-6 z-20">
-        <a
-          href="https://sketchfab.com/3d-models/asteroid-fbx-free-download-cb5e1211c13e4f8ab1f6d11a84a0ba07"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="group relative overflow-hidden flex items-center gap-3 px-6 py-3.5 bg-gradient-to-br from-cyan-600 via-blue-600 to-purple-600 hover:from-cyan-500 hover:via-blue-500 hover:to-purple-500 text-white font-bold rounded-xl transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-2xl shadow-cyan-500/40 hover:shadow-cyan-500/60 border-2 border-cyan-400/50 hover:border-cyan-300/70"
-        >
-          <span className="relative z-10 flex items-center gap-3">
-            <svg
-              className="w-6 h-6 drop-shadow-lg"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2.5}
-                d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"
-              />
-            </svg>
-            <div className="text-left">
-              <div className="text-sm font-black drop-shadow-lg">📦 Descargar Modelo 3D</div>
-              <div className="text-xs text-cyan-100 font-semibold">Archivo FBX (Sketchfab)</div>
-            </div>
-          </span>
-          {/* Shimmer effect */}
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-700" />
-          {/* Pulsing glow */}
-          <div className="absolute inset-0 rounded-xl bg-cyan-400/20 blur-xl group-hover:bg-cyan-400/40 transition-all duration-300" />
-        </a>
-
-        {/* Info tooltip */}
-        <div className="mt-3 p-4 bg-slate-900/95 backdrop-blur-xl rounded-xl border-2 border-cyan-500/30 shadow-xl">
-          <div className="flex items-start gap-2">
-            <svg
-              className="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
-              <path
-                fillRule="evenodd"
-                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                clipRule="evenodd"
-              />
-            </svg>
-            <div className="text-xs text-gray-300">
-              <p className="font-bold text-white mb-1">💡 Instrucciones:</p>
-              <ol className="space-y-1 list-decimal list-inside text-gray-400">
-                <li>Descarga el modelo FBX</li>
-                <li>Guárdalo en <span className="text-cyan-400 font-mono">/public/models/</span></li>
-                <li>Nómbralo <span className="text-cyan-400 font-mono">meteorite.fbx</span></li>
-              </ol>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }
