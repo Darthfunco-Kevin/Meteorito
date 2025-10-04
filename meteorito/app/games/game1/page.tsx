@@ -25,7 +25,9 @@ export default function MeteorGame() {
   // RUTAS DE TUS IMÁGENES - Colócalas en la carpeta public/images/
   const SHIP_IMAGE = '/ImagenParte1/nave.png';
   const METEOR_IMAGE = '/ImagenParte1/meteorito.png';
-  const PLANET_IMAGE = '/ImagenParte1/Planeta1.png';
+  //const PLANET_IMAGE = '/ImagenParte1/Planeta1.png';
+  const Entorno_IMAGE = '/ImagenParte1/Fondo2.png';
+
 
   useEffect(() => {
     if (!canvasRef.current) return;
@@ -46,6 +48,7 @@ export default function MeteorGame() {
       let shipTexture: PIXI.Texture | null = null;
       let meteorTexture: PIXI.Texture | null = null;
       let planetTexture: PIXI.Texture | null = null;
+        let EntornoTexture: PIXI.Texture | null = null;
 
       try {
         // Intentar cargar las imágenes personalizadas
@@ -59,15 +62,20 @@ export default function MeteorGame() {
       } catch (error) {
         console.log('No se encontró imagen de meteorito, usando diseño por defecto');
       }
-
       try {
-        planetTexture = await PIXI.Assets.load(PLANET_IMAGE);
+        EntornoTexture = await PIXI.Assets.load(Entorno_IMAGE);
       } catch (error) {
-        console.log('No se encontró imagen de planeta, usando diseño por defecto');
+        console.log('No se encontró imagen de meteorito, usando diseño por defecto');
       }
 
+    //  try {
+      //  planetTexture = await PIXI.Assets.load(PLANET_IMAGE);
+      //} catch (error) {
+        //console.log('No se encontró imagen de planeta, usando diseño por defecto');
+      //}
+
       // Crear fondo de estrellas
-      const createStars = () => {
+     /* const createStars = () => {
         for (let i = 0; i < 200; i++) {
           const star = new PIXI.Graphics();
           const size = Math.random() * 2;
@@ -83,12 +91,12 @@ export default function MeteorGame() {
           app.stage.addChild(star);
           starsRef.current.push(star);
         }
-      };
+      }; */
 
-      createStars();
+      //createStars();
 
-      // Crear planeta en la parte inferior
-      let planet: any;
+      // Crear planeta en la parte inferior 
+      /* let planet: any;
       if (planetTexture) {
         planet = new PIXI.Sprite(planetTexture);
         planet.anchor.set(0.5);
@@ -112,15 +120,28 @@ export default function MeteorGame() {
         planet.fill({ color: 0xffffff, alpha: 0.3 });
       }
       
-      app.stage.addChild(planet);
+      app.stage.addChild(planet); */
+
+    //Diseño epico
+      let entorno: any;
+      if (EntornoTexture) {
+        entorno = new PIXI.Sprite(EntornoTexture);
+        entorno.anchor.set(0);
+        entorno.width = 850;
+        entorno.height = 650;
+        }
+        
+        app.stage.addChild(entorno);
+
+
 
       // Crear nave espacial
       let ship: any;
       if (shipTexture) {
         ship = new PIXI.Sprite(shipTexture);
         ship.anchor.set(0.5);
-        ship.width = 60;
-        ship.height = 60;
+        ship.width = 120;
+        ship.height = 120;
       } else {
         // Diseño por defecto
         ship = new PIXI.Graphics();
@@ -338,29 +359,11 @@ export default function MeteorGame() {
 
     return () => {
       if (appRef.current) {
-        // Detener el ticker antes de destruir
-        appRef.current.ticker.stop();
-
-        // Limpiar el intervalo de meteoritos
         if ((appRef.current as any).meteorInterval) {
           clearInterval((appRef.current as any).meteorInterval);
         }
-
-        // Limpiar todos los objetos del stage
-        meteorsRef.current.forEach(m => appRef.current?.stage.removeChild(m));
-        bulletsRef.current.forEach(b => appRef.current?.stage.removeChild(b));
-        starsRef.current.forEach(s => appRef.current?.stage.removeChild(s));
-
-        // Destruir la aplicación
-        appRef.current.destroy(true, { children: true, texture: true });
-        appRef.current = null;
+        appRef.current.destroy(true);
       }
-
-      // Resetear referencias
-      meteorsRef.current = [];
-      bulletsRef.current = [];
-      starsRef.current = [];
-      shipRef.current = null;
     };
   }, []);
 
@@ -383,16 +386,8 @@ export default function MeteorGame() {
     bulletsRef.current.push(bullet);
   };
 
-  const WinGame = () => {
-    // Limpiar el juego antes de navegar
-    gameOverRef.current = true;
-    if (appRef.current) {
-      if ((appRef.current as any).meteorInterval) {
-        clearInterval((appRef.current as any).meteorInterval);
-      }
-      appRef.current.ticker.stop();
-    }
-    router.push('/historia1');
+  const WinGame = () =>{
+    router.push('/games/game1');
   }
 
   const restartGame = () => {
