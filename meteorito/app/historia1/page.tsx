@@ -1,5 +1,5 @@
-'use client';
-import { useState, useEffect } from 'react';
+"use client";
+import { useState, useEffect } from "react";
 
 export default function ImageDialogChanger() {
   type Slide = {
@@ -11,71 +11,109 @@ export default function ImageDialogChanger() {
   const slides: Slide[] = [
     {
       image: "https://media.giphy.com/media/3o7btPCcdNniyf0ArS/giphy.gif",
-      dialog: "La historia comienza en algún lugar del espacio, específicamente en la galaxia NGC 6744.",
+      dialog:
+        "La historia comienza en algún lugar del espacio, específicamente en la galaxia NGC 6744.",
       //audioUrl:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
       // Opcional: puedes agregar una URL de audio personalizado
       // audioUrl: "/audios/escena1.mp3"
     },
     {
-      image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800",
-      dialog: "Una civilización festejaba sus costumbres, sin saber que próximamente llegaría una inminente lluvia de meteoritos al planeta. "
+      image:
+        "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800",
+      dialog:
+        "Una civilización festejaba sus costumbres, sin saber que próximamente llegaría una inminente lluvia de meteoritos al planeta. ",
     },
     {
-      image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800",
-      dialog: "Fue demasiado tarde, cuando se percataron de la desgarradora noticia, sin perder más el tiempo comenzaron a encontrar una posible solución, pero su preocupación era en contra del meteorito denominado IMPACTOR."
+      image:
+        "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800",
+      dialog:
+        "Fue demasiado tarde, cuando se percataron de la desgarradora noticia, sin perder más el tiempo comenzaron a encontrar una posible solución, pero su preocupación era en contra del meteorito denominado IMPACTOR.",
     },
     {
-      image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800",
-      dialog: "Llega el día donde se definiría la continuidad de la civilización. A pesar de los esfuerzos para desviarlo, no fue lo suficiente."
+      image:
+        "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800",
+      dialog:
+        "Llega el día donde se definiría la continuidad de la civilización. A pesar de los esfuerzos para desviarlo, no fue lo suficiente.",
     },
     {
-      image: "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=800",
-      dialog: "Su civilización, sus antepasados, su historia, su cultura… todo desapareció de la faz del universo."
+      image:
+        "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=800",
+      dialog:
+        "Su civilización, sus antepasados, su historia, su cultura… todo desapareció de la faz del universo.",
     },
     {
-      image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
-      dialog: "Finalmente, descubrimos el océano infinito. ¡El destino alcanzado!"
+      image:
+        "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
+      dialog:
+        "Finalmente, descubrimos el océano infinito. ¡El destino alcanzado!",
     },
     {
-      image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
-      dialog: "Finalmente, descubrimos el océano infinito. ¡El destino alcanzado!"
+      image:
+        "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
+      dialog:
+        "Finalmente, descubrimos el océano infinito. ¡El destino alcanzado!",
     },
     {
-      image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
-      dialog: "Finalmente, descubrimos el océano infinito. ¡El destino alcanzado!"
+      image:
+        "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
+      dialog:
+        "Finalmente, descubrimos el océano infinito. ¡El destino alcanzado!",
     },
     {
-      image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
-      dialog: "Finalmente, descubrimos el océano infinito. ¡El destino alcanzado!"
+      image:
+        "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
+      dialog:
+        "Finalmente, descubrimos el océano infinito. ¡El destino alcanzado!",
     },
     {
-      image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
-      dialog: "Finalmente, descubrimos el océano infinito. ¡El destino alcanzado!"
-    }
-
+      image:
+        "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
+      dialog:
+        "Finalmente, descubrimos el océano infinito. ¡El destino alcanzado!",
+    },
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [autoPlay, setAutoPlay] = useState(true);
-  const [currentAudio, setCurrentAudio] = useState<HTMLAudioElement | null>(null);
+  const [currentAudio, setCurrentAudio] = useState<HTMLAudioElement | null>(
+    null
+  );
 
   // Función para reproducir audio con Text-to-Speech
   const speakDialog = (text: string) => {
     // Detener cualquier audio previo
     window.speechSynthesis.cancel();
-    
+
     const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'es-ES'; // Español
+    utterance.lang = "en-US"; // Inglés
     utterance.rate = 0.9; // Velocidad (0.1 a 10)
-    utterance.pitch = 1; // Tono (0 a 2)
+    utterance.pitch = 0.8; // Tono (0 a 2)
     utterance.volume = 1; // Volumen (0 a 1)
-    
+
+    // Intentar seleccionar una voz masculina en inglés
+    const voices = window.speechSynthesis.getVoices();
+    const englishVoice =
+      voices.find(
+        (voice) =>
+          (voice.lang.includes("en-US") || voice.lang.includes("en_US")) &&
+          (voice.name.includes("Male") ||
+            voice.name.includes("David") ||
+            voice.name.includes("Mark"))
+      ) ||
+      voices.find(
+        (voice) => voice.lang.includes("en-US") || voice.lang.includes("en_US")
+      );
+
+    if (englishVoice) {
+      utterance.voice = englishVoice;
+    }
+
     utterance.onstart = () => setIsPlaying(true);
     utterance.onend = () => setIsPlaying(false);
     utterance.onerror = () => setIsPlaying(false);
-    
+
     window.speechSynthesis.speak(utterance);
   };
 
@@ -86,20 +124,20 @@ export default function ImageDialogChanger() {
       currentAudio.pause();
       currentAudio.currentTime = 0;
     }
-    
+
     const audio = new Audio(audioUrl);
     setCurrentAudio(audio);
-    
+
     audio.onplay = () => setIsPlaying(true);
     audio.onended = () => setIsPlaying(false);
     audio.onerror = (e) => {
-      console.error('Error al cargar el audio:', e);
-      console.log('Intentando con:', audioUrl);
+      console.error("Error al cargar el audio:", e);
+      console.log("Intentando con:", audioUrl);
       setIsPlaying(false);
     };
-    
-    audio.play().catch(err => {
-      console.error('Error al reproducir:', err);
+
+    audio.play().catch((err) => {
+      console.error("Error al reproducir:", err);
       setIsPlaying(false);
     });
   };
@@ -108,7 +146,7 @@ export default function ImageDialogChanger() {
   useEffect(() => {
     if (autoPlay) {
       const currentSlide = slides[currentIndex];
-      
+
       // Si hay audioUrl personalizado, usarlo; si no, usar text-to-speech
       if (currentSlide.audioUrl) {
         playCustomAudio(currentSlide.audioUrl);
@@ -120,18 +158,18 @@ export default function ImageDialogChanger() {
 
   const nextSlide = () => {
     setIsTransitioning(true);
-    
+
     // Detener text-to-speech
     window.speechSynthesis.cancel();
-    
+
     // Detener audio personalizado
     if (currentAudio) {
       currentAudio.pause();
       currentAudio.currentTime = 0;
     }
-    
+
     setIsPlaying(false);
-    
+
     setTimeout(() => {
       setCurrentIndex((prevIndex) => {
         if (prevIndex >= slides.length - 1) {
@@ -194,26 +232,30 @@ export default function ImageDialogChanger() {
           animation: pulse-wave 1s ease-in-out infinite;
         }
       `}</style>
-      
+
       <div className="glow-container bg-white rounded-3xl overflow-hidden max-w-2xl w-full border-4 border-purple-400/50">
         {/* Indicación superior */}
         <div className="bg-gradient-to-r from-purple-600 to-purple-800 text-white py-4 px-6 text-center font-semibold text-lg tracking-wide flex items-center justify-between">
           <div className="flex-1 text-center">
             👆 Haz clic en la imagen para continuar
           </div>
-          
+
           {/* Control de audio automático */}
           <button
             onClick={() => setAutoPlay(!autoPlay)}
             className="ml-4 px-3 py-1 bg-white/20 hover:bg-white/30 rounded-lg text-sm transition-all"
-            title={autoPlay ? "Desactivar audio automático" : "Activar audio automático"}
+            title={
+              autoPlay
+                ? "Desactivar audio automático"
+                : "Activar audio automático"
+            }
           >
             {autoPlay ? "🔊 Auto" : "🔇 Manual"}
           </button>
         </div>
 
         {/* Contenedor de imagen */}
-        <div 
+        <div
           onClick={nextSlide}
           className="w-full h-96 bg-gray-100 flex items-center justify-center cursor-pointer relative overflow-hidden active:scale-[0.98] transition-transform duration-100"
         >
@@ -221,10 +263,10 @@ export default function ImageDialogChanger() {
             src={slides[currentIndex].image}
             alt={`Escena ${currentIndex + 1}`}
             className={`w-full h-full object-cover transition-opacity duration-300 ${
-              isTransitioning ? 'opacity-0' : 'opacity-100'
+              isTransitioning ? "opacity-0" : "opacity-100"
             }`}
           />
-          
+
           {/* Indicador de audio reproduciéndose */}
           {isPlaying && (
             <div className="absolute top-4 right-4 bg-purple-600 text-white px-4 py-2 rounded-full flex items-center gap-2 audio-playing">
@@ -240,7 +282,7 @@ export default function ImageDialogChanger() {
             <p className="text-lg leading-relaxed text-gray-800 flex-1">
               {slides[currentIndex].dialog}
             </p>
-            
+
             {/* Botón para reproducir/pausar audio manualmente */}
             <button
               onClick={toggleAudio}
@@ -261,7 +303,6 @@ export default function ImageDialogChanger() {
               <strong>Escena:</strong> {currentIndex + 1} de {slides.length}
             </div>
             <button
-              
               onClick={continueToNext}
               className="bg-purple-600 hover:bg-purple-700 text-white px-5 py-2.5 rounded-lg font-medium transition-all duration-300 active:scale-95"
             >
@@ -271,7 +312,8 @@ export default function ImageDialogChanger() {
 
           {/* Instrucción */}
           <div className="text-center mt-3 text-xs text-gray-400">
-            💡 Haz clic en la imagen para avanzar o usa el botón ▶️ para escuchar
+            💡 Haz clic en la imagen para avanzar o usa el botón ▶️ para
+            escuchar
           </div>
         </div>
       </div>
