@@ -151,9 +151,10 @@ export default function Home() {
               </Link>
             </div>
           </div>
+          
           {/* Feature Cards - Enhanced */}
-          <Link href="/juego">
-          <div className="mb-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Link href="/Infometeorito">
             <div className="w-full group relative p-8 bg-gradient-to-br from-slate-900/80 to-cyan-900/80 backdrop-blur-xl border border-cyan-500/30 rounded-2xl hover:border-cyan-400/60 transition-all duration-500 hover:transform hover:scale-105 hover:shadow-2xl hover:shadow-cyan-500/20">
               <div className="absolute inset-0 bg-gradient-to-r from-cyan-600/20 to-blue-600/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <div className="relative z-10">
@@ -164,8 +165,22 @@ export default function Home() {
                 <p className="text-gray-300 leading-relaxed">Find out who the participants are</p>
                 <div className="mt-4 h-1 w-0 bg-gradient-to-r from-cyan-500 to-blue-500 group-hover:w-full transition-all duration-500 rounded-full" />
               </div>
-            </div>
-          </div></Link>
+            </div></Link>
+
+            <Link href="/juego">
+            <div className="w-full group relative p-8 bg-gradient-to-br from-slate-900/80 to-purple-900/80 backdrop-blur-xl border border-purple-500/30 rounded-2xl hover:border-purple-400/60 transition-all duration-500 hover:transform hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/20">
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-blue-600/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="relative z-10">
+                <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-700 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:rotate-12 transition-transform duration-500 shadow-lg shadow-cyan-500/50">
+                  <Sparkles className="w-8 h-8 text-white group-hover:animate-spin" style={{ animationDuration: "2s" }} />
+                </div>
+                <h3 className="text-2xl font-bold text-white mb-3">Games</h3>
+                <p className="text-gray-300 leading-relaxed">Asteroid Mini-Games</p>
+                <div className="mt-4 h-1 w-0 bg-gradient-to-r from-purple-500 to-blue-500 group-hover:w-full transition-all duration-500 rounded-full" />
+              </div>
+            </div></Link>
+          </div>
+          
 
           {/* Projects Showcase */}
           
