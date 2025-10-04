@@ -5,32 +5,44 @@ export default function ImageDialogChanger() {
   const slides = [
     {
       image: "https://media.giphy.com/media/3o7btPCcdNniyf0ArS/giphy.gif",
-      dialog: "Scientist: We did it... we did it..."
+      dialog: "Narrator: The meteorite increasingly dictated the end for planet Earth, fear progressed and the capybaras remained firm and united. Each shot at the meteorite had a story, a value. News always happens and is reported."
 
     },
     {
       image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800",
-      dialog: "Narrator: After many generations, too many attempts to contain the meteorite, divert it, where luck was not in their salvation plan. Finally, everything had ended thanks to the capybara's heroism."
+      dialog: "Scientist: Don't shoot, you're only regenerating the meteorite! The only salvation that exists is to go to space! The spaceship is still ready. In a few seconds I will launch a nuclear missile to weaken it."
 
     },
     {
       image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800",
-      dialog: "Narrator: The capybaras are recognized as heroes of planet Earth, the crowd cried with happiness. The new travelers were not used to receiving a species that, without hesitating for a second, quickly say goodbye to their friend and leave."
+      dialog: "Narrator: An unworthy ending for someone who tried to give it all, who watched as his companions escaped, while trying to find a solution. The nervous capybaras didn't know what to do, each ship had 4 explosive missiles from other galaxies, although the probability of success would increase, planet Earth would not be the same again for a long time."
     },
     {
       image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800",
-      dialog: "Narrator: Something caught the capybara's attention, it was a taco stand, without thinking twice he decides to ignore the noise of his audience, to go order some tacos, receiving the order for free. While enjoying his order, he began signing for his little fans."
-
+      dialog: "Capybara: Long live you and everyone"
     },
     {
       image: "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=800",
-      dialog: "Narrator: Although he was happy, enjoying his time on planet Earth, he knows that there are many meteorites that threaten" 
+      dialog: "Narrator: Sometimes those we consider heroes can make critical decisions, regardless of the lives they carry with them on their journey. One life or millions of lives."
     },
     {
       image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
-      dialog: "Narrator: While the new furry heroes were in charge of destroying the meteorites that would impact planet Earth, the leader capybara goes directly to overthrow once and for all against the IMPACTOR meteorite."
-
+      dialog: "Narrator: Time passes, one by one they begin to leave, unable to bear that burden that always carries with them. Their legacy will be remembered as the heroes of the universe, although their conscience will not allow them to be recognized."
+    },
+    {
+      image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
+      dialog: "Narrator: The capybara who began with the hope of saving lives from meteorites, is now shattered, being unrecognizable for his great trajectory, not saving his planet led him to seek perfection, but by failing he only proved to be useless."
+    },
+    {
+      image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
+      dialog: "Capybara: Capybara... the planet destroyer"
+    },
+    {
+      image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
+      dialog: "Narrator: Capybara FOREVER"
     }
+
+    
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
