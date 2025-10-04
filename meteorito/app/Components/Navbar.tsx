@@ -153,7 +153,7 @@ export default function Navbar() {
               </Link>
 
               <Link
-                href="https://github.com/Darthfunco-Kevin/nextjsandrikkevin"
+                href="https://github.com/Darthfunco-Kevin/Meteorito"
                 target="_blank"
                 className="px-4 py-2 text-sm font-semibold text-gray-300 hover:text-white transition-all duration-300 relative group rounded-xl"
               >
@@ -246,7 +246,7 @@ export default function Navbar() {
             </Link>
 
             <Link
-              href="https://github.com/Darthfunco-Kevin/nextjsandrikkevin"
+              href="https://github.com/Darthfunco-Kevin/Meteorito"
               target="_blank"
               className="flex items-center gap-3 px-4 py-3 rounded-xl text-base font-semibold text-gray-300 hover:text-white hover:bg-slate-600/20 border border-transparent hover:border-slate-500/30 transition-all duration-300"
               onClick={() => setIsMenuOpen(false)}
