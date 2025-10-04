@@ -2,11 +2,7 @@
 
 import { Suspense, useState, useEffect, useMemo, memo } from "react";
 import { Canvas } from "@react-three/fiber";
-import {
-  OrbitControls,
-  Stars,
-  Environment,
-} from "@react-three/drei";
+import { OrbitControls, Stars, Environment } from "@react-three/drei";
 import InteractiveMeteorite from "./Components/InteractiveMeteorite";
 import ControlPanel from "@/app/Simulacion/Meteorito/Components/ControlPanel";
 import MeteoriteInfo from "@/app/Simulacion/Meteorito/Components/MeteoriteInfo";
@@ -61,8 +57,8 @@ export default function Meteorito() {
 
   // Meteorite properties
   const [scale, setScale] = useState(1);
-  const [color, setColor] = useState("#8B4513");
-  const [emissiveColor, setEmissiveColor] = useState("#FF4500");
+  const [color, setColor] = useState("#808080");
+  const [emissiveColor, setEmissiveColor] = useState("#606060");
   const [metalness, setMetalness] = useState(0.4);
   const [roughness, setRoughness] = useState(0.6);
   const [emissiveIntensity, setEmissiveIntensity] = useState(0.2);
@@ -105,7 +101,7 @@ export default function Meteorito() {
 
         // Select first meteorite by default
         if (allNeos.length > 0) {
-          setSelectedMeteorite(allNeos[0]);
+          handleMeteoriteSelect(allNeos[0]);
         }
       } catch (err) {
         setError(err instanceof Error ? err.message : "Unknown error");
@@ -160,17 +156,12 @@ export default function Meteorito() {
       (meteorite.estimated_diameter.kilometers.estimated_diameter_min +
         meteorite.estimated_diameter.kilometers.estimated_diameter_max) /
       2;
-    const calculatedScale = Math.max(0.1, Math.min(5, avgDiameter / 0.5)); // Normalize to reasonable scale
+    const calculatedScale = Math.max(0.1, Math.min(5, avgDiameter / 0.5)) * 3; // Aumentar escala 3x
     setScale(calculatedScale);
 
-    // Set color based on hazard status
-    if (meteorite.is_potentially_hazardous_asteroid) {
-      setColor("#8B0000"); // Dark red for hazardous
-      setEmissiveColor("#FF0000"); // Bright red
-    } else {
-      setColor("#8B4513"); // Brown for safe
-      setEmissiveColor("#FF4500"); // Orange
-    }
+    // Set color to gray for all meteorites
+    setColor("#808080"); // Gray
+    setEmissiveColor("#606060"); // Dark gray
   };
 
   if (loading) {
@@ -350,7 +341,9 @@ export default function Meteorito() {
                       d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                     />
                   </svg>
-                  <span className="text-sm text-red-300 font-semibold">{dateError}</span>
+                  <span className="text-sm text-red-300 font-semibold">
+                    {dateError}
+                  </span>
                 </div>
               )}
             </div>
@@ -368,7 +361,7 @@ export default function Meteorito() {
             alpha: true,
             powerPreference: "high-performance",
             stencil: false,
-            depth: true
+            depth: true,
           }}
           dpr={[1, 2]}
           performance={{ min: 0.5 }}

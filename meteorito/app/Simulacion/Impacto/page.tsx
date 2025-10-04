@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useState, useRef } from "react";
+import { Suspense, useEffect, useState, useRef, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import {
   OrbitControls,
@@ -45,17 +45,20 @@ function FallingMeteorite({
   onImpact: () => void;
   isHazardous: boolean;
 }) {
-  const meshRef = useRef<THREE.Mesh>(null);
+  const groupRef = useRef<THREE.Group>(null);
   const [position, setPosition] = useState<[number, number, number]>([
     0, 20, 0,
   ]);
   const [impacted, setImpacted] = useState(false);
 
+  // Load FBX model
+  const fbx = useFBX("/Asteroid_2a.fbx");
+
   useFrame(() => {
-    if (!impacted && meshRef.current) {
-      meshRef.current.rotation.x += 0.01;
-      meshRef.current.rotation.y += 0.015;
-      meshRef.current.rotation.z += 0.005;
+    if (!impacted && groupRef.current) {
+      groupRef.current.rotation.x += 0.01;
+      groupRef.current.rotation.y += 0.015;
+      groupRef.current.rotation.z += 0.005;
     }
   });
 
@@ -79,43 +82,49 @@ function FallingMeteorite({
     return () => clearInterval(interval);
   }, [impacted, onImpact]);
 
-  const baseColor = isHazardous ? "#4a2c1a" : "#6b4423";
-  const emissiveColor = isHazardous ? "#ff0000" : "#ff6b35";
+  const baseColor = "#808080"; // Gris
+  const emissiveColor = "#606060"; // Gris más oscuro para el brillo
+
+  // Clone and apply materials
+  const meteoriteModel = useMemo(() => {
+    if (!fbx) return null;
+
+    const clonedFbx = fbx.clone();
+    clonedFbx.traverse((child) => {
+      if (child instanceof THREE.Mesh) {
+        child.material = new THREE.MeshStandardMaterial({
+          color: new THREE.Color(baseColor),
+          emissive: new THREE.Color(emissiveColor),
+          emissiveIntensity: 0.3,
+          metalness: 0.8,
+          roughness: 0.3,
+        });
+        child.castShadow = true;
+      }
+    });
+    return clonedFbx;
+  }, [fbx, baseColor, emissiveColor]);
 
   return (
     <Trail
       width={scale * 2}
       length={12}
-      color={new THREE.Color(isHazardous ? "#ff4400" : "#ffaa44")}
+      color={new THREE.Color("#999999")}
       attenuation={(t) => t * t * t}
     >
       <group position={position}>
-        {/* Main meteorite body - irregular shape */}
-        <mesh ref={meshRef} castShadow>
-          <icosahedronGeometry args={[scale, 2]} />
-          <MeshDistortMaterial
-            color={baseColor}
-            emissive={emissiveColor}
-            emissiveIntensity={0.6}
-            metalness={0.8}
-            roughness={0.3}
-            distort={0.4}
-            speed={2}
-            envMapIntensity={1.5}
-          />
-        </mesh>
-
-        {/* Glowing core effect */}
-        <mesh scale={0.7}>
-          <icosahedronGeometry args={[scale, 1]} />
-          <meshBasicMaterial color={emissiveColor} transparent opacity={0.3} />
-        </mesh>
+        {/* FBX Asteroid Model */}
+        {meteoriteModel && (
+          <group ref={groupRef} scale={scale * 0.01}>
+            <primitive object={meteoriteModel} castShadow />
+          </group>
+        )}
 
         {/* Heat glow around meteorite */}
         <mesh scale={1.3}>
           <sphereGeometry args={[scale, 16, 16]} />
           <meshBasicMaterial
-            color="#ff6600"
+            color="#888888"
             transparent
             opacity={0.15}
             side={THREE.BackSide}
@@ -135,23 +144,39 @@ function FallingMeteorite({
 }
 
 function Earth() {
-  const groupRef = useRef<THREE.Group>(null);
-
-  // Load FBX model
-  const fbx = useFBX("/Asteroid_2a.fbx");
+  const meshRef = useRef<THREE.Mesh>(null);
 
   useFrame(() => {
-    if (groupRef.current) {
-      groupRef.current.rotation.y += 0.001;
+    if (meshRef.current) {
+      meshRef.current.rotation.y += 0.001;
     }
   });
 
   return (
     <group position={[0, -3, 0]}>
-      {/* 3D Model from FBX */}
-      <group ref={groupRef} scale={0.03}>
-        <primitive object={fbx.clone()} receiveShadow />
-      </group>
+      {/* Main Earth sphere */}
+      <mesh ref={meshRef} receiveShadow>
+        <sphereGeometry args={[3, 64, 64]} />
+        <meshStandardMaterial
+          color="#1a5fb4"
+          emissive="#0a2f5a"
+          emissiveIntensity={0.15}
+          metalness={0.2}
+          roughness={0.6}
+        />
+      </mesh>
+
+      {/* Continents overlay */}
+      <mesh scale={1.01}>
+        <sphereGeometry args={[3, 64, 64]} />
+        <meshStandardMaterial
+          color="#2d5016"
+          transparent
+          opacity={0.6}
+          roughness={0.9}
+          metalness={0.1}
+        />
+      </mesh>
 
       {/* Atmosphere glow */}
       <mesh scale={1.15}>
@@ -161,6 +186,17 @@ function Earth() {
           transparent
           opacity={0.1}
           side={THREE.BackSide}
+        />
+      </mesh>
+
+      {/* Cloud layer simulation */}
+      <mesh scale={1.02} rotation={[0, 0, 0]}>
+        <sphereGeometry args={[3, 32, 32]} />
+        <meshStandardMaterial
+          color="#ffffff"
+          transparent
+          opacity={0.15}
+          roughness={1}
         />
       </mesh>
 
@@ -598,37 +634,6 @@ function ImpactoContent() {
             </div>
 
             {/* Impact Alert */}
-            {showImpact && (
-              <div className="mt-6 p-5 bg-gradient-to-r from-red-600 to-red-800 rounded-2xl border-4 border-red-400 shadow-2xl shadow-red-500/50 animate-pulse">
-                <div className="flex items-center justify-center gap-4">
-                  <svg
-                    className="w-8 h-8 text-white animate-bounce drop-shadow-lg"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  <p className="text-white font-black text-xl tracking-wider drop-shadow-lg">
-                    🔥 ¡IMPACTO DETECTADO! 🔥
-                  </p>
-                  <svg
-                    className="w-8 h-8 text-white animate-bounce drop-shadow-lg"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </div>
-              </div>
-            )}
           </div>
         </div>
       )}
