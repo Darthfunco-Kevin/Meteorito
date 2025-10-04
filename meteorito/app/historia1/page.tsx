@@ -4,32 +4,49 @@ import { useState, useEffect } from 'react';
 export default function ImageDialogChanger() {
   const slides = [
     {
-      image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800",
-      dialog: "¡Bienvenido! Haz clic en la imagen para continuar la historia.",
-      audioUrl:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+      image: "https://media.giphy.com/media/3o7btPCcdNniyf0ArS/giphy.gif",
+      dialog: "La historia comienza en algún lugar del espacio, específicamente en la galaxia NGC 6744.",
+      //audioUrl:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
       // Opcional: puedes agregar una URL de audio personalizado
       // audioUrl: "/audios/escena1.mp3"
     },
     {
       image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800",
-      dialog: "El viaje comienza en las montañas nevadas..."
+      dialog: "Una civilización festejaba sus costumbres, sin saber que próximamente llegaría una inminente lluvia de meteoritos al planeta. "
     },
     {
       image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800",
-      dialog: "Después de días de camino, llegamos al bosque encantado."
+      dialog: "Fue demasiado tarde, cuando se percataron de la desgarradora noticia, sin perder más el tiempo comenzaron a encontrar una posible solución, pero su preocupación era en contra del meteorito denominado IMPACTOR."
     },
     {
       image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800",
-      dialog: "En el bosque, escuchamos sonidos misteriosos..."
+      dialog: "Llega el día donde se definiría la continuidad de la civilización. A pesar de los esfuerzos para desviarlo, no fue lo suficiente."
     },
     {
       image: "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=800",
-      dialog: "¡Una nueva aventura comienza aquí! Los árboles parecen susurrar secretos antiguos."
+      dialog: "Su civilización, sus antepasados, su historia, su cultura… todo desapareció de la faz del universo."
+    },
+    {
+      image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
+      dialog: "Finalmente, descubrimos el océano infinito. ¡El destino alcanzado!"
+    },
+    {
+      image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
+      dialog: "Finalmente, descubrimos el océano infinito. ¡El destino alcanzado!"
+    },
+    {
+      image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
+      dialog: "Finalmente, descubrimos el océano infinito. ¡El destino alcanzado!"
+    },
+    {
+      image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
+      dialog: "Finalmente, descubrimos el océano infinito. ¡El destino alcanzado!"
     },
     {
       image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
       dialog: "Finalmente, descubrimos el océano infinito. ¡El destino alcanzado!"
     }
+
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
