@@ -1,10 +1,9 @@
 "use client";
 
-import { useRef, useMemo } from "react";
-import { useFrame } from "@react-three/fiber";
-import { Mesh, Group } from "three";
+import { useMemo, memo, Suspense } from "react";
 import * as THREE from "three";
-import { Trail, Text, MeshDistortMaterial } from "@react-three/drei";
+import { Html } from "@react-three/drei";
+import AsteroidModel from "./AsteroidModel";
 
 interface NEOData {
   id: string;
@@ -39,7 +38,7 @@ interface InteractiveMeteoriteProps {
   neoData: NEOData;
 }
 
-export default function InteractiveMeteorite({
+const InteractiveMeteorite = memo(function InteractiveMeteorite({
   scale,
   color,
   emissiveColor,
@@ -48,215 +47,55 @@ export default function InteractiveMeteorite({
   emissiveIntensity,
   neoData
 }: InteractiveMeteoriteProps) {
-  const meshRef = useRef<Mesh>(null);
-  const groupRef = useRef<Group>(null);
-  const trailRef = useRef<Mesh>(null);
-
-  // Animation
-  useFrame((_, delta) => {
-    if (groupRef.current) {
-      // Slow rotation
-      groupRef.current.rotation.y += delta * 0.1;
-      groupRef.current.rotation.x += delta * 0.05;
-    }
-  });
-
-  // Calculate diameter for display
-  const avgDiameter = (neoData.estimated_diameter.kilometers.estimated_diameter_min + 
-                     neoData.estimated_diameter.kilometers.estimated_diameter_max) / 2;
+  // Calculate diameter for display - memoized
+  const avgDiameter = useMemo(() =>
+    (neoData.estimated_diameter.kilometers.estimated_diameter_min +
+     neoData.estimated_diameter.kilometers.estimated_diameter_max) / 2,
+    [neoData]
+  );
 
   return (
-    <group ref={groupRef} scale={scale}>
-      {/* Main meteorite body - Enhanced with distortion */}
-      <mesh ref={meshRef} castShadow receiveShadow>
-        <icosahedronGeometry args={[1, 4]} />
-        <MeshDistortMaterial
+    <group scale={scale}>
+      {/* FBX Asteroid Model */}
+      <Suspense fallback={null}>
+        <AsteroidModel
+          scale={0.01}
           color={color}
-          emissive={emissiveColor}
-          emissiveIntensity={emissiveIntensity * 1.5}
-          metalness={metalness + 0.3}
-          roughness={roughness - 0.2}
-          distort={0.4}
-          speed={1.5}
-          envMapIntensity={2}
-        />
-      </mesh>
-
-      {/* Secondary rocky layer with distortion */}
-      <mesh scale={0.92} castShadow>
-        <icosahedronGeometry args={[1, 3]} />
-        <MeshDistortMaterial
-          color={new THREE.Color().lerpColors(new THREE.Color(color), new THREE.Color("#2a1810"), 0.4)}
-          metalness={metalness + 0.4}
+          emissiveColor={emissiveColor}
+          metalness={metalness}
           roughness={roughness}
-          emissive={emissiveColor}
-          emissiveIntensity={emissiveIntensity * 0.8}
-          distort={0.3}
-          speed={1}
+          emissiveIntensity={emissiveIntensity}
+          autoRotate={true}
+          rotationSpeed={0.1}
         />
-      </mesh>
+      </Suspense>
 
-      {/* Textured surface overlay */}
-      <mesh scale={1.02}>
-        <icosahedronGeometry args={[1, 3]} />
-        <meshStandardMaterial
-          color="#3a2010"
-          metalness={0.9}
-          roughness={0.8}
-          transparent
-          opacity={0.5}
-          normalScale={new THREE.Vector2(3, 3)}
-        />
-      </mesh>
-
-      {/* Glowing molten core */}
-      <mesh scale={0.65}>
-        <icosahedronGeometry args={[1, 2]} />
-        <meshBasicMaterial
-          color={emissiveColor}
-          transparent
-          opacity={0.85}
-        />
-      </mesh>
-
-      {/* Inner blazing core */}
-      <mesh scale={0.35}>
-        <sphereGeometry args={[1, 16, 16]} />
-        <meshBasicMaterial
-          color="#ffd700"
-          transparent
-          opacity={0.95}
-        />
-      </mesh>
-
-      {/* Heat shimmer effect */}
-      <mesh scale={1.3}>
-        <sphereGeometry args={[1, 16, 16]} />
-        <meshBasicMaterial
-          color={emissiveColor}
-          transparent
-          opacity={0.12}
-          side={THREE.BackSide}
-        />
-      </mesh>
-
-      {/* Outer atmospheric glow */}
-      <mesh scale={1.5}>
-        <sphereGeometry args={[1, 12, 12]} />
-        <meshBasicMaterial
-          color={emissiveColor}
-          transparent
-          opacity={0.06}
-          side={THREE.BackSide}
-          blending={THREE.AdditiveBlending}
-        />
-      </mesh>
-      
-      {/* Enhanced multi-layered trail effect */}
-      <Trail
-        width={3}
-        length={15}
-        color={new THREE.Color(emissiveColor)}
-        attenuation={(t) => t * t * t}
-      >
-        <mesh ref={trailRef}>
-          <sphereGeometry args={[0.15]} />
-          <meshBasicMaterial color={emissiveColor} transparent opacity={1} />
-        </mesh>
-      </Trail>
-
-      <Trail
-        width={2}
-        length={12}
-        color={new THREE.Color(emissiveColor).multiplyScalar(0.8)}
-        attenuation={(t) => t * t}
-      >
-        <mesh>
-          <sphereGeometry args={[0.1]} />
-          <meshBasicMaterial
-            color={emissiveColor}
-            transparent
-            opacity={0.8}
-          />
-        </mesh>
-      </Trail>
-
-      <Trail
-        width={4}
-        length={18}
-        color={new THREE.Color(emissiveColor).multiplyScalar(0.5)}
-        attenuation={(t) => Math.pow(t, 4)}
-      >
-        <mesh>
-          <sphereGeometry args={[0.18]} />
-          <meshBasicMaterial
-            color={emissiveColor}
-            transparent
-            opacity={0.4}
-            blending={THREE.AdditiveBlending}
-          />
-        </mesh>
-      </Trail>
-
-      {/* Enhanced lighting system */}
-      <pointLight
-        position={[0, 0, 0]}
-        color={emissiveColor}
-        intensity={2.5}
-        distance={15}
-        decay={1.5}
-      />
-
-      <pointLight
-        position={[0, 0, 0]}
-        color="#ffd700"
-        intensity={1.5}
-        distance={10}
-        decay={2}
-      />
-
-      <pointLight
-        position={[0.5, 0, 0]}
-        color={emissiveColor}
-        intensity={1}
-        distance={8}
-        decay={2.5}
-      />
-      
-      {/* Meteorite name label */}
-      <Text
+      {/* Meteorite labels - Using HTML for 2D overlay */}
+      <Html
         position={[0, scale * 2, 0]}
-        fontSize={0.5}
-        color="white"
-        anchorX="center"
-        anchorY="middle"
+        center
+        distanceFactor={10}
+        style={{
+          pointerEvents: 'none',
+          userSelect: 'none',
+        }}
       >
-        {neoData.name}
-      </Text>
-
-      {/* Diameter label */}
-      <Text
-        position={[0, scale * 1.5, 0]}
-        fontSize={0.3}
-        color="#00d4ff"
-        anchorX="center"
-        anchorY="middle"
-      >
-        {avgDiameter.toFixed(2)} km
-      </Text>
-
-      {/* Hazard status indicator */}
-      {neoData.is_potentially_hazardous_asteroid && (
-        <Text
-          position={[0, scale * 1.2, 0]}
-          fontSize={0.25}
-          color="#ff4444"
-          anchorX="center"
-          anchorY="middle"
-        >
-          ⚠️ PELIGROSO
-        </Text>
-      )}
+        <div className="flex flex-col items-center gap-1">
+          <div className="text-white font-bold text-lg whitespace-nowrap drop-shadow-lg">
+            {neoData.name}
+          </div>
+          <div className="text-cyan-400 font-semibold text-sm drop-shadow-lg">
+            {avgDiameter.toFixed(2)} km
+          </div>
+          {neoData.is_potentially_hazardous_asteroid && (
+            <div className="text-red-400 font-bold text-xs drop-shadow-lg animate-pulse">
+              ⚠️ PELIGROSO
+            </div>
+          )}
+        </div>
+      </Html>
     </group>
   );
-}
+});
+
+export default InteractiveMeteorite;
