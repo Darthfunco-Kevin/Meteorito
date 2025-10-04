@@ -91,7 +91,7 @@ export default function Home() {
                 Bienvenido al
               </span>
               <span className="block bg-gradient-to-r from-cyan-200 via-purple-200 to-pink-200 bg-clip-text text-transparent drop-shadow-2xl animate-pulse">
-                Espacio Digital
+                Impactor 2025
               </span>
             </h1>
             <div className="flex items-center justify-center gap-3 mb-6">
@@ -107,37 +107,14 @@ export default function Home() {
 
           {/* Subtitle - Enhanced */}
           <p className="text-xl sm:text-2xl lg:text-3xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed font-light">
-            Explora el <span className="text-purple-400 font-semibold">universo de la programación</span> donde cada línea de código es una estrella
-            y cada proyecto es una <span className="text-cyan-400 font-semibold">galaxia</span> de posibilidades infinitas.
+           Te invitamos a descubrir la verdad sobre las amenazas de asteroides, a su vez sus impactos y consecuencias. Aquí encontrarás las herramientas y la 
+           información esencial para entender estos riesgos y aprender cómo podemos mitigarlos juntos.
           </p>
 
           {/* Feature Cards - Enhanced */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
             {/* Card 1 - Innovación */}
-            <div className="group relative p-8 bg-gradient-to-br from-slate-900/80 to-purple-900/80 backdrop-blur-xl border border-purple-500/30 rounded-2xl hover:border-purple-400/60 transition-all duration-500 hover:transform hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/20">
-              <div className="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-cyan-600/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <div className="relative z-10">
-                <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-700 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:rotate-12 transition-transform duration-500 shadow-lg shadow-purple-500/50">
-                  <Rocket className="w-8 h-8 text-white group-hover:animate-bounce" />
-                </div>
-                <h3 className="text-2xl font-bold text-white mb-3">Innovación</h3>
-                <p className="text-gray-300 leading-relaxed">Tecnologías de vanguardia para crear el futuro digital</p>
-                <div className="mt-4 h-1 w-0 bg-gradient-to-r from-purple-500 to-cyan-500 group-hover:w-full transition-all duration-500 rounded-full" />
-              </div>
-            </div>
-
-            {/* Card 2 - Velocidad */}
-            <div className="group relative p-8 bg-gradient-to-br from-slate-900/80 to-blue-900/80 backdrop-blur-xl border border-blue-500/30 rounded-2xl hover:border-blue-400/60 transition-all duration-500 hover:transform hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/20">
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <div className="relative z-10">
-                <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-700 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:rotate-12 transition-transform duration-500 shadow-lg shadow-blue-500/50">
-                  <Zap className="w-8 h-8 text-white group-hover:animate-pulse" />
-                </div>
-                <h3 className="text-2xl font-bold text-white mb-3">Velocidad</h3>
-                <p className="text-gray-300 leading-relaxed">Desarrollo ágil y eficiente como un meteorito espacial</p>
-                <div className="mt-4 h-1 w-0 bg-gradient-to-r from-blue-500 to-purple-500 group-hover:w-full transition-all duration-500 rounded-full" />
-              </div>
-            </div>
+            
 
             {/* Card 3 - Creatividad */}
             <div className="group relative p-8 bg-gradient-to-br from-slate-900/80 to-cyan-900/80 backdrop-blur-xl border border-cyan-500/30 rounded-2xl hover:border-cyan-400/60 transition-all duration-500 hover:transform hover:scale-105 hover:shadow-2xl hover:shadow-cyan-500/20">
