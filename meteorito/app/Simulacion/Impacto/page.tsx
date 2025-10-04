@@ -1,24 +1,17 @@
 "use client";
 
 import { Suspense, useEffect, useState, useRef } from "react";
-import dynamic from "next/dynamic";
-import { useFrame } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 import {
   OrbitControls,
   Stars,
   Environment,
-  Sphere,
   Trail,
   MeshDistortMaterial,
   useFBX,
 } from "@react-three/drei";
 import { useSearchParams, useRouter } from "next/navigation";
 import * as THREE from "three";
-
-const Canvas = dynamic(
-  () => import("@react-three/fiber").then((mod) => mod.Canvas),
-  { ssr: false }
-);
 
 interface NEOData {
   id: string;
@@ -52,20 +45,17 @@ function FallingMeteorite({
   onImpact: () => void;
   isHazardous: boolean;
 }) {
-  const groupRef = useRef<THREE.Group>(null);
+  const meshRef = useRef<THREE.Mesh>(null);
   const [position, setPosition] = useState<[number, number, number]>([
     0, 20, 0,
   ]);
   const [impacted, setImpacted] = useState(false);
 
-  // Load FBX model
-  const fbx = useFBX("/models/meteorite.fbx");
-
   useFrame(() => {
-    if (!impacted && groupRef.current) {
-      groupRef.current.rotation.x += 0.01;
-      groupRef.current.rotation.y += 0.015;
-      groupRef.current.rotation.z += 0.005;
+    if (!impacted && meshRef.current) {
+      meshRef.current.rotation.x += 0.01;
+      meshRef.current.rotation.y += 0.015;
+      meshRef.current.rotation.z += 0.005;
     }
   });
 
@@ -89,6 +79,7 @@ function FallingMeteorite({
     return () => clearInterval(interval);
   }, [impacted, onImpact]);
 
+  const baseColor = isHazardous ? "#4a2c1a" : "#6b4423";
   const emissiveColor = isHazardous ? "#ff0000" : "#ff6b35";
 
   return (
@@ -99,10 +90,26 @@ function FallingMeteorite({
       attenuation={(t) => t * t * t}
     >
       <group position={position}>
-        {/* 3D Model from FBX */}
-        <group ref={groupRef} scale={scale * 0.01}>
-          <primitive object={fbx.clone()} castShadow />
-        </group>
+        {/* Main meteorite body - irregular shape */}
+        <mesh ref={meshRef} castShadow>
+          <icosahedronGeometry args={[scale, 2]} />
+          <MeshDistortMaterial
+            color={baseColor}
+            emissive={emissiveColor}
+            emissiveIntensity={0.6}
+            metalness={0.8}
+            roughness={0.3}
+            distort={0.4}
+            speed={2}
+            envMapIntensity={1.5}
+          />
+        </mesh>
+
+        {/* Glowing core effect */}
+        <mesh scale={0.7}>
+          <icosahedronGeometry args={[scale, 1]} />
+          <meshBasicMaterial color={emissiveColor} transparent opacity={0.3} />
+        </mesh>
 
         {/* Heat glow around meteorite */}
         <mesh scale={1.3}>
@@ -131,7 +138,7 @@ function Earth() {
   const groupRef = useRef<THREE.Group>(null);
 
   // Load FBX model
-  const fbx = useFBX("/models/planet.fbx");
+  const fbx = useFBX("/Asteroid_2a.fbx");
 
   useFrame(() => {
     if (groupRef.current) {
@@ -625,7 +632,6 @@ function ImpactoContent() {
           </div>
         </div>
       )}
-
     </div>
   );
 }
