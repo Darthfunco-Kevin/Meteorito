@@ -1,8 +1,14 @@
 'use client';
 import { useState, useEffect } from 'react';
 
+type Slide = {
+  image: string;
+  dialog: string;
+  audioUrl?: string;
+};
+
 export default function ImageDialogChanger() {
-  const slides = [
+  const slides: Slide[] = [
     {
       image: "https://media.giphy.com/media/3o7btPCcdNniyf0ArS/giphy.gif",
       dialog: "Narrator: After hard work, the celebration begins to welcome their savior, being a quite repetitive custom for someone who has been saving lives for a long time."
@@ -114,7 +120,7 @@ export default function ImageDialogChanger() {
   const [currentAudio, setCurrentAudio] = useState<HTMLAudioElement | null>(null);
 
   // Función para reproducir audio con Text-to-Speech
-  const speakDialog = (text) => {
+  const speakDialog = (text: string) => {
     // Detener cualquier audio previo
     window.speechSynthesis.cancel();
     
@@ -132,7 +138,7 @@ export default function ImageDialogChanger() {
   };
 
   // Función alternativa para usar archivos de audio personalizados
-  const playCustomAudio = (audioUrl) => {
+  const playCustomAudio = (audioUrl: string) => {
     // Detener audio anterior si existe
     if (currentAudio) {
       currentAudio.pause();

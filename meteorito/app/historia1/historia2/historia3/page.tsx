@@ -1,8 +1,14 @@
 'use client';
 import { useState, useEffect } from 'react';
 
+interface Slide {
+  image: string;
+  dialog: string;
+  audioUrl?: string;
+}
+
 export default function ImageDialogChanger() {
-  const slides = [
+  const slides: Slide[] = [
     {
       image: "https://media.giphy.com/media/3o7btPCcdNniyf0ArS/giphy.gif",
       dialog: "Narrator: Time was running out and the meteor shower seemed to have no end, humanity was slowly beginning to lose hope. Finally, the penetrators were launched in the direction of the IMPACTOR meteorite."
@@ -12,8 +18,7 @@ export default function ImageDialogChanger() {
     },
     {
       image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800",
-      dialog: "Narrator: Although the attack was a success, the meteorite still represents a threat, the planet devourer won again. The crowd begins to despair not knowing what to do.
-
+      dialog: "Narrator: Although the attack was a success, the meteorite still represents a threat, the planet devourer won again. The crowd begins to despair not knowing what to do."
     },
     {
       image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800",
@@ -21,8 +26,7 @@ export default function ImageDialogChanger() {
     },
     {
       image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800",
-      dialog: "Narrator: Hope was destroyed in a matter of seconds, the only thing left is to accept destiny. For our little capybara hero, who was still destroying low-level meteorites, he was not willing to give up.
-
+      dialog: "Narrator: Hope was destroyed in a matter of seconds, the only thing left is to accept destiny. For our little capybara hero, who was still destroying low-level meteorites, he was not willing to give up."
     },
     {
       image: "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=800",
@@ -31,7 +35,6 @@ export default function ImageDialogChanger() {
     {
       image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
       dialog: "Narrator: While the new furry heroes were in charge of destroying the meteorites that would impact planet Earth, the leader capybara goes directly to overthrow once and for all against the IMPACTOR meteorite."
-
     }
   ];
 
@@ -42,7 +45,7 @@ export default function ImageDialogChanger() {
   const [currentAudio, setCurrentAudio] = useState<HTMLAudioElement | null>(null);
 
   // Función para reproducir audio con Text-to-Speech
-  const speakDialog = (text) => {
+  const speakDialog = (text: string) => {
     // Detener cualquier audio previo
     window.speechSynthesis.cancel();
     
@@ -60,7 +63,7 @@ export default function ImageDialogChanger() {
   };
 
   // Función alternativa para usar archivos de audio personalizados
-  const playCustomAudio = (audioUrl) => {
+  const playCustomAudio = (audioUrl: string) => {
     // Detener audio anterior si existe
     if (currentAudio) {
       currentAudio.pause();
@@ -145,7 +148,7 @@ export default function ImageDialogChanger() {
     if (currentAudio) {
       currentAudio.pause();
     }
-    window.location.href = "https://www.ejemplo.com/siguiente-historia";
+    window.location.href = "/games/game2";
   };
 
   return (
