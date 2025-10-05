@@ -55,17 +55,17 @@ const MeteoriteInfo = memo(function MeteoriteInfo({ meteorite }: MeteoriteInfoPr
   // Memoize risk level
   const risk = useMemo(() => {
     if (meteorite.is_potentially_hazardous_asteroid) {
-      return { level: "ALTO", color: "text-red-400", bgColor: "bg-red-500/20" };
+      return { level: "HIGH", color: "text-red-400", bgColor: "bg-red-500/20" };
     } else if (avgDiameter > 1) {
-      return { level: "MEDIO", color: "text-yellow-400", bgColor: "bg-yellow-500/20" };
+      return { level: "MEDIUM", color: "text-yellow-400", bgColor: "bg-yellow-500/20" };
     } else {
-      return { level: "BAJO", color: "text-green-400", bgColor: "bg-green-500/20" };
+      return { level: "LOW", color: "text-green-400", bgColor: "bg-green-500/20" };
     }
   }, [meteorite.is_potentially_hazardous_asteroid, avgDiameter]);
 
   // Memoize formatted date
   const formattedDate = useMemo(() =>
-    new Date(latestApproach.close_approach_date).toLocaleDateString('es-ES', {
+    new Date(latestApproach.close_approach_date).toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
       day: 'numeric'
@@ -79,7 +79,7 @@ const MeteoriteInfo = memo(function MeteoriteInfo({ meteorite }: MeteoriteInfoPr
       <div className="flex items-center justify-between p-5 border-b-2 border-cyan-500/30 bg-gradient-to-r from-cyan-900/30 to-blue-900/30">
         <h2 className="text-xl font-bold text-white flex items-center gap-2">
           <Info className="w-6 h-6 text-cyan-400 drop-shadow-lg" />
-          <span className="drop-shadow-lg">Información</span>
+          <span className="drop-shadow-lg">Information</span>
         </h2>
         <button
           onClick={() => setIsExpanded(!isExpanded)}
@@ -104,7 +104,7 @@ const MeteoriteInfo = memo(function MeteoriteInfo({ meteorite }: MeteoriteInfoPr
           {meteorite.is_potentially_hazardous_asteroid && (
             <div className="flex items-center gap-2 p-3 bg-red-500/30 border-2 border-red-500/50 rounded-xl shadow-lg shadow-red-500/20">
               <AlertTriangle className="w-5 h-5 text-red-400 animate-pulse" />
-              <span className="text-red-300 text-sm font-bold">⚠️ Potencialmente Peligroso</span>
+              <span className="text-red-300 text-sm font-bold">⚠️ Potentially Dangerous</span>
             </div>
           )}
 
@@ -113,14 +113,14 @@ const MeteoriteInfo = memo(function MeteoriteInfo({ meteorite }: MeteoriteInfoPr
             <div className="flex items-center gap-3 p-3 bg-gradient-to-br from-cyan-900/30 to-blue-900/30 rounded-xl border border-cyan-500/30 shadow-lg">
               <Ruler className="w-5 h-5 text-cyan-400 flex-shrink-0" />
               <div>
-                <div className="text-xs text-gray-400 font-semibold">Diámetro</div>
+                <div className="text-xs text-gray-400 font-semibold">Diameter</div>
                 <div className="text-base font-bold text-white">{avgDiameter.toFixed(2)} km</div>
               </div>
             </div>
             <div className="flex items-center gap-3 p-3 bg-gradient-to-br from-cyan-900/30 to-blue-900/30 rounded-xl border border-cyan-500/30 shadow-lg">
               <Gauge className="w-5 h-5 text-cyan-400 flex-shrink-0" />
               <div>
-                <div className="text-xs text-gray-400 font-semibold">Magnitud</div>
+                <div className="text-xs text-gray-400 font-semibold">Magnitude</div>
                 <div className="text-base font-bold text-white">{meteorite.absolute_magnitude_h.toFixed(1)}</div>
               </div>
             </div>
@@ -134,18 +134,18 @@ const MeteoriteInfo = memo(function MeteoriteInfo({ meteorite }: MeteoriteInfoPr
           <div className="space-y-4 pt-5">
             {/* Detailed Stats */}
             <div>
-              <h4 className="text-sm font-semibold text-gray-300 mb-2">Estadísticas Detalladas</h4>
+              <h4 className="text-sm font-semibold text-gray-300 mb-2">Detailed Statistics</h4>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-gray-400">Diámetro mínimo:</span>
+                  <span className="text-gray-400">Minimum diameter:</span>
                   <span className="text-white">{meteorite.estimated_diameter.kilometers.estimated_diameter_min.toFixed(2)} km</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-400">Diámetro máximo:</span>
+                  <span className="text-gray-400">Maximum diameter:</span>
                   <span className="text-white">{meteorite.estimated_diameter.kilometers.estimated_diameter_max.toFixed(2)} km</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-400">ID de referencia:</span>
+                  <span className="text-gray-400">Reference ID:</span>
                   <span className="text-white font-mono text-xs">{meteorite.id}</span>
                 </div>
               </div>
@@ -156,23 +156,23 @@ const MeteoriteInfo = memo(function MeteoriteInfo({ meteorite }: MeteoriteInfoPr
               <div>
                 <h4 className="text-sm font-semibold text-gray-300 mb-2 flex items-center gap-2">
                   <Calendar className="w-4 h-4" />
-                  Último Acercamiento
+                  Latest Approach
                 </h4>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-gray-400">Fecha:</span>
+                    <span className="text-gray-400">Date:</span>
                     <span className="text-white">{formattedDate}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-400">Velocidad:</span>
+                    <span className="text-gray-400">Velocity:</span>
                     <span className="text-white">{velocity.toFixed(2)} km/s</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-400">Distancia de fallo:</span>
+                    <span className="text-gray-400">Miss distance:</span>
                     <span className="text-white">{(missDistance / 1000).toFixed(2)} km</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-gray-400">Distancia astronómica:</span>
+                    <span className="text-gray-400">Astronomical distance:</span>
                     <span className="text-white">{parseFloat(latestApproach.miss_distance.astronomical).toFixed(6)} AU</span>
                   </div>
                 </div>
@@ -181,21 +181,21 @@ const MeteoriteInfo = memo(function MeteoriteInfo({ meteorite }: MeteoriteInfoPr
 
             {/* Size Comparison */}
             <div>
-              <h4 className="text-sm font-semibold text-gray-300 mb-2">Comparación de Tamaño</h4>
+              <h4 className="text-sm font-semibold text-gray-300 mb-2">Size Comparison</h4>
               <div className="space-y-1 text-sm">
                 {avgDiameter < 0.1 && (
-                  <div className="text-gray-400">• Pequeño como una casa</div>
+                  <div className="text-gray-400">• Small as a house</div>
                 )}
                 {avgDiameter >= 0.1 && avgDiameter < 1 && (
-                  <div className="text-gray-400">• Tamaño de un edificio</div>
+                  <div className="text-gray-400">• Size of a building</div>
                 )}
                 {avgDiameter >= 1 && avgDiameter < 10 && (
-                  <div className="text-gray-400">• Tamaño de una montaña</div>
+                  <div className="text-gray-400">• Size of a mountain</div>
                 )}
                 {avgDiameter >= 10 && (
-                  <div className="text-gray-400">• Tamaño de una ciudad</div>
+                  <div className="text-gray-400">• Size of a city</div>
                 )}
-                <div className="text-gray-400">• Velocidad: {velocity.toFixed(0)} km/s ({Math.round(velocity * 3.6)} km/h)</div>
+                <div className="text-gray-400">• Velocity: {velocity.toFixed(0)} km/s ({Math.round(velocity * 3.6)} km/h)</div>
               </div>
             </div>
 
@@ -208,7 +208,7 @@ const MeteoriteInfo = memo(function MeteoriteInfo({ meteorite }: MeteoriteInfoPr
                 className="inline-flex items-center gap-2 px-3 py-2 bg-purple-600 hover:bg-purple-700 text-white text-sm rounded-lg transition-colors"
               >
                 <Info className="w-4 h-4" />
-                Ver en NASA JPL
+                View on NASA JPL
               </a>
             </div>
           </div>
