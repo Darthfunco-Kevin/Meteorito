@@ -10,66 +10,84 @@ export default function ImageDialogChanger() {
 
   const slides: Slide[] = [
     {
-      image: "https://media.giphy.com/media/3o7btPCcdNniyf0ArS/giphy.gif",
+      image: "Lineal/H1.png",
       dialog:
-        "La historia comienza en algún lugar del espacio, específicamente en la galaxia NGC 6744.",
+        "Narrator: The story begins somewhere in space, specifically in the galaxy NGC 6744.",
       //audioUrl:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
       // Opcional: puedes agregar una URL de audio personalizado
       // audioUrl: "/audios/escena1.mp3"
     },
     {
       image:
-        "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800",
+        "Lineal/H2.png",
       dialog:
-        "Una civilización festejaba sus costumbres, sin saber que próximamente llegaría una inminente lluvia de meteoritos al planeta. ",
+        "Narrator: A civilization was celebrating its traditions, unaware that a catastrophic meteor shower was soon to strike their planet. ",
+    },
+    {
+      image:
+        "Lineal/H3.png",
+      dialog:
+        "Narrator: It was too late when they realized the dreadful truth. Without wasting another second, they tried to find a possible solution — but their greatest fear was the meteor known as IMPACTOR.",
     },
     {
       image:
         "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800",
       dialog:
-        "Fue demasiado tarde, cuando se percataron de la desgarradora noticia, sin perder más el tiempo comenzaron a encontrar una posible solución, pero su preocupación era en contra del meteorito denominado IMPACTOR.",
-    },
-    {
-      image:
-        "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800",
-      dialog:
-        "Llega el día donde se definiría la continuidad de la civilización. A pesar de los esfuerzos para desviarlo, no fue lo suficiente.",
+        "Narrator: The day came — the day that would determine the survival of their civilization. Despite their efforts to divert it, it wasn’t enough.",
     },
     {
       image:
         "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=800",
       dialog:
-        "Su civilización, sus antepasados, su historia, su cultura… todo desapareció de la faz del universo.",
+        "Narrator: Their civilization, their ancestors, their history, their culture… all vanished from the face of the universe.",
     },
     {
       image:
         "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
       dialog:
-        "Finalmente, descubrimos el océano infinito. ¡El destino alcanzado!",
+        "Narrator: Time flowed like a single drop of water. That simple story slowly faded from memory — forgotten by the universe, as new generations focused only on their own struggles, ignoring the lessons of the past.",
     },
     {
       image:
         "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
       dialog:
-        "Finalmente, descubrimos el océano infinito. ¡El destino alcanzado!",
+        "Narrator: However, one capybara, upon learning of this tragedy, reflected deeply on the consequences for those without the means to defend themselves. His civilization, unlike others, had the technology and strength to make a difference.",
     },
     {
       image:
         "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
       dialog:
-        "Finalmente, descubrimos el océano infinito. ¡El destino alcanzado!",
+        "Narrator: It was a mission that could cost him his life. Yet, the capybara was ready to follow his destiny, his purpose — his reason for being — even though his family opposed his decision.",
     },
     {
       image:
         "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
       dialog:
-        "Finalmente, descubrimos el océano infinito. ¡El destino alcanzado!",
+        "Narrator: It was hard to leave behind everyone he loved. So, he left a farewell letter, promising to return one day.",
     },
     {
       image:
         "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
       dialog:
-        "Finalmente, descubrimos el océano infinito. ¡El destino alcanzado!",
+        "Capybara: If the universe forgets, I will remember. I’ll return when the sky and space are safe again",
+    },
+    {
+      image:
+        "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
+      dialog:
+        "Capybara: Hold on… I’ll be there in a few minutes.",
+    },
+    {
+      image:
+        "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
+      dialog:
+        "Capybara: Scientist: I thought your existence was just a rumor, sir…",
+    },
+     {
+      image:
+        "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
+      dialog:
+        "Capybara: Capybara forever!",
     },
   ];
 
@@ -207,22 +225,58 @@ export default function ImageDialogChanger() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-600 via-purple-700 to-purple-900 flex items-center justify-center p-5">
+    <div className="min-h-screen relative overflow-hidden flex items-center justify-center p-5">
       <style>{`
-        @keyframes glow {
+        @keyframes starfield {
+          0% { transform: translateY(0) translateX(0); }
+          100% { transform: translateY(100vh) translateX(10vw); }
+        }
+        @keyframes twinkle {
+          0%, 100% { opacity: 0.3; }
+          50% { opacity: 1; }
+        }
+        @keyframes nebula-float {
+          0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.3; }
+          50% { transform: translate(50px, 30px) scale(1.1); opacity: 0.5; }
+        }
+        @keyframes cosmic-glow {
           0%, 100% {
-            box-shadow: 0 0 40px rgba(102, 126, 234, 0.4),
-                        0 0 80px rgba(118, 75, 162, 0.3),
-                        0 0 120px rgba(102, 126, 234, 0.2);
+            box-shadow: 0 0 40px rgba(147, 51, 234, 0.4),
+                        0 0 80px rgba(79, 70, 229, 0.3),
+                        0 0 120px rgba(59, 130, 246, 0.2),
+                        inset 0 0 60px rgba(139, 92, 246, 0.1);
           }
           50% {
-            box-shadow: 0 0 60px rgba(102, 126, 234, 0.6),
-                        0 0 100px rgba(118, 75, 162, 0.4),
-                        0 0 140px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 0 60px rgba(147, 51, 234, 0.6),
+                        0 0 100px rgba(79, 70, 229, 0.5),
+                        0 0 140px rgba(59, 130, 246, 0.4),
+                        inset 0 0 80px rgba(139, 92, 246, 0.2);
           }
         }
+        .space-background {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(to bottom, #0a0118, #1a0b2e, #2d1b4e, #1a0b2e, #0a0118);
+        }
+        .stars {
+          position: absolute;
+          width: 3px;
+          height: 3px;
+          background: white;
+          border-radius: 50%;
+          animation: starfield linear infinite, twinkle ease-in-out infinite;
+          box-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
+        }
+        .nebula {
+          position: absolute;
+          border-radius: 50%;
+          filter: blur(60px);
+          animation: nebula-float ease-in-out infinite;
+        }
         .glow-container {
-          animation: glow 3s ease-in-out infinite;
+          animation: cosmic-glow 4s ease-in-out infinite;
+          position: relative;
+          z-index: 10;
         }
         @keyframes pulse-wave {
           0%, 100% { transform: scale(1); opacity: 0.8; }
@@ -233,11 +287,57 @@ export default function ImageDialogChanger() {
         }
       `}</style>
 
+      {/* Fondo espacial */}
+      <div className="space-background"></div>
+
+      {/* Nebulosas */}
+      <div className="nebula" style={{
+        top: '10%',
+        left: '15%',
+        width: '400px',
+        height: '400px',
+        background: 'radial-gradient(circle, rgba(147, 51, 234, 0.4), transparent)',
+        animationDuration: '8s'
+      }}></div>
+      <div className="nebula" style={{
+        top: '60%',
+        right: '10%',
+        width: '300px',
+        height: '300px',
+        background: 'radial-gradient(circle, rgba(79, 70, 229, 0.3), transparent)',
+        animationDuration: '10s',
+        animationDelay: '2s'
+      }}></div>
+      <div className="nebula" style={{
+        bottom: '20%',
+        left: '30%',
+        width: '350px',
+        height: '350px',
+        background: 'radial-gradient(circle, rgba(59, 130, 246, 0.2), transparent)',
+        animationDuration: '12s',
+        animationDelay: '4s'
+      }}></div>
+
+      {/* Estrellas dinámicas */}
+      {[...Array(50)].map((_, i) => (
+        <div
+          key={i}
+          className="stars"
+          style={{
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+            animationDuration: `${15 + Math.random() * 20}s, ${2 + Math.random() * 3}s`,
+            animationDelay: `${Math.random() * 5}s, ${Math.random() * 2}s`,
+            opacity: Math.random() * 0.7 + 0.3
+          }}
+        ></div>
+      ))}
+
       <div className="glow-container bg-white rounded-3xl overflow-hidden max-w-2xl w-full border-4 border-purple-400/50">
         {/* Indicación superior */}
         <div className="bg-gradient-to-r from-purple-600 to-purple-800 text-white py-4 px-6 text-center font-semibold text-lg tracking-wide flex items-center justify-between">
           <div className="flex-1 text-center">
-            👆 Haz clic en la imagen para continuar
+            👆 Click on the image to continue
           </div>
 
           {/* Control de audio automático */}
@@ -262,7 +362,7 @@ export default function ImageDialogChanger() {
           <img
             src={slides[currentIndex].image}
             alt={`Escena ${currentIndex + 1}`}
-            className={`w-full h-full object-cover transition-opacity duration-300 ${
+            className={`w-full h-full object-contain transition-opacity duration-300 ${
               isTransitioning ? "opacity-0" : "opacity-100"
             }`}
           />
@@ -271,7 +371,7 @@ export default function ImageDialogChanger() {
           {isPlaying && (
             <div className="absolute top-4 right-4 bg-purple-600 text-white px-4 py-2 rounded-full flex items-center gap-2 audio-playing">
               <span className="text-xl">🔊</span>
-              <span className="text-sm font-medium">Reproduciendo...</span>
+              <span className="text-sm font-medium">Playing...</span>
             </div>
           )}
         </div>
@@ -300,20 +400,19 @@ export default function ImageDialogChanger() {
           {/* Info y botón */}
           <div className="flex items-center justify-between mt-4 p-4 bg-white rounded-xl">
             <div className="text-sm text-gray-600">
-              <strong>Escena:</strong> {currentIndex + 1} de {slides.length}
+              <strong>Scene:</strong> {currentIndex + 1} de {slides.length}
             </div>
             <button
               onClick={continueToNext}
               className="bg-purple-600 hover:bg-purple-700 text-white px-5 py-2.5 rounded-lg font-medium transition-all duration-300 active:scale-95"
             >
-              Continuar →
+              Continue →
             </button>
           </div>
 
           {/* Instrucción */}
           <div className="text-center mt-3 text-xs text-gray-400">
-            💡 Haz clic en la imagen para avanzar o usa el botón ▶️ para
-            escuchar
+            💡Click on the image to advance or use the ▶️ button to listen.
           </div>
         </div>
       </div>
