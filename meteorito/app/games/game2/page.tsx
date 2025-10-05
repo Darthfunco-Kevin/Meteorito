@@ -1,6 +1,7 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
 import * as PIXI from 'pixi.js';
+import { useRouter } from 'next/navigation';
 
 // ====== CONFIGURACIÓN DE DISEÑO (PERSONALIZABLE) ======
 const DESIGN_CONFIG = {
@@ -35,6 +36,7 @@ const DESIGN_CONFIG = {
 // ====================================================
 
 export default function DestructionGame() {
+  const router = useRouter();
   const canvasRef = useRef<HTMLDivElement>(null);
   const appRef = useRef<PIXI.Application | null>(null);
   const [clicks, setClicks] = useState(0);
@@ -45,6 +47,7 @@ export default function DestructionGame() {
   const clicksRef = useRef(0);
   const gameStateRef = useRef('playing');
   const gameStartedRef = useRef(false);
+  const gameOverRef = useRef(false);
 
   useEffect(() => {
     if (!canvasRef.current || appRef.current) return;
@@ -365,6 +368,19 @@ export default function DestructionGame() {
     setTimeLeft(45);
   };
 
+  const WinGame = () => {
+    // Limpiar el juego antes de navegar
+    gameOverRef.current = true;
+    if (appRef.current) {
+      if ((appRef.current as any).meteorInterval) {
+        clearInterval((appRef.current as any).meteorInterval);
+      }
+      appRef.current.ticker.stop();
+    }
+    router.push('/historia1/historia2');
+  }
+
+
   const resetGame = () => {
     setGameStarted(false);
     setGameState('playing');
@@ -417,7 +433,7 @@ export default function DestructionGame() {
       {gameState === 'won' && (
         <div className="text-center">
           <button
-            onClick={resetGame}
+            onClick={WinGame}
             className="px-10 py-5 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white text-2xl font-bold rounded-xl shadow-lg transform hover:scale-105 transition-all mb-4 border-2 border-white animate-pulse"
           >
             ✅ FINAL BUENO

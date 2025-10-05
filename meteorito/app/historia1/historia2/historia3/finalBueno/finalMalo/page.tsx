@@ -1,100 +1,95 @@
-"use client";
-import { useState, useEffect } from "react";
-
-interface Slide {
-  image: string;
-  dialog: string;
-  audioUrl?: string;
-}
+'use client';
+import { useState, useEffect } from 'react';
 
 export default function ImageDialogChanger() {
-  const slides: Slide[] = [
+  const slides = [
     {
       image: "https://media.giphy.com/media/3o7btPCcdNniyf0ArS/giphy.gif",
-      dialog:
-        "Narrator: Time was running out and the meteor shower seemed to have no end, humanity was slowly beginning to lose hope. Finally, the penetrators were launched in the direction of the IMPACTOR meteorite.",
-      //audioUrl:"https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
-      // Opcional: puedes agregar una URL de audio personalizado
-      // audioUrl: "/audios/escena1.mp3"
+      dialog: "Narrator: The meteorite increasingly dictated the end for planet Earth, fear progressed and the capybaras remained firm and united. Each shot at the meteorite had a story, a value. News always happens and is reported."
+
     },
     {
-      image:
-        "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800",
-      dialog:
-        "Narrator: Although the attack was a success, the meteorite still represents a threat, the planet devourer won again. The crowd begins to despair not knowing what to do.",
+      image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800",
+      dialog: "Scientist: Don't shoot, you're only regenerating the meteorite! The only salvation that exists is to go to space! The spaceship is still ready. In a few seconds I will launch a nuclear missile to weaken it."
+
     },
     {
-      image:
-        "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800",
-      dialog:
-        "Scientist: Capybara... can you hear me... there's nothing we can do, I want to thank you for your help, little furry friend!",
+      image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800",
+      dialog: "Narrator: An unworthy ending for someone who tried to give it all, who watched as his companions escaped, while trying to find a solution. The nervous capybaras didn't know what to do, each ship had 4 explosive missiles from other galaxies, although the probability of success would increase, planet Earth would not be the same again for a long time."
     },
     {
-      image:
-        "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800",
-      dialog:
-        "Narrator: Hope was destroyed in a matter of seconds, the only thing left is to accept destiny. For our little capybara hero, who was still destroying low-level meteorites, he was not willing to give up.",
+      image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800",
+      dialog: "Capybara: Long live you and everyone"
     },
     {
-      image:
-        "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=800",
-      dialog: "Capybara: Let's get them!",
+      image: "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=800",
+      dialog: "Narrator: Sometimes those we consider heroes can make critical decisions, regardless of the lives they carry with them on their journey. One life or millions of lives."
     },
     {
-      image:
-        "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
-      dialog:
-        "Narrator: While the new furry heroes were in charge of destroying the meteorites that would impact planet Earth, the leader capybara goes directly to overthrow once and for all against the IMPACTOR meteorite.",
+      image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
+      dialog: "Narrator: Time passes, one by one they begin to leave, unable to bear that burden that always carries with them. Their legacy will be remembered as the heroes of the universe, although their conscience will not allow them to be recognized."
     },
+    {
+      image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
+      dialog: "Narrator: The capybara who began with the hope of saving lives from meteorites, is now shattered, being unrecognizable for his great trajectory, not saving his planet led him to seek perfection, but by failing he only proved to be useless."
+    },
+    {
+      image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
+      dialog: "Capybara: Capybara... the planet destroyer"
+    },
+    {
+      image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
+      dialog: "Narrator: Capybara FOREVER"
+    }
+
+    
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [autoPlay, setAutoPlay] = useState(true);
-  const [currentAudio, setCurrentAudio] = useState<HTMLAudioElement | null>(
-    null
-  );
+  const [currentAudio, setCurrentAudio] = useState<HTMLAudioElement | null>(null);
 
   // Función para reproducir audio con Text-to-Speech
-  const speakDialog = (text: string) => {
+  const speakDialog = (text) => {
     // Detener cualquier audio previo
     window.speechSynthesis.cancel();
-
+    
     const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = "es-ES"; // Español
+    utterance.lang = 'es-ES'; // Español
     utterance.rate = 0.9; // Velocidad (0.1 a 10)
     utterance.pitch = 1; // Tono (0 a 2)
     utterance.volume = 1; // Volumen (0 a 1)
-
+    
     utterance.onstart = () => setIsPlaying(true);
     utterance.onend = () => setIsPlaying(false);
     utterance.onerror = () => setIsPlaying(false);
-
+    
     window.speechSynthesis.speak(utterance);
   };
 
   // Función alternativa para usar archivos de audio personalizados
-  const playCustomAudio = (audioUrl: string) => {
+  const playCustomAudio = (audioUrl) => {
     // Detener audio anterior si existe
     if (currentAudio) {
       currentAudio.pause();
       currentAudio.currentTime = 0;
     }
-
+    
     const audio = new Audio(audioUrl);
     setCurrentAudio(audio);
-
+    
     audio.onplay = () => setIsPlaying(true);
     audio.onended = () => setIsPlaying(false);
     audio.onerror = (e) => {
-      console.error("Error al cargar el audio:", e);
-      console.log("Intentando con:", audioUrl);
+      console.error('Error al cargar el audio:', e);
+      console.log('Intentando con:', audioUrl);
       setIsPlaying(false);
     };
-
-    audio.play().catch((err) => {
-      console.error("Error al reproducir:", err);
+    
+    audio.play().catch(err => {
+      console.error('Error al reproducir:', err);
       setIsPlaying(false);
     });
   };
@@ -103,7 +98,7 @@ export default function ImageDialogChanger() {
   useEffect(() => {
     if (autoPlay) {
       const currentSlide = slides[currentIndex];
-
+      
       // Si hay audioUrl personalizado, usarlo; si no, usar text-to-speech
       if (currentSlide.audioUrl) {
         playCustomAudio(currentSlide.audioUrl);
@@ -115,18 +110,18 @@ export default function ImageDialogChanger() {
 
   const nextSlide = () => {
     setIsTransitioning(true);
-
+    
     // Detener text-to-speech
     window.speechSynthesis.cancel();
-
+    
     // Detener audio personalizado
     if (currentAudio) {
       currentAudio.pause();
       currentAudio.currentTime = 0;
     }
-
+    
     setIsPlaying(false);
-
+    
     setTimeout(() => {
       setCurrentIndex((prevIndex) => {
         if (prevIndex >= slides.length - 1) {
@@ -160,7 +155,7 @@ export default function ImageDialogChanger() {
     if (currentAudio) {
       currentAudio.pause();
     }
-    window.location.href = "/games/game2";
+    window.location.href = "https://www.ejemplo.com/siguiente-historia";
   };
 
   return (
@@ -189,30 +184,26 @@ export default function ImageDialogChanger() {
           animation: pulse-wave 1s ease-in-out infinite;
         }
       `}</style>
-
+      
       <div className="glow-container bg-white rounded-3xl overflow-hidden max-w-2xl w-full border-4 border-purple-400/50">
         {/* Indicación superior */}
         <div className="bg-gradient-to-r from-purple-600 to-purple-800 text-white py-4 px-6 text-center font-semibold text-lg tracking-wide flex items-center justify-between">
           <div className="flex-1 text-center">
             👆 Haz clic en la imagen para continuar
           </div>
-
+          
           {/* Control de audio automático */}
           <button
             onClick={() => setAutoPlay(!autoPlay)}
             className="ml-4 px-3 py-1 bg-white/20 hover:bg-white/30 rounded-lg text-sm transition-all"
-            title={
-              autoPlay
-                ? "Desactivar audio automático"
-                : "Activar audio automático"
-            }
+            title={autoPlay ? "Desactivar audio automático" : "Activar audio automático"}
           >
             {autoPlay ? "🔊 Auto" : "🔇 Manual"}
           </button>
         </div>
 
         {/* Contenedor de imagen */}
-        <div
+        <div 
           onClick={nextSlide}
           className="w-full h-96 bg-gray-100 flex items-center justify-center cursor-pointer relative overflow-hidden active:scale-[0.98] transition-transform duration-100"
         >
@@ -220,10 +211,10 @@ export default function ImageDialogChanger() {
             src={slides[currentIndex].image}
             alt={`Escena ${currentIndex + 1}`}
             className={`w-full h-full object-cover transition-opacity duration-300 ${
-              isTransitioning ? "opacity-0" : "opacity-100"
+              isTransitioning ? 'opacity-0' : 'opacity-100'
             }`}
           />
-
+          
           {/* Indicador de audio reproduciéndose */}
           {isPlaying && (
             <div className="absolute top-4 right-4 bg-purple-600 text-white px-4 py-2 rounded-full flex items-center gap-2 audio-playing">
@@ -239,7 +230,7 @@ export default function ImageDialogChanger() {
             <p className="text-lg leading-relaxed text-gray-800 flex-1">
               {slides[currentIndex].dialog}
             </p>
-
+            
             {/* Botón para reproducir/pausar audio manualmente */}
             <button
               onClick={toggleAudio}
@@ -269,8 +260,7 @@ export default function ImageDialogChanger() {
 
           {/* Instrucción */}
           <div className="text-center mt-3 text-xs text-gray-400">
-            💡 Haz clic en la imagen para avanzar o usa el botón ▶️ para
-            escuchar
+            💡 Haz clic en la imagen para avanzar o usa el botón ▶️ para escuchar
           </div>
         </div>
       </div>

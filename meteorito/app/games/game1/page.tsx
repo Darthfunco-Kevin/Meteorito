@@ -387,7 +387,7 @@ export default function MeteorGame() {
   };
 
   const WinGame = () =>{
-    router.push('/games/game1');
+    router.push('/historia1/historia2/historia3');
   }
 
   const restartGame = () => {
