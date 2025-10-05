@@ -89,7 +89,7 @@ const InteractiveMeteorite = memo(function InteractiveMeteorite({
           </div>
           {neoData.is_potentially_hazardous_asteroid && (
             <div className="text-red-400 font-bold text-xs drop-shadow-lg animate-pulse">
-              ⚠️ PELIGROSO
+              ⚠️ DANGEROUS
             </div>
           )}
         </div>

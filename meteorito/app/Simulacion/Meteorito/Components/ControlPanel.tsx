@@ -95,7 +95,7 @@ const ControlPanel = memo(function ControlPanel({
       <div className="flex items-center justify-between p-5 border-b-2 border-purple-500/30 bg-gradient-to-r from-purple-900/30 to-blue-900/30">
         <h2 className="text-xl font-bold text-white flex items-center gap-2">
           <Settings className="w-6 h-6 text-purple-400 drop-shadow-lg" />
-          <span className="drop-shadow-lg">Panel de Control</span>
+          <span className="drop-shadow-lg">Control Panel</span>
         </h2>
         <button
           onClick={() => setIsExpanded(!isExpanded)}
@@ -117,7 +117,7 @@ const ControlPanel = memo(function ControlPanel({
                   : 'text-gray-300 hover:text-white hover:bg-slate-700/50'
               }`}
             >
-              🌠 Meteoritos
+              🌠 Meteorites
             </button>
             <button
               onClick={() => setActiveTab('appearance')}
@@ -147,9 +147,9 @@ const ControlPanel = memo(function ControlPanel({
           {activeTab === 'meteorites' && (
             <div className="space-y-4">
               <div className="flex items-center justify-between mb-3">
-                <h3 className="text-lg font-semibold text-white">Seleccionar Meteorito</h3>
+                <h3 className="text-lg font-semibold text-white">Select Meteorite</h3>
                 <span className="text-xs text-gray-400 bg-slate-700/50 px-2 py-1 rounded">
-                  {neoData.length} disponibles
+                  {neoData.length} available
                 </span>
               </div>
 
@@ -188,11 +188,11 @@ const ControlPanel = memo(function ControlPanel({
                                 ? 'bg-red-500/20 text-red-300 border border-red-500/50'
                                 : 'bg-green-500/20 text-green-300 border border-green-500/50'
                             }`}>
-                              {meteorite.is_potentially_hazardous_asteroid ? 'Peligroso' : 'Seguro'}
+                              {meteorite.is_potentially_hazardous_asteroid ? 'Dangerous' : 'Safe'}
                             </span>
                             {avgDiameter > 1 && (
                               <span className="px-2 py-0.5 rounded-full text-xs font-semibold bg-orange-500/20 text-orange-300 border border-orange-500/50">
-                                Grande
+                                Large
                               </span>
                             )}
                           </div>
@@ -205,30 +205,30 @@ const ControlPanel = memo(function ControlPanel({
                       {/* Stats Grid */}
                       <div className="grid grid-cols-2 gap-2 mt-3">
                         <div className="bg-slate-800/60 rounded-lg p-2 border border-slate-700/50">
-                          <div className="text-xs text-gray-400 mb-0.5">Diámetro</div>
+                          <div className="text-xs text-gray-400 mb-0.5">Diameter</div>
                           <div className="text-sm font-bold text-white">
                             {avgDiameter.toFixed(3)} km
                           </div>
                         </div>
 
                         <div className="bg-slate-800/60 rounded-lg p-2 border border-slate-700/50">
-                          <div className="text-xs text-gray-400 mb-0.5">Magnitud</div>
+                          <div className="text-xs text-gray-400 mb-0.5">Magnitude</div>
                           <div className="text-sm font-bold text-white">
                             {meteorite.absolute_magnitude_h.toFixed(1)}
                           </div>
                         </div>
 
                         <div className="bg-slate-800/60 rounded-lg p-2 border border-slate-700/50">
-                          <div className="text-xs text-gray-400 mb-0.5">Velocidad</div>
+                          <div className="text-xs text-gray-400 mb-0.5">Velocity</div>
                           <div className="text-sm font-bold text-cyan-400">
                             {velocity.toFixed(1)} km/s
                           </div>
                         </div>
 
                         <div className="bg-slate-800/60 rounded-lg p-2 border border-slate-700/50">
-                          <div className="text-xs text-gray-400 mb-0.5">Fecha</div>
+                          <div className="text-xs text-gray-400 mb-0.5">Date</div>
                           <div className="text-xs font-semibold text-white">
-                            {new Date(approachDate).toLocaleDateString('es-ES', {
+                            {new Date(approachDate).toLocaleDateString('en-US', {
                               day: '2-digit',
                               month: 'short'
                             })}
@@ -247,7 +247,7 @@ const ControlPanel = memo(function ControlPanel({
                       {selectedMeteorite?.id === meteorite.id && (
                         <div className="mt-3 flex items-center justify-center gap-2 text-xs text-purple-400 font-semibold">
                           <div className="w-2 h-2 bg-purple-400 rounded-full animate-pulse"></div>
-                          Seleccionado
+                          Selected
                         </div>
                       )}
                     </button>
@@ -260,12 +260,12 @@ const ControlPanel = memo(function ControlPanel({
           {/* Appearance Tab */}
           {activeTab === 'appearance' && (
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-white mb-3">Apariencia</h3>
-              
+              <h3 className="text-lg font-semibold text-white mb-3">Appearance</h3>
+
               {/* Scale */}
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Escala: {scale.toFixed(2)}x
+                  Scale: {scale.toFixed(2)}x
                 </label>
                 <input
                   type="range"
@@ -281,7 +281,7 @@ const ControlPanel = memo(function ControlPanel({
               {/* Color */}
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Color Base
+                  Base Color
                 </label>
                 <div className="flex items-center gap-3">
                   <input
@@ -303,7 +303,7 @@ const ControlPanel = memo(function ControlPanel({
               {/* Emissive Color */}
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Color de Brillo
+                  Glow Color
                 </label>
                 <div className="flex items-center gap-3">
                   <input
@@ -327,12 +327,12 @@ const ControlPanel = memo(function ControlPanel({
           {/* Materials Tab */}
           {activeTab === 'materials' && (
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-white mb-3">Propiedades del Material</h3>
-              
+              <h3 className="text-lg font-semibold text-white mb-3">Material Properties</h3>
+
               {/* Metalness */}
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Metalicidad: {metalness.toFixed(2)}
+                  Metalness: {metalness.toFixed(2)}
                 </label>
                 <input
                   type="range"
@@ -348,7 +348,7 @@ const ControlPanel = memo(function ControlPanel({
               {/* Roughness */}
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Rugosidad: {roughness.toFixed(2)}
+                  Roughness: {roughness.toFixed(2)}
                 </label>
                 <input
                   type="range"
@@ -364,7 +364,7 @@ const ControlPanel = memo(function ControlPanel({
               {/* Emissive Intensity */}
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Intensidad de Brillo: {emissiveIntensity.toFixed(2)}
+                  Glow Intensity: {emissiveIntensity.toFixed(2)}
                 </label>
                 <input
                   type="range"
@@ -387,19 +387,19 @@ const ControlPanel = memo(function ControlPanel({
                     onClick={handleMetallicPreset}
                     className="px-3 py-2 bg-slate-700 hover:bg-slate-600 rounded text-white text-sm transition-colors"
                   >
-                    Metálico
+                    Metallic
                   </button>
                   <button
                     onClick={handleRockyPreset}
                     className="px-3 py-2 bg-slate-700 hover:bg-slate-600 rounded text-white text-sm transition-colors"
                   >
-                    Rocoso
+                    Rocky
                   </button>
                   <button
                     onClick={handleMoltenPreset}
                     className="px-3 py-2 bg-slate-700 hover:bg-slate-600 rounded text-white text-sm transition-colors"
                   >
-                    Fundido
+                    Molten
                   </button>
                   <button
                     onClick={handleNaturalPreset}
