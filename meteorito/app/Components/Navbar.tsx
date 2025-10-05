@@ -40,6 +40,10 @@ export default function Navbar() {
     if (path === "/Informacion") {
       return pathname === "/Informacion";
     }
+    // Checks for Viaje route
+    if (path === "/Viaje") {
+      return pathname === "/Viaje";
+    }
     // Checks for About Us route
     if (path === "/Infometeorito") {
       return pathname === "/Infometeorito";
@@ -176,6 +180,26 @@ export default function Navbar() {
               </Link>
 
               <Link
+                href="/Viaje"
+                className={`px-4 py-2 text-sm font-semibold transition-all duration-300 relative group rounded-xl ${
+                  isActive("/Viaje")
+                    ? "text-white bg-gradient-to-r from-indigo-600/30 to-blue-600/30 border border-indigo-500/50"
+                    : "text-gray-300 hover:text-white"
+                }`}
+              >
+                <span className="relative z-10 flex items-center gap-2">
+                  <Globe className="w-4 h-4" />
+                  Viaje
+                </span>
+                {!isActive("/Viaje") && (
+                  <>
+                    <div className="absolute inset-0 bg-gradient-to-r from-indigo-600/20 to-blue-600/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-indigo-500 to-blue-500 transition-all duration-300 group-hover:w-full rounded-full" />
+                  </>
+                )}
+              </Link>
+
+              <Link
                 href="/Informacion"
                 className={`px-4 py-2 text-sm font-semibold transition-all duration-300 relative group rounded-xl ${
                   isActive("/Informacion")
@@ -304,6 +328,19 @@ export default function Navbar() {
             >
               <Code2 className="w-5 h-5" />
               <span>Game</span>
+            </Link>
+
+            <Link
+              href="/Viaje"
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl text-base font-semibold transition-all duration-300 ${
+                isActive("/Viaje")
+                  ? "text-white bg-gradient-to-r from-indigo-600/40 to-blue-600/40 border border-indigo-500/50"
+                  : "text-gray-300 hover:text-white hover:bg-indigo-600/20 border border-transparent hover:border-indigo-500/30"
+              }`}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <Globe className="w-5 h-5" />
+              <span>Viaje</span>
             </Link>
 
             <Link
