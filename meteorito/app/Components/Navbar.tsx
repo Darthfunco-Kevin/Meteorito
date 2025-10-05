@@ -22,7 +22,30 @@ export default function Navbar() {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  const isActive = (path: string) => pathname === path;
+  const isActive = (path: string) => {
+    // Check if the current pathname matches or starts with the path
+    if (path === "/") return pathname === "/";
+    // Checks for Meteorite routes
+    if (path === "/Simulacion/Meteorito") {
+      return (
+        pathname.startsWith("/Simulacion/Meteorito") ||
+        pathname === "/Simulacion/Impacto"
+      );
+    }
+    // Checks for Game routes (assuming /historia1 is part of the game flow)
+    if (path === "/InicioGame") {
+      return pathname === "/InicioGame" || pathname.startsWith("/historia1");
+    }
+    // Checks for Information route
+    if (path === "/Informacion") {
+      return pathname === "/Informacion";
+    }
+    // Checks for About Us route
+    if (path === "/Infometeorito") {
+      return pathname === "/Infometeorito";
+    }
+    return false;
+  };
 
   return (
     <header
@@ -115,7 +138,7 @@ export default function Navbar() {
               <Link
                 href="/Simulacion/Meteorito"
                 className={`px-4 py-2 text-sm font-semibold transition-all duration-300 relative group rounded-xl ${
-                  isActive("/Meteorito") || isActive("/impacto")
+                  isActive("/Simulacion/Meteorito")
                     ? "text-white bg-gradient-to-r from-orange-600/30 to-red-600/30 border border-orange-500/50"
                     : "text-gray-300 hover:text-white"
                 }`}
@@ -124,7 +147,7 @@ export default function Navbar() {
                   <Globe className="w-4 h-4" />
                   Meteorites
                 </span>
-                {!isActive("/Meteorito") && !isActive("/impacto") && (
+                {!isActive("/Simulacion/Meteorito") && (
                   <>
                     <div className="absolute inset-0 bg-gradient-to-r from-orange-600/20 to-red-600/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-orange-500 to-red-500 transition-all duration-300 group-hover:w-full rounded-full" />
@@ -135,7 +158,7 @@ export default function Navbar() {
               <Link
                 href="/InicioGame"
                 className={`px-4 py-2 text-sm font-semibold transition-all duration-300 relative group rounded-xl ${
-                  isActive("/games")
+                  isActive("/InicioGame")
                     ? "text-white bg-gradient-to-r from-green-600/30 to-emerald-600/30 border border-green-500/50"
                     : "text-gray-300 hover:text-white"
                 }`}
@@ -148,6 +171,47 @@ export default function Navbar() {
                   <>
                     <div className="absolute inset-0 bg-gradient-to-r from-green-600/20 to-emerald-600/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-green-500 to-emerald-500 transition-all duration-300 group-hover:w-full rounded-full" />
+                  </>
+                )}
+              </Link>
+
+              <Link
+                href="/Informacion"
+                className={`px-4 py-2 text-sm font-semibold transition-all duration-300 relative group rounded-xl ${
+                  isActive("/Informacion")
+                    ? "text-white bg-gradient-to-r from-sky-600/30 to-blue-600/30 border border-sky-500/50"
+                    : "text-gray-300 hover:text-white"
+                }`}
+              >
+                <span className="relative z-10 flex items-center gap-2">
+                  <Globe className="w-4 h-4" />
+                  Information
+                </span>
+                {!isActive("/Informacion") && (
+                  <>
+                    <div className="absolute inset-0 bg-gradient-to-r from-sky-600/20 to-blue-600/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-sky-500 to-blue-500 transition-all duration-300 group-hover:w-full rounded-full" />
+                  </>
+                )}
+              </Link>
+
+              {/* NEW: About Us Link */}
+              <Link
+                href="/Infometeorito"
+                className={`px-4 py-2 text-sm font-semibold transition-all duration-300 relative group rounded-xl ${
+                  isActive("/Infometeorito")
+                    ? "text-white bg-gradient-to-r from-pink-600/30 to-purple-600/30 border border-pink-500/50"
+                    : "text-gray-300 hover:text-white"
+                }`}
+              >
+                <span className="relative z-10 flex items-center gap-2">
+                  <Sparkles className="w-4 h-4" />
+                  Acerca de Nosotros
+                </span>
+                {!isActive("/Infometeorito") && (
+                  <>
+                    <div className="absolute inset-0 bg-gradient-to-r from-pink-600/20 to-purple-600/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-pink-500 to-purple-500 transition-all duration-300 group-hover:w-full rounded-full" />
                   </>
                 )}
               </Link>
@@ -167,9 +231,8 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Desktop CTA Button - Removed */}
+          {/* Desktop Cosmic indicator */}
           <div className="hidden md:flex items-center gap-3">
-            {/* Cosmic indicator */}
             <div className="flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-purple-600/20 to-cyan-600/20 border border-purple-500/30 rounded-full">
               <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse shadow-lg shadow-green-400/50" />
               <span className="text-xs text-gray-300 font-medium">Online</span>
@@ -218,9 +281,9 @@ export default function Navbar() {
             </Link>
 
             <Link
-              href="/Meteorito"
+              href="/Simulacion/Meteorito"
               className={`flex items-center gap-3 px-4 py-3 rounded-xl text-base font-semibold transition-all duration-300 ${
-                isActive("/Meteorito") || isActive("/impacto")
+                isActive("/Simulacion/Meteorito")
                   ? "text-white bg-gradient-to-r from-orange-600/40 to-red-600/40 border border-orange-500/50"
                   : "text-gray-300 hover:text-white hover:bg-orange-600/20 border border-transparent hover:border-orange-500/30"
               }`}
@@ -231,9 +294,9 @@ export default function Navbar() {
             </Link>
 
             <Link
-              href="games"
+              href="/InicioGame"
               className={`flex items-center gap-3 px-4 py-3 rounded-xl text-base font-semibold transition-all duration-300 ${
-                isActive("/games")
+                isActive("/InicioGame")
                   ? "text-white bg-gradient-to-r from-green-600/40 to-emerald-600/40 border border-green-500/50"
                   : "text-gray-300 hover:text-white hover:bg-green-600/20 border border-transparent hover:border-green-500/30"
               }`}
@@ -241,6 +304,33 @@ export default function Navbar() {
             >
               <Code2 className="w-5 h-5" />
               <span>Game</span>
+            </Link>
+
+            <Link
+              href="/Informacion"
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl text-base font-semibold transition-all duration-300 ${
+                isActive("/Informacion")
+                  ? "text-white bg-gradient-to-r from-sky-600/40 to-blue-600/40 border border-sky-500/50"
+                  : "text-gray-300 hover:text-white hover:bg-sky-600/20 border border-transparent hover:border-sky-500/30"
+              }`}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <Globe className="w-5 h-5" />
+              <span>Information</span>
+            </Link>
+
+            {/* NEW: About Us Link (Mobile) */}
+            <Link
+              href="/Infometeorito"
+              className={`flex items-center gap-3 px-4 py-3 rounded-xl text-base font-semibold transition-all duration-300 ${
+                isActive("/Infometeorito")
+                  ? "text-white bg-gradient-to-r from-pink-600/40 to-purple-600/40 border border-pink-500/50"
+                  : "text-gray-300 hover:text-white hover:bg-pink-600/20 border border-transparent hover:border-pink-500/30"
+              }`}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <Sparkles className="w-5 h-5" />
+              <span>Acerca de Nosotros</span>
             </Link>
 
             <Link
