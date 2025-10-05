@@ -34,8 +34,9 @@ export default function Error() {
 
           <div className="space-y-4 text-blue-200">
             <p className="text-lg leading-relaxed">
-              It looks like you've gotten lost in space. The page you are
-              looking for doesn't exist or has been moved to another galaxy.
+              It looks like you&apos;ve gotten lost in space. The page you are
+              looking for doesn&apos;t exist or has been moved to another
+              galaxy.
             </p>
 
             <div className="bg-blue-900/30 backdrop-blur-sm border border-blue-700/50 rounded-xl p-6">

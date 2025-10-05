@@ -1,16 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-  Rocket,
-  Star,
-  Zap,
-  Sparkles,
-  ArrowRight,
-  Globe,
-  Code,
-  Palette,
-} from "lucide-react";
+import { Star, Sparkles, Globe, Code } from "lucide-react"; // Importaciones no usadas (Rocket, Zap, ArrowRight, Palette) eliminadas
 import SpaceScene from "./Components/SpaceScene";
 import Link from "next/link";
 
@@ -146,9 +137,9 @@ export default function Home() {
           {/* Subtitle - Enhanced */}
           <p className="text-xl sm:text-2xl lg:text-3xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed font-light">
             We invite you to discover the truth about asteroid threats, as well
-            as their impacts and consequences. Here, you'll find the essential
-            tools and information to understand these risks and learn how we can
-            mitigate them together.{" "}
+            as their impacts and consequences. Here, you&apos;ll find the
+            essential tools and information to understand these risks and learn
+            how we can mitigate them together.{" "}
           </p>
           {/* Projects Showcase */}
           <div className="mb-16">
@@ -243,8 +234,6 @@ export default function Home() {
               </div>
             </Link>
           </div>
-
-          {/* Projects Showcase */}
 
           {/* Floating Elements */}
           <div className="absolute top-20 left-10 w-20 h-20 bg-purple-500/20 rounded-full blur-xl animate-pulse"></div>

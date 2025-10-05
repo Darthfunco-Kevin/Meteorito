@@ -79,17 +79,16 @@ export default function CapybaraSpace() {
                 <p className="text-lg text-purple-200 leading-relaxed">
                   In a remote corner of the galaxy, Captain Capybara navigates
                   among the stars with his characteristic relaxed style. Aboard
-                  his spaceship "The Cosmic Orange", this intrepid
-                  rodent has visited more than 100 planets, always carrying
-                  with him his life philosophy: stay calm, even
-                  in front of black holes.
+                  his spaceship &quot;The Cosmic Orange&quot;, this intrepid
+                  rodent has visited more than 100 planets, always carrying with
+                  him his life philosophy: stay calm, even in front of black
+                  holes.
                 </p>
                 <p className="text-lg text-purple-200 leading-relaxed">
-                  His mission is not only to explore the cosmos, but to teach all
-                  the civilizations he encounters the art of serenity.
-                  Some call him the "Space Zen Master", others
-                  simply know him as the coolest capybara in the
-                  Milky Way.
+                  His mission is not only to explore the cosmos, but to teach
+                  all the civilizations he encounters the art of serenity. Some
+                  call him the &quot;Space Zen Master&quot;, others simply know
+                  him as the coolest capybara in the Milky Way.
                 </p>
 
                 {/* Achievements */}
@@ -104,9 +103,7 @@ export default function CapybaraSpace() {
                   <div className="bg-indigo-800/30 rounded-lg p-4 border border-indigo-500/30">
                     <div className="text-3xl mb-2">🚀</div>
                     <div className="text-2xl font-bold text-cyan-400">∞</div>
-                    <div className="text-sm text-purple-300">
-                      Calm Level
-                    </div>
+                    <div className="text-sm text-purple-300">Calm Level</div>
                   </div>
                 </div>
 
