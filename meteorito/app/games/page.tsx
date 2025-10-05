@@ -397,7 +397,7 @@ export default function MeteorGame() {
       }
       appRef.current.ticker.stop();
     }
-    router.push("/historia1/historia2");
+    router.push("/NewGames");
   };
 
   const restartGame = () => {

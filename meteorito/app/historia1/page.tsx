@@ -19,7 +19,7 @@ export default function ImageDialogChanger() {
     },
     {
       image:
-        "Lineal/Images2.png",
+        "Lineal/H2.png",
       dialog:
         "Narrator: A civilization was celebrating its traditions, unaware that a catastrophic meteor shower was soon to strike their planet. ",
     },
@@ -31,7 +31,7 @@ export default function ImageDialogChanger() {
     },
     {
       image:
-        "Lineal/Images4.png",
+        "Lineal/H4.png",
       dialog:
         "Narrator: The day came — the day that would determine the survival of their civilization. Despite their efforts to divert it, it wasn’t enough.",
     },
