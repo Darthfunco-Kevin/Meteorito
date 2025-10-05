@@ -44,7 +44,7 @@ export default function ImageDialogChanger() {
       setCurrentIndex((prevIndex) => {
         // Redireccionar al llegar al final de la historia
         if (prevIndex >= slides.length - 1) {
-          window.location.href = "/NewGames"; // Redirección final al juego
+          window.location.href = "/games/game2"; // Redirección final al juego
           return 0; // Fallback (aunque la redirección debería ocurrir)
         }
         return prevIndex + 1;
@@ -66,7 +66,7 @@ export default function ImageDialogChanger() {
 
   // Función para el botón "Continue" (va a la misma redirección final)
   const continueToNext = () => {
-    window.location.href = "/NewGames";
+    window.location.href = "/games/game2";
   };
 
   return (
