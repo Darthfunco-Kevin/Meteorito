@@ -451,11 +451,11 @@ export default function MeteorGame() {
           className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 mb-3"
           style={{ textShadow: "0 0 30px rgba(59, 130, 246, 0.5)" }}
         >
-          🚀 DESTRUCTOR DE METEORITOS
+          🚀 Meteorite Destroyer
         </h1>
         <div className="flex justify-center items-center gap-8 mb-2">
           <div className="text-3xl text-yellow-300 font-bold">
-            Meteoritos: {score} / 20
+            METEORITES: {score} / 20
           </div>
           <div className="text-3xl font-bold">
             <span
@@ -467,7 +467,7 @@ export default function MeteorGame() {
                   : "text-red-500"
               }
             >
-              ❤️ Salud: {health}%
+              ❤️ Health: {health}%
             </span>
           </div>
         </div>
@@ -484,7 +484,7 @@ export default function MeteorGame() {
           />
         </div>
         <div className="text-sm text-cyan-300 mt-2">
-          Usa A y D para mover la nave | ESPACIO para disparar
+          Use A and D to move the ship | SPACE to shoot
         </div>
       </div>
 
@@ -510,13 +510,13 @@ export default function MeteorGame() {
                   : "bg-gradient-to-r from-red-500 via-red-600 to-red-700"
               }`}
             >
-              {gameWon ? "¡VICTORIA! 🎉" : "GAME OVER 💥"}
+              {gameWon ? "WIN ! 🎉" : "GAME OVER 💥"}
             </h2>
             <p className="text-2xl text-white mb-2">
-              {gameWon ? "¡Has salvado el planeta!" : "¡Tu nave fue destruida!"}
+              {gameWon ? "¡You have saved the planet!" : "¡Your ship was destroyed!"}
             </p>
             <p className="text-lg text-gray-300 mb-8">
-              Meteoritos destruidos: {score} / 20
+              Meteorites destroyed: {score} / 20
             </p>
             <button
               onClick={gameWon ? WinGame : restartGame}
@@ -526,7 +526,7 @@ export default function MeteorGame() {
                   : "bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:from-blue-600 hover:via-blue-700 hover:to-blue-800 shadow-blue-500/50"
               }`}
             >
-              {gameWon ? "🔄 Continuar" : "🔄 Reintentar"}
+              {gameWon ? "🔄 Continue" : "🔄 Retry"}
             </button>
           </div>
         )}
@@ -537,38 +537,36 @@ export default function MeteorGame() {
         disabled={showGameOver}
         className="mt-6 px-12 py-4 text-2xl font-bold bg-gradient-to-r from-red-500 to-orange-600 text-white rounded-xl hover:from-red-600 hover:to-orange-700 transform hover:scale-105 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-orange-500/50"
       >
-        ⚡ DISPARAR
+        ⚡ Shoot
       </button>
 
       <div className="mt-6 p-4 bg-gradient-to-r from-indigo-900/50 to-purple-900/50 rounded-lg border border-cyan-500/30 backdrop-blur-sm">
-        <p className="text-cyan-300 font-semibold mb-2">🎮 CONTROLES:</p>
+        <p className="text-cyan-300 font-semibold mb-2">🎮 CONTROLS:</p>
         <p className="text-white text-sm">
-          🔹 Tecla{" "}
+          🔹 Key{" "}
           <kbd className="px-2 py-1 bg-cyan-500/20 rounded border border-cyan-400">
             A
           </kbd>{" "}
-          - Mover izquierda
+          - Move Left
         </p>
         <p className="text-white text-sm">
-          🔹 Tecla{" "}
+          🔹 Key{" "}
           <kbd className="px-2 py-1 bg-cyan-500/20 rounded border border-cyan-400">
             D
           </kbd>{" "}
-          - Mover derecha
+          - Move Right
         </p>
         <p className="text-white text-sm">
-          🔹 Tecla{" "}
+          🔹 Key{" "}
           <kbd className="px-2 py-1 bg-cyan-500/20 rounded border border-cyan-400">
-            ESPACIO
+            SPACE
           </kbd>{" "}
-          - Disparar láser
+          - Shoot laser
         </p>
         <p className="text-red-400 text-sm mt-2">
-          ⚠️ ¡Evita los meteoritos! Cada colisión quita 15% de salud
+          ⚠️ Avoid the meteorites! Each collision takes away 15% of your health.
         </p>
-        <p className="text-red-400 text-sm">
-          ⚠️ ¡No toques el suelo! Pierdes 20% de salud
-        </p>
+       
       </div>
     </div>
   );
