@@ -392,18 +392,18 @@ export default function DestructionGame() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-black via-indigo-950 to-purple-950 flex flex-col items-center justify-center p-8">
       <h1 className="text-5xl font-bold text-white mb-4 tracking-wider">
-        🚀 BATALLA ESPACIAL 🌠
+        🚀 SPACE BATTLE 🌠
       </h1>
-      <p className="text-cyan-300 text-lg mb-6">Destruye el meteorito antes de que sea demasiado tarde</p>
+      <p className="text-cyan-300 text-lg mb-6">Destroy the meteorite before it&apos;s too late</p>
       
       <div className="bg-black bg-opacity-60 rounded-lg p-6 mb-6 shadow-2xl border-2 border-cyan-500">
         <div className="flex gap-8 text-white text-xl mb-4">
           <div className="flex flex-col items-center">
-            <span className="text-cyan-400 text-sm uppercase tracking-wider">Impactos</span>
+            <span className="text-cyan-400 text-sm uppercase tracking-wider">Hits</span>
             <span className="text-4xl font-bold text-green-400">{clicks}/225</span>
           </div>
           <div className="flex flex-col items-center">
-            <span className="text-cyan-400 text-sm uppercase tracking-wider">Tiempo</span>
+            <span className="text-cyan-400 text-sm uppercase tracking-wider">Time</span>
             <span className={`text-4xl font-bold ${timeLeft <= 10 ? 'text-red-400 animate-pulse' : 'text-yellow-400'}`}>
               {timeLeft}s
             </span>
@@ -416,7 +416,7 @@ export default function DestructionGame() {
             style={{ width: `${(clicks / 225) * 100}%` }}
           ></div>
         </div>
-        <p className="text-cyan-300 text-xs text-center">Progreso de destrucción</p>
+        <p className="text-cyan-300 text-xs text-center">Destruction progress</p>
       </div>
 
       <div ref={canvasRef} className="rounded-xl shadow-2xl mb-6 border-4 border-cyan-600"></div>
@@ -426,7 +426,7 @@ export default function DestructionGame() {
           onClick={startGame}
           className="px-10 py-5 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white text-2xl font-bold rounded-xl shadow-lg transform hover:scale-105 transition-all border-2 border-white"
         >
-          🚀 INICIAR MISIÓN
+          🚀 START MISSION
         </button>
       )}
 
@@ -436,10 +436,10 @@ export default function DestructionGame() {
             onClick={WinGame}
             className="px-10 py-5 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white text-2xl font-bold rounded-xl shadow-lg transform hover:scale-105 transition-all mb-4 border-2 border-white animate-pulse"
           >
-            ✅ FINAL BUENO
+            ✅ GOOD ENDING
           </button>
-          <p className="text-green-400 text-2xl font-bold">🎉 ¡MISIÓN CUMPLIDA! 🎉</p>
-          <p className="text-cyan-300 text-lg mt-2">El meteorito ha sido destruido</p>
+          <p className="text-green-400 text-2xl font-bold">🎉 MISSION ACCOMPLISHED! 🎉</p>
+          <p className="text-cyan-300 text-lg mt-2">The meteorite has been destroyed</p>
         </div>
       )}
 
@@ -449,19 +449,19 @@ export default function DestructionGame() {
             onClick={resetGame}
             className="px-10 py-5 bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 text-white text-2xl font-bold rounded-xl shadow-lg transform hover:scale-105 transition-all mb-4 border-2 border-white"
           >
-            ❌ FINAL MALO
+            ❌ BAD ENDING
           </button>
-          <p className="text-red-400 text-2xl font-bold">💥 MISIÓN FALLIDA 💥</p>
-          <p className="text-cyan-300 text-lg mt-2">Solo lograste {clicks} impactos de 225</p>
+          <p className="text-red-400 text-2xl font-bold">💥 MISSION FAILED 💥</p>
+          <p className="text-cyan-300 text-lg mt-2">You only achieved {clicks} hits out of 225</p>
         </div>
       )}
 
       <div className="text-cyan-200 mt-6 text-center max-w-2xl bg-black bg-opacity-40 p-4 rounded-lg border border-cyan-700">
         <p className="text-lg">
-          ⚡ Haz clic rápidamente sobre el meteorito para destruirlo
+          ⚡ Click rapidly on the meteorite to destroy it
         </p>
         <p className="text-sm mt-2 text-cyan-400">
-          Tu nave disparará láseres automáticamente con cada clic
+          Your ship will automatically fire lasers with each click
         </p>
       </div>
     </div>
