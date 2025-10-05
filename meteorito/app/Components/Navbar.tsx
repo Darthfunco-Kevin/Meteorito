@@ -189,7 +189,7 @@ export default function Navbar() {
               >
                 <span className="relative z-10 flex items-center gap-2">
                   <Globe className="w-4 h-4" />
-                  Viaje
+                  Journey
                 </span>
                 {!isActive("/Viaje") && (
                   <>
@@ -230,7 +230,7 @@ export default function Navbar() {
               >
                 <span className="relative z-10 flex items-center gap-2">
                   <Sparkles className="w-4 h-4" />
-                  Acerca de Nosotros
+                  About Us
                 </span>
                 {!isActive("/Infometeorito") && (
                   <>
@@ -340,7 +340,7 @@ export default function Navbar() {
               onClick={() => setIsMenuOpen(false)}
             >
               <Globe className="w-5 h-5" />
-              <span>Viaje</span>
+              <span>Journey</span>
             </Link>
 
             <Link
@@ -367,7 +367,7 @@ export default function Navbar() {
               onClick={() => setIsMenuOpen(false)}
             >
               <Sparkles className="w-5 h-5" />
-              <span>Acerca de Nosotros</span>
+              <span>About Us</span>
             </Link>
 
             <Link
