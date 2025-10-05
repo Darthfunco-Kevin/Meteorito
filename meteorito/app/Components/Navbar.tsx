@@ -83,7 +83,7 @@ export default function Navbar() {
               <div className="flex items-center gap-1 mt-0.5">
                 <Sparkles className="w-3 h-3 text-purple-400 animate-pulse" />
                 <span className="text-xs text-gray-400 font-medium">
-                 Digital Space
+                  Digital Space
                 </span>
               </div>
             </div>
@@ -122,7 +122,7 @@ export default function Navbar() {
               >
                 <span className="relative z-10 flex items-center gap-2">
                   <Globe className="w-4 h-4" />
-                  Meteorites 
+                  Meteorites
                 </span>
                 {!isActive("/Meteorito") && !isActive("/impacto") && (
                   <>
@@ -133,7 +133,7 @@ export default function Navbar() {
               </Link>
 
               <Link
-                href="games"
+                href="/InicioGame"
                 className={`px-4 py-2 text-sm font-semibold transition-all duration-300 relative group rounded-xl ${
                   isActive("/games")
                     ? "text-white bg-gradient-to-r from-green-600/30 to-emerald-600/30 border border-green-500/50"
@@ -144,7 +144,7 @@ export default function Navbar() {
                   <Code2 className="w-4 h-4" />
                   Game
                 </span>
-                {!isActive("/games") && (
+                {!isActive("/InicioGame") && (
                   <>
                     <div className="absolute inset-0 bg-gradient-to-r from-green-600/20 to-emerald-600/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-green-500 to-emerald-500 transition-all duration-300 group-hover:w-full rounded-full" />
@@ -172,9 +172,7 @@ export default function Navbar() {
             {/* Cosmic indicator */}
             <div className="flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-purple-600/20 to-cyan-600/20 border border-purple-500/30 rounded-full">
               <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse shadow-lg shadow-green-400/50" />
-              <span className="text-xs text-gray-300 font-medium">
-                Online
-              </span>
+              <span className="text-xs text-gray-300 font-medium">Online</span>
             </div>
           </div>
 
@@ -260,7 +258,7 @@ export default function Navbar() {
               <div className="flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-600/20 to-cyan-600/20 border border-purple-500/30 rounded-xl">
                 <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse shadow-lg shadow-green-400/50" />
                 <span className="text-sm text-gray-300 font-medium">
-                 Online
+                  Online
                 </span>
               </div>
             </div>
