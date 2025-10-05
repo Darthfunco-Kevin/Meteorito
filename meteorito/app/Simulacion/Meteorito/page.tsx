@@ -83,7 +83,7 @@ export default function Meteorito() {
         );
 
         if (!response.ok) {
-          throw new Error("Error al obtener datos de la NASA");
+          throw new Error("Error fetching NASA data");
         }
 
         const data = await response.json();
@@ -93,7 +93,7 @@ export default function Meteorito() {
 
         if (allNeos.length === 0) {
           throw new Error(
-            "No hay datos de meteoritos disponibles para estas fechas"
+            "No meteorite data available for these dates"
           );
         }
 
@@ -121,7 +121,7 @@ export default function Meteorito() {
 
     // Validate start date is not after end date
     if (startDateObj > endDateObj) {
-      setDateError("La fecha de inicio debe ser anterior a la fecha fin");
+      setDateError("Start date must be before end date");
       return;
     }
 
@@ -130,7 +130,7 @@ export default function Meteorito() {
     today.setHours(0, 0, 0, 0);
 
     if (endDateObj > today) {
-      setDateError("No se pueden seleccionar fechas futuras");
+      setDateError("Cannot select future dates");
       return;
     }
 
@@ -139,7 +139,7 @@ export default function Meteorito() {
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
     if (diffDays > 7) {
-      setDateError("El rango máximo es de 7 días");
+      setDateError("Maximum range is 7 days");
       return;
     }
 
@@ -188,10 +188,10 @@ export default function Meteorito() {
             ></div>
           </div>
           <h2 className="text-3xl font-bold bg-gradient-to-r from-purple-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent mb-3">
-            Cargando datos de la NASA...
+            Loading NASA data...
           </h2>
           <p className="text-gray-300 text-lg">
-            Obteniendo información de meteoritos reales
+            Getting real meteorite information
           </p>
           <div className="mt-4 flex items-center justify-center gap-2">
             <div className="w-2 h-2 bg-purple-500 rounded-full animate-bounce" />
@@ -240,14 +240,14 @@ export default function Meteorito() {
             </div>
           </div>
           <h2 className="text-3xl font-bold text-red-400 mb-3">
-            Error al cargar datos
+            Error loading data
           </h2>
           <p className="text-gray-300 mb-6 text-lg">{error}</p>
           <button
             onClick={() => window.location.reload()}
             className="px-8 py-3 bg-gradient-to-r from-red-600 to-orange-600 text-white font-bold rounded-xl hover:from-red-700 hover:to-orange-700 transition-all duration-300 transform hover:scale-105 shadow-xl shadow-red-500/30"
           >
-            Reintentar
+            Retry
           </button>
         </div>
       </div>
@@ -276,14 +276,14 @@ export default function Meteorito() {
             {/* Title Section */}
             <div className="flex-1">
               <h1 className="text-4xl lg:text-5xl font-black bg-gradient-to-r from-purple-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent mb-3 drop-shadow-2xl">
-                Simulador de Meteoritos
+                Meteorite Simulator
               </h1>
               <div className="flex items-center gap-3 flex-wrap">
                 <span className="px-4 py-1.5 bg-gradient-to-r from-purple-600/30 to-blue-600/30 border border-purple-500/50 rounded-full text-xs text-purple-300 font-bold shadow-lg shadow-purple-500/20">
-                  🛰️ Datos NASA
+                  🛰️ NASA Data
                 </span>
                 <p className="text-gray-300 text-sm font-medium">
-                  🖱️ Interactúa con el mouse para explorar
+                  🖱️ Interact with the mouse to explore
                 </p>
               </div>
             </div>
@@ -293,7 +293,7 @@ export default function Meteorito() {
               <div className="flex items-center gap-3">
                 <div className="flex flex-col gap-1.5">
                   <label className="text-xs text-gray-300 font-bold uppercase tracking-wide">
-                    Fecha Inicio
+                    Start Date
                   </label>
                   <input
                     type="date"
@@ -309,7 +309,7 @@ export default function Meteorito() {
 
                 <div className="flex flex-col gap-1.5">
                   <label className="text-xs text-gray-300 font-bold uppercase tracking-wide">
-                    Fecha Fin
+                    End Date
                   </label>
                   <input
                     type="date"
@@ -468,7 +468,7 @@ export default function Meteorito() {
                   d="M13 10V3L4 14h7v7l9-11h-7z"
                 />
               </svg>
-              <span className="drop-shadow-lg">Simulación de Impacto</span>
+              <span className="drop-shadow-lg">Impact Simulation</span>
               <svg
                 className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200 drop-shadow-lg"
                 fill="none"

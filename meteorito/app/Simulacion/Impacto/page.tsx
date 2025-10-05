@@ -403,7 +403,7 @@ function ImpactoContent() {
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-purple-400 mx-auto mb-4"></div>
-          <h2 className="text-2xl text-white mb-2">Cargando simulación...</h2>
+          <h2 className="text-2xl text-white mb-2">Loading simulation...</h2>
         </div>
       </div>
     );
@@ -432,7 +432,7 @@ function ImpactoContent() {
           <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
             <div className="flex-1">
               <h1 className="text-4xl lg:text-5xl font-black bg-gradient-to-r from-red-400 via-orange-400 to-yellow-300 bg-clip-text text-transparent mb-3 drop-shadow-2xl">
-                💥 Simulación de Impacto
+                💥 Impact Simulation
               </h1>
               <div className="flex items-center gap-3 flex-wrap">
                 <p className="text-gray-200 font-bold text-lg bg-gradient-to-r from-orange-300 to-yellow-300 bg-clip-text text-transparent">
@@ -440,7 +440,7 @@ function ImpactoContent() {
                 </p>
                 {meteoriteData.is_potentially_hazardous_asteroid && (
                   <span className="px-4 py-1.5 bg-gradient-to-r from-red-600/40 to-orange-600/40 border-2 border-red-500/60 rounded-full text-red-300 text-xs font-black uppercase shadow-lg shadow-red-500/30 animate-pulse">
-                    ⚠️ Potencialmente Peligroso
+                    ⚠️ Potentially Hazardous
                   </span>
                 )}
               </div>
@@ -464,7 +464,7 @@ function ImpactoContent() {
                     d="M10 19l-7-7m0 0l7-7m-7 7h18"
                   />
                 </svg>
-                <span className="drop-shadow-lg">Volver a Meteoritos</span>
+                <span className="drop-shadow-lg">Back to Meteorites</span>
               </span>
             </button>
           </div>
@@ -560,7 +560,7 @@ function ImpactoContent() {
                 </svg>
               </div>
               <h2 className="text-3xl font-black bg-gradient-to-r from-orange-300 via-red-300 to-yellow-300 bg-clip-text text-transparent drop-shadow-xl">
-                📊 Datos del Impacto
+                📊 Impact Data
               </h2>
             </div>
 
@@ -570,7 +570,7 @@ function ImpactoContent() {
                 <div className="flex items-center gap-2 mb-2">
                   <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse shadow-lg shadow-red-500/50" />
                   <p className="text-gray-300 text-xs uppercase tracking-wider font-black">
-                    ⚡ Energía de impacto
+                    ⚡ Impact energy
                   </p>
                 </div>
                 <p className="text-3xl font-black text-red-400 drop-shadow-lg">
@@ -583,7 +583,7 @@ function ImpactoContent() {
                 <div className="flex items-center gap-2 mb-2">
                   <div className="w-3 h-3 bg-orange-500 rounded-full animate-pulse shadow-lg shadow-orange-500/50" />
                   <p className="text-gray-300 text-xs uppercase tracking-wider font-black">
-                    🕳️ Diámetro del cráter
+                    🕳️ Crater diameter
                   </p>
                 </div>
                 <p className="text-3xl font-black text-orange-400 drop-shadow-lg">
@@ -596,7 +596,7 @@ function ImpactoContent() {
                 <div className="flex items-center gap-2 mb-2">
                   <div className="w-3 h-3 bg-yellow-500 rounded-full animate-pulse shadow-lg shadow-yellow-500/50" />
                   <p className="text-gray-300 text-xs uppercase tracking-wider font-black">
-                    💀 Radio de devastación
+                    💀 Devastation radius
                   </p>
                 </div>
                 <p className="text-3xl font-black text-yellow-400 drop-shadow-lg">
@@ -611,7 +611,7 @@ function ImpactoContent() {
               <div className="grid grid-cols-2 gap-4">
                 <div className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 rounded-xl p-4 border-2 border-slate-700/50 shadow-lg hover:border-cyan-500/50 transition-all">
                   <p className="text-gray-400 text-xs mb-1 font-bold uppercase tracking-wide">
-                    🚀 Velocidad
+                    🚀 Velocity
                   </p>
                   <p className="text-xl font-black text-cyan-400">
                     {
@@ -624,7 +624,7 @@ function ImpactoContent() {
 
                 <div className="bg-gradient-to-br from-slate-800/80 to-slate-900/80 rounded-xl p-4 border-2 border-slate-700/50 shadow-lg hover:border-purple-500/50 transition-all">
                   <p className="text-gray-400 text-xs mb-1 font-bold uppercase tracking-wide">
-                    📏 Diámetro
+                    📏 Diameter
                   </p>
                   <p className="text-xl font-black text-purple-400">
                     {avgDiameter.toFixed(3)} km
@@ -649,7 +649,7 @@ export default function Impacto() {
           <div className="text-center">
             <div className="animate-spin rounded-full h-32 w-32 border-t-4 border-b-4 border-orange-500 mx-auto mb-4"></div>
             <h2 className="text-2xl font-bold text-white">
-              Cargando simulación...
+              Loading simulation...
             </h2>
           </div>
         </div>
