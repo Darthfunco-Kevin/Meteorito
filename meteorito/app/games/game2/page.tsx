@@ -1,34 +1,40 @@
-'use client';
-import React, { useEffect, useRef, useState } from 'react';
-import * as PIXI from 'pixi.js';
-import { useRouter } from 'next/navigation';
+"use client";
+import React, { useEffect, useRef, useState } from "react";
+import * as PIXI from "pixi.js";
+import { useRouter } from "next/navigation";
 
-// ====== CONFIGURACIÓN DE DISEÑO (PERSONALIZABLE) ======
+// ====== IMAGE PATHS ======
+const IMAGE_PATHS = {
+  ship: "/ImagenParte2/Nave2.png", // Path is relative to the 'public' folder
+  meteorite: "/ImagenParte2/Impactor.png", // Path is relative to the 'public' folder
+};
+
+// ====== DESIGN CONFIGURATION (CUSTOMIZABLE) ======
 const DESIGN_CONFIG = {
-  // Colores del espacio
+  // Space colors
   spaceBackground: 0x0a0e27,
   starsColor: 0xffffff,
   nebulaPurple: 0x6b2d5c,
   nebulaBlue: 0x1e3a5f,
-  
-  // Diseño de la nave (atacante)
+
+  // Ship design (attacker)
   shipBodyColor: 0x4a9eff,
   shipWindowColor: 0x00ffff,
   shipEngineColor: 0xff4500,
   shipWingColor: 0x2e6db5,
-  shipSize: 1.2, // Escala general de la nave
-  
-  // Diseño del meteorito (objetivo)
+  shipSize: 0.085, // Scale adjusted for the ship image (four times smaller)
+
+  // Meteorite design (target)
   meteoriteMainColor: 0x8b4513,
   meteoriteCraterColor: 0x654321,
   meteoriteHighlight: 0xa0522d,
-  meteoriteSize: 1.0, // Escala general del meteorito
-  
-  // Efectos
+  meteoriteSize: 0.25, // Scale adjusted for the meteorite image (four times smaller)
+
+  // Effects
   laserColor: 0x00ff00,
   explosionColors: [0xff6b35, 0xf7931e, 0xfdc830, 0xff4500],
-  
-  // Planeta Tierra en el fondo
+
+  // Earth planet in the background
   earthColor: 0x4a90e2,
   earthContinents: 0x2d5016,
   earthClouds: 0xffffff,
@@ -41,11 +47,11 @@ export default function DestructionGame() {
   const appRef = useRef<PIXI.Application | null>(null);
   const [clicks, setClicks] = useState(0);
   const [timeLeft, setTimeLeft] = useState(45);
-  const [gameState, setGameState] = useState('playing');
+  const [gameState, setGameState] = useState("playing");
   const [gameStarted, setGameStarted] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const clicksRef = useRef(0);
-  const gameStateRef = useRef('playing');
+  const gameStateRef = useRef("playing");
   const gameStartedRef = useRef(false);
   const gameOverRef = useRef(false);
 
@@ -53,6 +59,12 @@ export default function DestructionGame() {
     if (!canvasRef.current || appRef.current) return;
 
     const initPixi = async () => {
+      // 1. Load image textures
+      const [shipTexture, meteoriteTexture] = await Promise.all([
+        PIXI.Assets.load(IMAGE_PATHS.ship),
+        PIXI.Assets.load(IMAGE_PATHS.meteorite),
+      ]);
+
       const app = new PIXI.Application();
       await app.init({
         width: 900,
@@ -66,8 +78,8 @@ export default function DestructionGame() {
       }
       appRef.current = app;
 
-      // ===== FONDO ESPACIAL =====
-      // Crear estrellas
+      // ===== SPACE BACKGROUND (unchanged logic) =====
+      // Create stars
       const starsContainer = new PIXI.Container();
       for (let i = 0; i < 200; i++) {
         const star = new PIXI.Graphics();
@@ -82,7 +94,7 @@ export default function DestructionGame() {
       }
       app.stage.addChild(starsContainer);
 
-      // Planeta Tierra en el fondo
+      // Earth planet in the background
       const earth = new PIXI.Graphics();
       earth.beginFill(DESIGN_CONFIG.earthColor);
       earth.drawCircle(0, 0, 80);
@@ -101,7 +113,7 @@ export default function DestructionGame() {
       earth.alpha = 0.6;
       app.stage.addChild(earth);
 
-      // Nebulosa de fondo
+      // Background Nebula
       const nebula = new PIXI.Graphics();
       nebula.beginFill(DESIGN_CONFIG.nebulaPurple, 0.2);
       nebula.drawCircle(200, 500, 150);
@@ -111,96 +123,39 @@ export default function DestructionGame() {
       nebula.endFill();
       app.stage.addChild(nebula);
 
-      // ===== NAVE ESPACIAL (ATACANTE) =====
+      // ===== SPACESHIP (ATTACKER) - USING IMAGE =====
       const shipContainer = new PIXI.Container();
-      
-      // Cuerpo principal de la nave
-      const shipBody = new PIXI.Graphics();
-      shipBody.beginFill(DESIGN_CONFIG.shipBodyColor);
-      shipBody.moveTo(0, -20);
-      shipBody.lineTo(40, 0);
-      shipBody.lineTo(40, 10);
-      shipBody.lineTo(0, 20);
-      shipBody.lineTo(0, -20);
-      shipBody.endFill();
-      
-      // Alas de la nave
-      shipBody.beginFill(DESIGN_CONFIG.shipWingColor);
-      shipBody.moveTo(10, -20);
-      shipBody.lineTo(10, -35);
-      shipBody.lineTo(30, -25);
-      shipBody.lineTo(10, -20);
-      shipBody.endFill();
-      shipBody.beginFill(DESIGN_CONFIG.shipWingColor);
-      shipBody.moveTo(10, 20);
-      shipBody.lineTo(10, 35);
-      shipBody.lineTo(30, 25);
-      shipBody.lineTo(10, 20);
-      shipBody.endFill();
-      
-      // Ventana de la nave
-      shipBody.beginFill(DESIGN_CONFIG.shipWindowColor);
-      shipBody.drawCircle(25, 0, 6);
-      shipBody.endFill();
-      
-      // Motor de la nave
-      shipBody.beginFill(DESIGN_CONFIG.shipEngineColor);
-      shipBody.drawRect(-8, -8, 8, 16);
-      shipBody.endFill();
-      
-      shipContainer.addChild(shipBody);
+
+      const shipSprite = new PIXI.Sprite(shipTexture);
+      shipSprite.anchor.set(0.5); // Center the anchor
+      shipSprite.rotation = Math.PI / 2; // Rotate 90 degrees to make it horizontal and point right
+
+      shipContainer.addChild(shipSprite);
       shipContainer.x = 150;
       shipContainer.y = 350;
       shipContainer.scale.set(DESIGN_CONFIG.shipSize);
       app.stage.addChild(shipContainer);
 
-      // ===== METEORITO (OBJETIVO) =====
+      // ===== METEORITE (TARGET) - USING IMAGE =====
       const meteoriteContainer = new PIXI.Container();
-      
-      const meteorite = new PIXI.Graphics();
-      meteorite.beginFill(DESIGN_CONFIG.meteoriteMainColor);
-      // Forma irregular del meteorito
-      meteorite.moveTo(0, -50);
-      meteorite.lineTo(30, -40);
-      meteorite.lineTo(50, -20);
-      meteorite.lineTo(45, 10);
-      meteorite.lineTo(50, 40);
-      meteorite.lineTo(20, 50);
-      meteorite.lineTo(-20, 45);
-      meteorite.lineTo(-50, 30);
-      meteorite.lineTo(-45, -10);
-      meteorite.lineTo(-40, -35);
-      meteorite.lineTo(0, -50);
-      meteorite.endFill();
-      
-      // Cráteres del meteorito
-      meteorite.beginFill(DESIGN_CONFIG.meteoriteCraterColor);
-      meteorite.drawCircle(-10, -15, 12);
-      meteorite.drawCircle(20, 10, 8);
-      meteorite.drawCircle(-20, 20, 10);
-      meteorite.drawCircle(15, -25, 6);
-      meteorite.endFill();
-      
-      // Brillos del meteorito
-      meteorite.beginFill(DESIGN_CONFIG.meteoriteHighlight, 0.3);
-      meteorite.drawCircle(10, -20, 8);
-      meteorite.drawCircle(-15, 10, 6);
-      meteorite.endFill();
-      
-      meteoriteContainer.addChild(meteorite);
+
+      const meteoriteSprite = new PIXI.Sprite(meteoriteTexture);
+      meteoriteSprite.anchor.set(0.5); // Center the anchor
+
+      meteoriteContainer.addChild(meteoriteSprite);
       meteoriteContainer.x = 700;
       meteoriteContainer.y = 350;
       meteoriteContainer.scale.set(DESIGN_CONFIG.meteoriteSize);
-      meteoriteContainer.eventMode = 'static';
-      meteoriteContainer.cursor = 'pointer';
+      meteoriteContainer.eventMode = "static";
+      meteoriteContainer.cursor = "pointer";
       app.stage.addChild(meteoriteContainer);
 
-      // Texto de HP
-      const hpText = new PIXI.Text('HP: 225', {
-        fontFamily: 'Arial',
+      // HP Text
+      const hpText = new PIXI.Text("HP: 225", {
+        fontFamily: "Arial",
         fontSize: 28,
         fill: 0xffffff,
-        fontWeight: 'bold',
+        fontWeight: "bold",
         stroke: 0x000000,
         strokeThickness: 4,
       });
@@ -208,16 +163,17 @@ export default function DestructionGame() {
       hpText.y = 50;
       app.stage.addChild(hpText);
 
-      // Contenedores de efectos
+      // Effects containers
       const lasersContainer = new PIXI.Container();
       app.stage.addChild(lasersContainer);
-      
+
       const particlesContainer = new PIXI.Container();
       app.stage.addChild(particlesContainer);
 
-      // ===== EVENTO DE CLIC =====
-      meteoriteContainer.on('pointerdown', () => {
-        if (gameStateRef.current !== 'playing' || !gameStartedRef.current) return;
+      // ===== CLICK EVENT =====
+      meteoriteContainer.on("pointerdown", () => {
+        if (gameStateRef.current !== "playing" || !gameStartedRef.current)
+          return;
 
         clicksRef.current += 1;
         setClicks(clicksRef.current);
@@ -225,20 +181,26 @@ export default function DestructionGame() {
         const remainingHP = 225 - clicksRef.current;
         hpText.text = `HP: ${remainingHP > 0 ? remainingHP : 0}`;
 
-        // Crear láser
+        // Create laser
         const laser = new PIXI.Graphics() as PIXI.Graphics & { speed: number };
         laser.beginFill(DESIGN_CONFIG.laserColor);
         laser.drawRect(0, -2, 40, 4);
         laser.endFill();
-        laser.x = shipContainer.x + 40;
+        // Adjust laser start position to the ship's nose
+        const shipScaledHeight = shipSprite.height * shipContainer.scale.y;
+        laser.x = shipContainer.x + shipScaledHeight / 2 - 20;
         laser.y = shipContainer.y;
         laser.speed = 15;
         lasersContainer.addChild(laser);
 
-        // Crear partículas de explosión
+        // Create explosion particles
         const colors = DESIGN_CONFIG.explosionColors;
         for (let i = 0; i < 8; i++) {
-          const particle = new PIXI.Graphics() as PIXI.Graphics & { vx: number; vy: number; life: number };
+          const particle = new PIXI.Graphics() as PIXI.Graphics & {
+            vx: number;
+            vy: number;
+            life: number;
+          };
           particle.beginFill(colors[Math.floor(Math.random() * colors.length)]);
           particle.drawCircle(0, 0, Math.random() * 4 + 3);
           particle.endFill();
@@ -254,7 +216,7 @@ export default function DestructionGame() {
           particlesContainer.addChild(particle);
         }
 
-        // Sacudida del meteorito
+        // Meteorite shake effect
         meteoriteContainer.x += Math.random() * 12 - 6;
         meteoriteContainer.y += Math.random() * 12 - 6;
         meteoriteContainer.rotation += (Math.random() - 0.5) * 0.2;
@@ -265,25 +227,29 @@ export default function DestructionGame() {
         }, 80);
       });
 
-      // ===== LOOP DE ANIMACIÓN =====
+      // ===== ANIMATION LOOP (TICKER) =====
       app.ticker.add(() => {
-        // Animar estrellas (parpadeo)
+        // Animate stars (twinkle)
         starsContainer.children.forEach((star) => {
           star.alpha += (Math.random() - 0.5) * 0.05;
           star.alpha = Math.max(0.3, Math.min(1, star.alpha));
         });
 
-        // Rotar Tierra lentamente
+        // Rotate Earth slowly
         earth.rotation += 0.001;
 
-        // Pulso del motor de la nave
+        // Ship engine pulse
         const enginePulse = 1 + Math.sin(Date.now() * 0.01) * 0.3;
-        shipContainer.scale.set(DESIGN_CONFIG.shipSize * (0.98 + enginePulse * 0.02));
+        // Apply pulse to both scales since the ship is rotated
+        shipContainer.scale.x =
+          DESIGN_CONFIG.shipSize * (0.98 + enginePulse * 0.02);
+        shipContainer.scale.y =
+          DESIGN_CONFIG.shipSize * (0.98 + enginePulse * 0.02);
 
-        // Rotación lenta del meteorito
+        // Slow meteorite rotation
         meteoriteContainer.rotation += 0.005;
 
-        // Animar láseres
+        // Animate lasers
         lasersContainer.children.forEach((laser) => {
           const l = laser as PIXI.Graphics & { speed: number };
           l.x += l.speed;
@@ -292,9 +258,13 @@ export default function DestructionGame() {
           }
         });
 
-        // Animar partículas
+        // Animate particles
         particlesContainer.children.forEach((particle) => {
-          const p = particle as PIXI.Graphics & { vx: number; vy: number; life: number };
+          const p = particle as PIXI.Graphics & {
+            vx: number;
+            vy: number;
+            life: number;
+          };
           if (p.vx !== undefined && p.vy !== undefined) {
             p.x += p.vx;
             p.y += p.vy;
@@ -315,11 +285,14 @@ export default function DestructionGame() {
       if (appRef.current) {
         appRef.current.destroy(true, { children: true });
         appRef.current = null;
+        // Clean up assets
+        PIXI.Assets.unload(IMAGE_PATHS.ship);
+        PIXI.Assets.unload(IMAGE_PATHS.meteorite);
       }
     };
   }, []);
 
-  // Sincronizar refs con estados
+  // Sync refs with states
   useEffect(() => {
     gameStateRef.current = gameState;
   }, [gameState]);
@@ -328,14 +301,14 @@ export default function DestructionGame() {
     gameStartedRef.current = gameStarted;
   }, [gameStarted]);
 
-  // Timer del juego
+  // Game Timer
   useEffect(() => {
-    if (gameStarted && gameState === 'playing') {
+    if (gameStarted && gameState === "playing") {
       timerRef.current = setInterval(() => {
         setTimeLeft((prev) => {
           if (prev <= 1) {
             clearInterval(timerRef.current!);
-            setGameState(clicksRef.current >= 225 ? 'won' : 'lost');
+            setGameState(clicksRef.current >= 225 ? "won" : "lost");
             return 0;
           }
           return prev - 1;
@@ -350,10 +323,10 @@ export default function DestructionGame() {
     };
   }, [gameStarted, gameState]);
 
-  // Verificar victoria
+  // Check for victory
   useEffect(() => {
-    if (clicks >= 225 && gameState === 'playing') {
-      setGameState('won');
+    if (clicks >= 225 && gameState === "playing") {
+      setGameState("won");
       if (timerRef.current) {
         clearInterval(timerRef.current);
       }
@@ -362,14 +335,15 @@ export default function DestructionGame() {
 
   const startGame = () => {
     setGameStarted(true);
-    setGameState('playing');
+    setGameState("playing");
     setClicks(0);
     clicksRef.current = 0;
     setTimeLeft(45);
   };
 
-  const WinGame = () => {
-    // Limpiar el juego antes de navegar
+  // Renamed from WinGame to follow English naming convention
+  const endGameWin = () => {
+    // Clean up before navigating
     gameOverRef.current = true;
     if (appRef.current) {
       if ((appRef.current as any).meteorInterval) {
@@ -377,16 +351,11 @@ export default function DestructionGame() {
       }
       appRef.current.ticker.stop();
     }
-    router.push('/historia1/historia2');
-  }
-
+    router.push("/");
+  };
 
   const resetGame = () => {
-    setGameStarted(false);
-    setGameState('playing');
-    setClicks(0);
-    clicksRef.current = 0;
-    setTimeLeft(45);
+    router.push("/");
   };
 
   return (
@@ -394,34 +363,53 @@ export default function DestructionGame() {
       <h1 className="text-5xl font-bold text-white mb-4 tracking-wider">
         🚀 SPACE BATTLE 🌠
       </h1>
-      <p className="text-cyan-300 text-lg mb-6">Destroy the meteorite before it&apos;s too late</p>
-      
+      <p className="text-cyan-300 text-lg mb-6">
+        Destroy the meteorite before it's too late
+      </p>
+
       <div className="bg-black bg-opacity-60 rounded-lg p-6 mb-6 shadow-2xl border-2 border-cyan-500">
         <div className="flex gap-8 text-white text-xl mb-4">
           <div className="flex flex-col items-center">
-            <span className="text-cyan-400 text-sm uppercase tracking-wider">Hits</span>
-            <span className="text-4xl font-bold text-green-400">{clicks}/225</span>
+            <span className="text-cyan-400 text-sm uppercase tracking-wider">
+              IMPACTS
+            </span>
+            <span className="text-4xl font-bold text-green-400">
+              {clicks}/225
+            </span>
           </div>
           <div className="flex flex-col items-center">
-            <span className="text-cyan-400 text-sm uppercase tracking-wider">Time</span>
-            <span className={`text-4xl font-bold ${timeLeft <= 10 ? 'text-red-400 animate-pulse' : 'text-yellow-400'}`}>
+            <span className="text-cyan-400 text-sm uppercase tracking-wider">
+              TIME LEFT
+            </span>
+            <span
+              className={`text-4xl font-bold ${
+                timeLeft <= 10
+                  ? "text-red-400 animate-pulse"
+                  : "text-yellow-400"
+              }`}
+            >
               {timeLeft}s
             </span>
           </div>
         </div>
-        
+
         <div className="w-full bg-gray-900 rounded-full h-5 mb-2 border-2 border-cyan-700">
-          <div 
+          <div
             className="bg-gradient-to-r from-green-500 via-yellow-500 to-red-500 h-full rounded-full transition-all duration-300"
             style={{ width: `${(clicks / 225) * 100}%` }}
           ></div>
         </div>
-        <p className="text-cyan-300 text-xs text-center">Destruction progress</p>
+        <p className="text-cyan-300 text-xs text-center">
+          Destruction Progress
+        </p>
       </div>
 
-      <div ref={canvasRef} className="rounded-xl shadow-2xl mb-6 border-4 border-cyan-600"></div>
+      <div
+        ref={canvasRef}
+        className="rounded-xl shadow-2xl mb-6 border-4 border-cyan-600"
+      ></div>
 
-      {!gameStarted && gameState === 'playing' && (
+      {!gameStarted && gameState === "playing" && (
         <button
           onClick={startGame}
           className="px-10 py-5 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white text-2xl font-bold rounded-xl shadow-lg transform hover:scale-105 transition-all border-2 border-white"
@@ -430,20 +418,24 @@ export default function DestructionGame() {
         </button>
       )}
 
-      {gameState === 'won' && (
+      {gameState === "won" && (
         <div className="text-center">
           <button
-            onClick={WinGame}
+            onClick={endGameWin}
             className="px-10 py-5 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white text-2xl font-bold rounded-xl shadow-lg transform hover:scale-105 transition-all mb-4 border-2 border-white animate-pulse"
           >
             ✅ GOOD ENDING
           </button>
-          <p className="text-green-400 text-2xl font-bold">🎉 MISSION ACCOMPLISHED! 🎉</p>
-          <p className="text-cyan-300 text-lg mt-2">The meteorite has been destroyed</p>
+          <p className="text-green-400 text-2xl font-bold">
+            🎉 MISSION ACCOMPLISHED! 🎉
+          </p>
+          <p className="text-cyan-300 text-lg mt-2">
+            The meteorite has been destroyed
+          </p>
         </div>
       )}
 
-      {gameState === 'lost' && (
+      {gameState === "lost" && (
         <div className="text-center">
           <button
             onClick={resetGame}
@@ -451,17 +443,21 @@ export default function DestructionGame() {
           >
             ❌ BAD ENDING
           </button>
-          <p className="text-red-400 text-2xl font-bold">💥 MISSION FAILED 💥</p>
-          <p className="text-cyan-300 text-lg mt-2">You only achieved {clicks} hits out of 225</p>
+          <p className="text-red-400 text-2xl font-bold">
+            💥 MISSION FAILED 💥
+          </p>
+          <p className="text-cyan-300 text-lg mt-2">
+            You only managed {clicks} impacts out of 225
+          </p>
         </div>
       )}
 
       <div className="text-cyan-200 mt-6 text-center max-w-2xl bg-black bg-opacity-40 p-4 rounded-lg border border-cyan-700">
         <p className="text-lg">
-          ⚡ Click rapidly on the meteorite to destroy it
+          ⚡ Quickly click on the meteorite to destroy it
         </p>
         <p className="text-sm mt-2 text-cyan-400">
-          Your ship will automatically fire lasers with each click
+          Your ship will automatically fire lasers with every click
         </p>
       </div>
     </div>
