@@ -19,7 +19,7 @@ export default function ImageDialogChanger() {
     },
     {
       image:
-        "Lineal/H2.png",
+        "Lineal/Images2.png",
       dialog:
         "Narrator: A civilization was celebrating its traditions, unaware that a catastrophic meteor shower was soon to strike their planet. ",
     },
@@ -31,61 +31,61 @@ export default function ImageDialogChanger() {
     },
     {
       image:
-        "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800",
+        "Lineal/Images4.png",
       dialog:
         "Narrator: The day came — the day that would determine the survival of their civilization. Despite their efforts to divert it, it wasn’t enough.",
     },
     {
       image:
-        "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=800",
+        "Lineal/6.jpg",
       dialog:
         "Narrator: Their civilization, their ancestors, their history, their culture… all vanished from the face of the universe.",
     },
     {
       image:
-        "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
+        "Lineal/6.jpg",
       dialog:
         "Narrator: Time flowed like a single drop of water. That simple story slowly faded from memory — forgotten by the universe, as new generations focused only on their own struggles, ignoring the lessons of the past.",
     },
     {
       image:
-        "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
+        "Lineal/4.gif",
       dialog:
         "Narrator: However, one capybara, upon learning of this tragedy, reflected deeply on the consequences for those without the means to defend themselves. His civilization, unlike others, had the technology and strength to make a difference.",
     },
     {
       image:
-        "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
+        "Lineal/4.gif",
       dialog:
         "Narrator: It was a mission that could cost him his life. Yet, the capybara was ready to follow his destiny, his purpose — his reason for being — even though his family opposed his decision.",
     },
     {
       image:
-        "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
+        "Lineal/4.gif",
       dialog:
         "Narrator: It was hard to leave behind everyone he loved. So, he left a farewell letter, promising to return one day.",
     },
     {
       image:
-        "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
+        "Lineal/4.gif",
       dialog:
         "Capybara: If the universe forgets, I will remember. I’ll return when the sky and space are safe again",
     },
     {
       image:
-        "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
+        "Lineal/3.gif",
       dialog:
         "Capybara: Hold on… I’ll be there in a few minutes.",
     },
     {
       image:
-        "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
+        "Lineal/1.png",
       dialog:
-        "Capybara: Scientist: I thought your existence was just a rumor, sir…",
+        "Scientist: I thought your existence was just a rumor, sir…",
     },
      {
       image:
-        "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800",
+        "Lineal/5.png",
       dialog:
         "Capybara: Capybara forever!",
     },
