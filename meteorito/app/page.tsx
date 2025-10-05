@@ -224,7 +224,7 @@ export default function Home() {
               </div>
             </Link>
 
-            <Link href="/games">
+            <Link href="/InicioGame">
               <div className="w-full group relative p-8 bg-gradient-to-br from-slate-900/80 to-purple-900/80 backdrop-blur-xl border border-purple-500/30 rounded-2xl hover:border-purple-400/60 transition-all duration-500 hover:transform hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/20">
                 <div className="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-blue-600/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <div className="relative z-10">
