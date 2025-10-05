@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export default function CapybaraSpace() {
   const handleStart = () => {
-    window.location.href = "https://example.com"; // Change this URL to the one you need
+    window.location.href = "historia1"; // Change this URL to the one you need
   };
 
   return (
